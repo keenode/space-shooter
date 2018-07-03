@@ -5,11 +5,19 @@ import PlayerShip from '../../components/Game/PlayerShip'
 
 import styles from './GameCanvas.css'
 
+const playRegionBounds = {
+  width: 440,
+  height: 680,
+  offsetTop: 40
+}
+
 class GameCanvas extends Component {
+  playReigion = new PIXI.Container()
   playerShip = null
 
   componentDidMount() {
     this.setupPIXI('game-canvas')
+    this.setupPlayRegion()
     this.placeEntities()
     this.gameApp.ticker.add(delta => this.gameLoop(delta))
   }
@@ -38,12 +46,28 @@ class GameCanvas extends Component {
     this.fpsText = new PIXI.Text('', style)
     this.fpsText.x = 15
     this.fpsText.y = 15
+
+    this.gameApp.stage.addChild(this.playReigion)
     this.gameApp.stage.addChild(this.fpsText)
   }
 
+  setupPlayRegion() {
+    console.log(this.gameApp.renderer.width)
+    this.playReigion.x = this.gameApp.renderer.width / 2 - playRegionBounds.width / 2
+    this.playReigion.y = playRegionBounds.offsetTop
+    this.playReigion.addChild(this.drawPlayRegionBounds())
+  }
+
   placeEntities() {
-    this.playerShip = new PlayerShip(100, 300)
-    this.gameApp.stage.addChild(this.playerShip.PIXIContainer)
+    this.playerShip = new PlayerShip(playRegionBounds)
+    this.playReigion.addChild(this.playerShip.PIXIContainer)
+  }
+
+  drawPlayRegionBounds() {
+    const rect = new PIXI.Graphics()
+    rect.lineStyle(1, 0x00ff00, 1)
+    rect.drawRect(0, 0, playRegionBounds.width, playRegionBounds.height)
+    return rect
   }
 
   gameLoop(delta) {
