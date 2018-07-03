@@ -81,12 +81,18 @@ class PlayerShip {
     this.vx = Math.abs(this.vx) > this.maxVel ? this.maxVel * dirFactorX : this.vx
     this.vy = Math.abs(this.vy) > this.maxVel ? this.maxVel * dirFactorY : this.vy
 
-    // console.log('vy: ' + this.vy)
-    // console.log('vx: ' + this.vx)
-
-    // Set position
-    this.PIXIContainer.x += Math.round(this.vx) * delta
-    this.PIXIContainer.y += Math.round(this.vy) * delta
+    // Bounds checking
+    if (this.PIXIContainer.x + this.vx < 0) {
+      this.vx = 0
+      this.PIXIContainer.x = 0
+    } else if (this.PIXIContainer.x + this.vx > this.playRegionBounds.width) {
+      this.vx = 0
+      this.PIXIContainer.x = this.playRegionBounds.width
+    } else {
+      // Update position
+      this.PIXIContainer.x += Math.round(this.vx) * delta
+      this.PIXIContainer.y += Math.round(this.vy) * delta
+    }
   }
 }
 
