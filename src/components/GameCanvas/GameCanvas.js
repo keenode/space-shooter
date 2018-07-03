@@ -76,19 +76,25 @@ class GameCanvas extends Component {
   }
 
   gameLoop(delta) {
+    // Hande player updates
     this.playerShip.update(delta)
-
     if (this.playerShip.isFiring) {
       const projectile = new Projectile(this.playerShip.PIXIContainer.x, this.playerShip.PIXIContainer.y)
       this.projectiles.data.push(projectile)
       this.projectiles.container.addChild(projectile.PIXIContainer)
     }
 
+    // Handle projectile updates
     for (let p = 0; p < this.projectiles.data.length; p++) {
-      // const projectile = this.projectiles.getChildAt(p)
-      this.projectiles.data[p].update(delta)
+      const projectile = this.projectiles.data[p]
+      projectile.update(delta)
+      if (!projectile.isAlive) {
+        this.projectiles.data.splice(p, 1)
+        this.projectiles.container.removeChildAt(p)
+      }
     }
 
+    // Update FPS text
     this.fpsText.text = Math.round(this.gameApp.ticker.FPS) + ' FPS'
   }
 
