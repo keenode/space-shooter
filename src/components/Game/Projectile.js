@@ -4,8 +4,8 @@ class Projectile {
   PIXIContainer = new PIXI.Container()
   vx = 0
   vy = 0
-  accel = 0.8
-  maxVel = 20.0
+  accel = 1.0
+  maxVel = 10.0
   friction = 0.35
 
   constructor(xPos, yPos) {
@@ -23,7 +23,10 @@ class Projectile {
   }
 
   update(delta) {
-    
+    this.vy -= this.accel
+    this.vy -= this.friction * Math.sign(this.vy)
+    this.vy = Math.abs(this.vy) > this.maxVel ? -this.maxVel : this.vy
+    this.PIXIContainer.y += Math.round(this.vy) * delta
   }
 }
 

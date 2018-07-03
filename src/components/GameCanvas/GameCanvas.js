@@ -15,7 +15,10 @@ const playRegionBounds = {
 class GameCanvas extends Component {
   playReigion = new PIXI.Container()
   playerShip = null
-  projectiles = new PIXI.Container()
+  projectiles = {
+    data: [],
+    container: new PIXI.Container()
+  }
 
   componentDidMount() {
     this.setupPIXI('game-canvas')
@@ -62,7 +65,7 @@ class GameCanvas extends Component {
   placeEntities() {
     this.playerShip = new PlayerShip(playRegionBounds)
     this.playReigion.addChild(this.playerShip.PIXIContainer)
-    this.playReigion.addChild(this.projectiles)
+    this.playReigion.addChild(this.projectiles.container)
   }
 
   drawPlayRegionBounds() {
@@ -74,10 +77,16 @@ class GameCanvas extends Component {
 
   gameLoop(delta) {
     this.playerShip.update(delta)
+
     if (this.playerShip.isFiring) {
-      this.projectiles.addChild(
-        new Projectile(this.playerShip.PIXIContainer.x, this.playerShip.PIXIContainer.y).PIXIContainer
-      )
+      const projectile = new Projectile(this.playerShip.PIXIContainer.x, this.playerShip.PIXIContainer.y)
+      this.projectiles.data.push(projectile)
+      this.projectiles.container.addChild(projectile.PIXIContainer)
+    }
+
+    for (let p = 0; p < this.projectiles.data.length; p++) {
+      // const projectile = this.projectiles.getChildAt(p)
+      this.projectiles.data[p].update(delta)
     }
 
     this.fpsText.text = Math.round(this.gameApp.ticker.FPS) + ' FPS'
