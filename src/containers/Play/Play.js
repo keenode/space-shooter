@@ -1,10 +1,12 @@
 import React from 'react'
 
+import GameCanvas from '../../components/GameCanvas/GameCanvas'
+
 import styles from './Play.css'
 
 const play = () => (
-  <div className={styles.Container}>
-    <h1>Play</h1>
+  <div className={styles.PlayContainer}>
+    <GameCanvas />
   </div>
 )
 
