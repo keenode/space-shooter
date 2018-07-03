@@ -8,12 +8,14 @@ class EnemyShip {
   vx = 0
   vy = 0
   accel = 0.8
-  maxVel = 2.0
+  maxVel = 1.0
   friction = 0.35
   // isFiring = false
   // fireTimer = 0
   // fireRate = 10.0
   isAlive = true
+  nextAttackElapsed = 0
+  nextAttackTimer = Math.random() * 175.0 + 25.0
 
   constructor(xPos, yPos) {
     this.PIXIContainer.x = xPos
@@ -67,7 +69,7 @@ class EnemyShip {
     this.PIXIContainer.x += Math.round(this.vx) * delta
     this.PIXIContainer.y += Math.round(this.vy) * delta
 
-    // this.fireTimer += delta
+    this.nextAttackElapsed += delta
   }
 }
 

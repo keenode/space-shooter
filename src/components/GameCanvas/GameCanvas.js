@@ -26,6 +26,10 @@ class GameCanvas extends Component {
     data: [],
     container: new PIXI.Container()
   }
+  enemyProjectiles = {
+    data: [],
+    container: new PIXI.Container()
+  }
 
   componentDidMount() {
     this.setupPIXI('game-canvas')
@@ -88,6 +92,7 @@ class GameCanvas extends Component {
     this.enemies.container.addChild(enemy2.PIXIContainer)
     this.enemies.container.addChild(enemy3.PIXIContainer)
     this.playReigion.addChild(this.enemies.container)
+    this.playReigion.addChild(this.enemyProjectiles.container)
   }
 
   drawPlayRegionBounds() {
@@ -101,7 +106,7 @@ class GameCanvas extends Component {
     // Hande player updates
     this.playerShip.update(delta)
     if (this.playerShip.isFiring && this.playerShip.fireTimer >= this.playerShip.fireRate) {
-      const projectile = new Projectile(this.playerShip.PIXIContainer.x, this.playerShip.PIXIContainer.y)
+      const projectile = new Projectile(this.playerShip, playRegionBounds)
       this.playerProjectiles.data.push(projectile)
       this.playerProjectiles.container.addChild(projectile.PIXIContainer)
       this.playerShip.fireTimer = 0
@@ -109,10 +114,18 @@ class GameCanvas extends Component {
 
     // Handle enemy updates
     for (let b = 0; b < this.enemies.data.length; b++) {
-      this.enemies.data[b].update(delta)
+      const enemy = this.enemies.data[b]
+      enemy.update(delta)
+      if (enemy.nextAttackElapsed >= enemy.nextAttackTimer) {
+        const projectile = new Projectile(enemy, playRegionBounds)
+        this.enemyProjectiles.data.push(projectile)
+        this.enemyProjectiles.container.addChild(projectile.PIXIContainer)
+        enemy.nextAttackElapsed = 0
+        enemy.nextAttackTimer = Math.random() * 175.0 + 25.0
+      }
     }
 
-    // Handle projectile updates
+    // Handle player projectile updates
     for (let p = 0; p < this.playerProjectiles.data.length; p++) {
       const projectile = this.playerProjectiles.data[p]
       projectile.update(delta)
@@ -120,6 +133,17 @@ class GameCanvas extends Component {
       if (!projectile.isAlive) {
         this.playerProjectiles.data.splice(p, 1)
         this.playerProjectiles.container.removeChildAt(p)
+      }
+    }
+
+    // Handle enemy projectile updates
+    for (let p = 0; p < this.enemyProjectiles.data.length; p++) {
+      const projectile = this.enemyProjectiles.data[p]
+      projectile.update(delta)
+      // TODO: Current logic causing weird positoning stutter upon removal
+      if (!projectile.isAlive) {
+        this.enemyProjectiles.data.splice(p, 1)
+        this.enemyProjectiles.container.removeChildAt(p)
       }
     }
 
@@ -133,7 +157,7 @@ class GameCanvas extends Component {
         enemy.isAlive = false
       }
 
-      // Check collision with projectile
+      // Check enemy collision with player projectiles
       for (let p = 0; p < this.playerProjectiles.data.length; p++) {
         const projectile = this.playerProjectiles.data[p]
         if (collisionTest(enemy.PIXIContainer, projectile.PIXIContainer)) {
@@ -146,6 +170,15 @@ class GameCanvas extends Component {
       if (!enemy.isAlive) {
         this.enemies.data.splice(b, 1)
         this.enemies.container.removeChildAt(b)
+      }
+    }
+
+    // Check player collision with enemy projectiles
+    for (let p = 0; p < this.enemyProjectiles.data.length; p++) {
+      const projectile = this.enemyProjectiles.data[p]
+      if (collisionTest(this.playerShip.PIXIContainer, projectile.PIXIContainer)) {
+        console.log('damage')
+        projectile.isAlive = false
       }
     }
 
