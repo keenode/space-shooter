@@ -1,7 +1,12 @@
 import * as PIXI from 'pixi.js'
 
+const shipWidth = 48
+const shipHeight = 48
+const shipBottomPadding = 20
+
 class PlayerShip {
   PIXIContainer = new PIXI.Container()
+  playRegionBounds = null
   vx = 0
   vy = 0
   accel = 0.8
@@ -13,8 +18,9 @@ class PlayerShip {
   }
 
   constructor(playRegionBounds) {
+    this.playRegionBounds = playRegionBounds
     this.PIXIContainer.x = playRegionBounds.width / 2
-    this.PIXIContainer.y = playRegionBounds.height - 72
+    this.PIXIContainer.y = playRegionBounds.height - shipHeight / 2 - shipBottomPadding
     this.PIXIContainer.addChild(this.draw())
     document.addEventListener('keydown', this.handleKeyDown.bind(this), false)
     document.addEventListener('keyup', this.handleKeyUp.bind(this), false)
@@ -41,10 +47,10 @@ class PlayerShip {
     triangle.beginFill(0xff0000)
     triangle.lineStyle(1, 0xffffff, 1)
     triangle.drawPolygon([
-      -24, 48,
-      24, 48,
-      0, 0,
-      -24, 48
+      -shipWidth / 2, shipHeight / 2,
+      shipWidth / 2, shipHeight / 2,
+      0, -shipHeight / 2,
+      -shipWidth / 2, shipHeight / 2
     ])
     triangle.endFill()
     return triangle
