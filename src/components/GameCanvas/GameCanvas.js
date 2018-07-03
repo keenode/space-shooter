@@ -76,9 +76,17 @@ class GameCanvas extends Component {
     this.playReigion.addChild(this.projectiles.container)
 
     // Baddies
-    const baddie = new EnemyShip()
-    this.baddies.data.push(baddie)
-    this.baddies.container.addChild(baddie.PIXIContainer)
+    const baddie1 = new EnemyShip(100, 100)
+    this.baddies.data.push(baddie1)
+    this.baddies.container.addChild(baddie1.PIXIContainer)
+    const baddie2 = new EnemyShip(200, 125)
+    this.baddies.data.push(baddie2)
+    this.baddies.container.addChild(baddie1.PIXIContainer)
+    const baddie3 = new EnemyShip(300, 75)
+    this.baddies.data.push(baddie3)
+    this.baddies.container.addChild(baddie1.PIXIContainer)
+    this.baddies.container.addChild(baddie2.PIXIContainer)
+    this.baddies.container.addChild(baddie3.PIXIContainer)
     this.playReigion.addChild(this.baddies.container)
   }
 
@@ -99,6 +107,11 @@ class GameCanvas extends Component {
       this.playerShip.fireTimer = 0
     }
 
+    // Handle baddie updates
+    for (let b = 0; b < this.baddies.data.length; b++) {
+      this.baddies.data[b].update(delta)
+    }
+
     // Handle projectile updates
     for (let p = 0; p < this.projectiles.data.length; p++) {
       const projectile = this.projectiles.data[p]
@@ -113,6 +126,13 @@ class GameCanvas extends Component {
     // Handle collisons
     for (let b = 0; b < this.baddies.data.length; b++) {
       const baddie = this.baddies.data[b]
+
+      // Check collision with player
+      if (collisionTest(baddie.PIXIContainer, this.playerShip.PIXIContainer)) {
+        console.log('crash')
+      }
+
+      // Check collision with projectile
       for (let p = 0; p < this.projectiles.data.length; p++) {
         const projectile = this.projectiles.data[p]
         if (collisionTest(baddie.PIXIContainer, projectile.PIXIContainer)) {

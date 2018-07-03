@@ -8,15 +8,15 @@ class EnemyShip {
   vx = 0
   vy = 0
   accel = 0.8
-  maxVel = 20.0
+  maxVel = 2.0
   friction = 0.35
   // isFiring = false
   // fireTimer = 0
   // fireRate = 10.0
 
-  constructor() {
-    this.PIXIContainer.x = 200
-    this.PIXIContainer.y = 100
+  constructor(xPos, yPos) {
+    this.PIXIContainer.x = xPos
+    this.PIXIContainer.y = yPos
     this.PIXIContainer.rotation = 180 * Math.PI / 180
     this.PIXIContainer.addChild(this.draw())
     // this.fireTimer = this.fireRate
@@ -50,17 +50,21 @@ class EnemyShip {
     // if (this.moving.right) {
     //   this.vx += this.accel
     // }
-    this.vy -= this.accel
+    this.vy += this.accel
 
     // Handle friction
     this.vx -= this.friction * Math.sign(this.vx)
     this.vy -= this.friction * Math.sign(this.vy)
 
     // Handle max velocity 
-    const dirFactorX = this.moving.left ? -1 : 1
-    const dirFactorY = this.moving.up ? 1 : -1
+    const dirFactorX = 1 //this.moving.left ? -1 : 1
+    const dirFactorY = 1 //this.moving.up ? 1 : -1
     this.vx = Math.abs(this.vx) > this.maxVel ? this.maxVel * dirFactorX : this.vx
     this.vy = Math.abs(this.vy) > this.maxVel ? this.maxVel * dirFactorY : this.vy
+
+    // Update position
+    this.PIXIContainer.x += Math.round(this.vx) * delta
+    this.PIXIContainer.y += Math.round(this.vy) * delta
 
     // this.fireTimer += delta
   }
