@@ -78,10 +78,11 @@ class GameCanvas extends Component {
   gameLoop(delta) {
     // Hande player updates
     this.playerShip.update(delta)
-    if (this.playerShip.isFiring) {
+    if (this.playerShip.isFiring && this.playerShip.fireTimer >= this.playerShip.fireRate) {
       const projectile = new Projectile(this.playerShip.PIXIContainer.x, this.playerShip.PIXIContainer.y)
       this.projectiles.data.push(projectile)
       this.projectiles.container.addChild(projectile.PIXIContainer)
+      this.playerShip.fireTimer = 0
     }
 
     // Handle projectile updates

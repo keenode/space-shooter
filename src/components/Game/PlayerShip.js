@@ -17,12 +17,15 @@ class PlayerShip {
     right: false
   }
   isFiring = false
+  fireTimer = 0
+  fireRate = 10.0
 
   constructor(playRegionBounds) {
     this.playRegionBounds = playRegionBounds
     this.PIXIContainer.x = playRegionBounds.width / 2
     this.PIXIContainer.y = playRegionBounds.height - shipHeight / 2 - shipBottomPadding
     this.PIXIContainer.addChild(this.draw())
+    this.fireTimer = this.fireRate
     document.addEventListener('keydown', this.handleKeyDown.bind(this), false)
     document.addEventListener('keyup', this.handleKeyUp.bind(this), false)
   }
@@ -102,6 +105,8 @@ class PlayerShip {
       this.PIXIContainer.x += Math.round(this.vx) * delta
       this.PIXIContainer.y += Math.round(this.vy) * delta
     }
+
+    this.fireTimer += delta
   }
 }
 
