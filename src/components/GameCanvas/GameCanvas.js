@@ -18,11 +18,11 @@ const playRegionBounds = {
 class GameCanvas extends Component {
   playReigion = new PIXI.Container()
   playerShip = null
-  baddies = {
+  enemies = {
     data: [],
     container: new PIXI.Container()
   }
-  projectiles = {
+  playerProjectiles = {
     data: [],
     container: new PIXI.Container()
   }
@@ -73,21 +73,21 @@ class GameCanvas extends Component {
     // Player
     this.playerShip = new PlayerShip(playRegionBounds)
     this.playReigion.addChild(this.playerShip.PIXIContainer)
-    this.playReigion.addChild(this.projectiles.container)
+    this.playReigion.addChild(this.playerProjectiles.container)
 
-    // Baddies
-    const baddie1 = new EnemyShip(100, 100)
-    this.baddies.data.push(baddie1)
-    this.baddies.container.addChild(baddie1.PIXIContainer)
-    const baddie2 = new EnemyShip(200, 125)
-    this.baddies.data.push(baddie2)
-    this.baddies.container.addChild(baddie1.PIXIContainer)
-    const baddie3 = new EnemyShip(300, 75)
-    this.baddies.data.push(baddie3)
-    this.baddies.container.addChild(baddie1.PIXIContainer)
-    this.baddies.container.addChild(baddie2.PIXIContainer)
-    this.baddies.container.addChild(baddie3.PIXIContainer)
-    this.playReigion.addChild(this.baddies.container)
+    // Enemies
+    const enemy1 = new EnemyShip(100, 100)
+    this.enemies.data.push(enemy1)
+    this.enemies.container.addChild(enemy1.PIXIContainer)
+    const enemy2 = new EnemyShip(200, 125)
+    this.enemies.data.push(enemy2)
+    this.enemies.container.addChild(enemy1.PIXIContainer)
+    const enemy3 = new EnemyShip(300, 75)
+    this.enemies.data.push(enemy3)
+    this.enemies.container.addChild(enemy1.PIXIContainer)
+    this.enemies.container.addChild(enemy2.PIXIContainer)
+    this.enemies.container.addChild(enemy3.PIXIContainer)
+    this.playReigion.addChild(this.enemies.container)
   }
 
   drawPlayRegionBounds() {
@@ -102,43 +102,50 @@ class GameCanvas extends Component {
     this.playerShip.update(delta)
     if (this.playerShip.isFiring && this.playerShip.fireTimer >= this.playerShip.fireRate) {
       const projectile = new Projectile(this.playerShip.PIXIContainer.x, this.playerShip.PIXIContainer.y)
-      this.projectiles.data.push(projectile)
-      this.projectiles.container.addChild(projectile.PIXIContainer)
+      this.playerProjectiles.data.push(projectile)
+      this.playerProjectiles.container.addChild(projectile.PIXIContainer)
       this.playerShip.fireTimer = 0
     }
 
-    // Handle baddie updates
-    for (let b = 0; b < this.baddies.data.length; b++) {
-      this.baddies.data[b].update(delta)
+    // Handle enemy updates
+    for (let b = 0; b < this.enemies.data.length; b++) {
+      this.enemies.data[b].update(delta)
     }
 
     // Handle projectile updates
-    for (let p = 0; p < this.projectiles.data.length; p++) {
-      const projectile = this.projectiles.data[p]
+    for (let p = 0; p < this.playerProjectiles.data.length; p++) {
+      const projectile = this.playerProjectiles.data[p]
       projectile.update(delta)
       // TODO: Current logic causing weird positoning stutter upon removal
       if (!projectile.isAlive) {
-        this.projectiles.data.splice(p, 1)
-        this.projectiles.container.removeChildAt(p)
+        this.playerProjectiles.data.splice(p, 1)
+        this.playerProjectiles.container.removeChildAt(p)
       }
     }
 
     // Handle collisons
-    for (let b = 0; b < this.baddies.data.length; b++) {
-      const baddie = this.baddies.data[b]
+    for (let b = 0; b < this.enemies.data.length; b++) {
+      const enemy = this.enemies.data[b]
 
       // Check collision with player
-      if (collisionTest(baddie.PIXIContainer, this.playerShip.PIXIContainer)) {
+      if (collisionTest(enemy.PIXIContainer, this.playerShip.PIXIContainer)) {
         console.log('crash')
+        enemy.isAlive = false
       }
 
       // Check collision with projectile
-      for (let p = 0; p < this.projectiles.data.length; p++) {
-        const projectile = this.projectiles.data[p]
-        if (collisionTest(baddie.PIXIContainer, projectile.PIXIContainer)) {
+      for (let p = 0; p < this.playerProjectiles.data.length; p++) {
+        const projectile = this.playerProjectiles.data[p]
+        if (collisionTest(enemy.PIXIContainer, projectile.PIXIContainer)) {
           console.log('hit')
           projectile.isAlive = false
+          enemy.isAlive = false
         }
+      }
+
+      if (!enemy.isAlive) {
+        this.enemies.data.splice(b, 1)
+        this.enemies.container.removeChildAt(b)
       }
     }
 

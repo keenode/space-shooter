@@ -13,6 +13,7 @@ class EnemyShip {
   // isFiring = false
   // fireTimer = 0
   // fireRate = 10.0
+  isAlive = true
 
   constructor(xPos, yPos) {
     this.PIXIContainer.x = xPos
