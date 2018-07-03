@@ -1,0 +1,19 @@
+.NavItem {
+  height: 100%;
+}
+
+.NavItem a {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  height: 100%;
+  color: var(--ui-text-color);
+}
+
+.NavItem a:hover {
+  background-color: red;
+}
+
+.NavItem .Active {
+  color: cyan;
+}

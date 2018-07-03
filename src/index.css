@@ -1,4 +1,4 @@
-/* http://meyerweb.com/eric/tools/css/reset/ 
+/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -12,8 +12,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
   margin: 0;
@@ -24,7 +24,7 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block;
 }
@@ -51,4 +51,35 @@ table {
  * Base Styles
  */
 
+:root {
+  /* Color Palette */
+  --color-black: #1a1a1a;
+  --color-deep-forest: #172A3A;
+  --color-forest: #004346;
+  --color-mystic-green: #09BC8A;
+  --color-teal: #59C3C3;
+  --color-off-white: #F7F0F0;
+}
 
+:root {
+  --base-bg-color: var(--color-deep-forest);
+  --base-font-color: var(--color-off-white);
+  --base-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  --grid-max-width: 1440px;
+  --grid-gutter: 30px;
+}
+
+body {
+  color: var(--base-font-color);
+  background-color: var(--base-bg-color);
+  font-family: var(--base-font-family);
+  line-height: 1.5;
+}
+
+p {
+  margin-bottom: 30px;
+}
+
+a {
+  text-decoration: none;
+}
