@@ -9,6 +9,7 @@ class Projectile {
   maxVel = 10.0
   friction = 0.35
   isAlive = true
+  // force = mass * accel
 
   constructor(xPos, yPos, playRegionBounds) {
     this.PIXIContainer.x = xPos

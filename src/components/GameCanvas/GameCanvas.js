@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import * as PIXI from 'pixi.js'
 
+import { collisionTest } from '../../components/Game/Utility' 
+
 import PlayerShip from '../../components/Game/PlayerShip'
+import EnemyShip from '../../components/Game/EnemyShip'
 import Projectile from '../../components/Game/Projectile'
 
 import styles from './GameCanvas.css'
@@ -15,6 +18,10 @@ const playRegionBounds = {
 class GameCanvas extends Component {
   playReigion = new PIXI.Container()
   playerShip = null
+  baddies = {
+    data: [],
+    container: new PIXI.Container()
+  }
   projectiles = {
     data: [],
     container: new PIXI.Container()
@@ -63,9 +70,16 @@ class GameCanvas extends Component {
   }
 
   placeEntities() {
+    // Player
     this.playerShip = new PlayerShip(playRegionBounds)
     this.playReigion.addChild(this.playerShip.PIXIContainer)
     this.playReigion.addChild(this.projectiles.container)
+
+    // Baddies
+    const baddie = new EnemyShip()
+    this.baddies.data.push(baddie)
+    this.baddies.container.addChild(baddie.PIXIContainer)
+    this.playReigion.addChild(this.baddies.container)
   }
 
   drawPlayRegionBounds() {
@@ -89,9 +103,22 @@ class GameCanvas extends Component {
     for (let p = 0; p < this.projectiles.data.length; p++) {
       const projectile = this.projectiles.data[p]
       projectile.update(delta)
+      // TODO: Current logic causing weird positoning stutter upon removal
       if (!projectile.isAlive) {
         this.projectiles.data.splice(p, 1)
         this.projectiles.container.removeChildAt(p)
+      }
+    }
+
+    // Handle collisons
+    for (let b = 0; b < this.baddies.data.length; b++) {
+      const baddie = this.baddies.data[b]
+      for (let p = 0; p < this.projectiles.data.length; p++) {
+        const projectile = this.projectiles.data[p]
+        if (collisionTest(baddie.PIXIContainer, projectile.PIXIContainer)) {
+          console.log('hit')
+          projectile.isAlive = false
+        }
       }
     }
 
