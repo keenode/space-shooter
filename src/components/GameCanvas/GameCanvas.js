@@ -1,11 +1,16 @@
 import React, { Component } from 'react'
 import * as PIXI from 'pixi.js'
 
+import PlayerShip from '../../components/Game/PlayerShip'
+
 import styles from './GameCanvas.css'
 
 class GameCanvas extends Component {
+  playerShip = null
+
   componentDidMount() {
     this.setupPIXI('game-canvas')
+    this.placeEntities()
     this.gameApp.ticker.add(delta => this.gameLoop(delta))
   }
 
@@ -34,6 +39,11 @@ class GameCanvas extends Component {
     this.fpsText.x = 15
     this.fpsText.y = 15
     this.gameApp.stage.addChild(this.fpsText)
+  }
+
+  placeEntities() {
+    this.playerShip = new PlayerShip(100, 300)
+    this.gameApp.stage.addChild(this.playerShip.PIXIContainer)
   }
 
   gameLoop(delta) {
