@@ -52,7 +52,6 @@ class GameCanvas extends Component {
   }
 
   setupPlayRegion() {
-    console.log(this.gameApp.renderer.width)
     this.playReigion.x = this.gameApp.renderer.width / 2 - playRegionBounds.width / 2
     this.playReigion.y = playRegionBounds.offsetTop
     this.playReigion.addChild(this.drawPlayRegionBounds())
@@ -71,7 +70,7 @@ class GameCanvas extends Component {
   }
 
   gameLoop(delta) {
-    // this.camera.update(delta)
+    this.playerShip.update(delta)
     this.fpsText.text = Math.round(this.gameApp.ticker.FPS) + ' FPS'
   }
 
