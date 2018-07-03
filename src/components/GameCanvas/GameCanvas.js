@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import * as PIXI from 'pixi.js'
 
 import PlayerShip from '../../components/Game/PlayerShip'
+import Projectile from '../../components/Game/Projectile'
 
 import styles from './GameCanvas.css'
 
@@ -14,6 +15,7 @@ const playRegionBounds = {
 class GameCanvas extends Component {
   playReigion = new PIXI.Container()
   playerShip = null
+  projectiles = new PIXI.Container()
 
   componentDidMount() {
     this.setupPIXI('game-canvas')
@@ -60,6 +62,7 @@ class GameCanvas extends Component {
   placeEntities() {
     this.playerShip = new PlayerShip(playRegionBounds)
     this.playReigion.addChild(this.playerShip.PIXIContainer)
+    this.playReigion.addChild(this.projectiles)
   }
 
   drawPlayRegionBounds() {
@@ -71,6 +74,12 @@ class GameCanvas extends Component {
 
   gameLoop(delta) {
     this.playerShip.update(delta)
+    if (this.playerShip.isFiring) {
+      this.projectiles.addChild(
+        new Projectile(this.playerShip.PIXIContainer.x, this.playerShip.PIXIContainer.y).PIXIContainer
+      )
+    }
+
     this.fpsText.text = Math.round(this.gameApp.ticker.FPS) + ' FPS'
   }
 

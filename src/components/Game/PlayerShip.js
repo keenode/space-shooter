@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 
 const shipWidth = 48
 const shipHeight = 48
-const shipBottomPadding = 20
+const shipBottomPadding = 24
 
 class PlayerShip {
   PIXIContainer = new PIXI.Container()
@@ -16,6 +16,7 @@ class PlayerShip {
     left: false,
     right: false
   }
+  isFiring = false
 
   constructor(playRegionBounds) {
     this.playRegionBounds = playRegionBounds
@@ -32,6 +33,10 @@ class PlayerShip {
     } else if (e.which === 39 || e.which === 68) {
       this.moving.right = true
     }
+
+    if (e.which === 32) {
+      this.isFiring = true
+    }
   }
 
   handleKeyUp(e) {
@@ -39,6 +44,10 @@ class PlayerShip {
       this.moving.left = false
     } else if (e.which === 39 || e.which === 68) {
       this.moving.right = false
+    }
+
+    if (e.which === 32) {
+      this.isFiring = false
     }
   }
 
