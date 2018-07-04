@@ -127,7 +127,7 @@ class PlayerShip {
     }
 
     if (rotDir === 0) {
-      this.rv *= this.mass
+      this.rv *= this.mass * 0.8
       if (Math.abs(Math.round(this.rv * 100) / 100) <= 0) {
         this.rv = 0
       }
