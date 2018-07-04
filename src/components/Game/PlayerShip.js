@@ -13,13 +13,10 @@ class PlayerShip {
   rv = 0
   accel = 2.0
   spd = 0
-  rotSpd = 0
   rotAccel = 0.01
   maxRotVel = 0.1
   maxSpd = 10.0
-  mass = 0.15
-  // rotDeccel = 0.35
-  // deccel = 0.35
+  mass = 0.95
   rotating = {
     left: false,
     right: false
@@ -91,6 +88,9 @@ class PlayerShip {
   }
 
   update(delta) {
+    // Get angle of velocity
+    // var angle = Math.atan2(velocity.y, velocity.x);
+
     // Set magnitude of speed
     this.spd = Math.sqrt(this.vy * this.vy + this.vx * this.vx)
 
@@ -109,25 +109,22 @@ class PlayerShip {
     //   this.vy += this.spd
     // }
 
-    // Get angle of velocity
-    // var angle = Math.atan2(velocity.y, velocity.x);
-
     // Handle decceleration from mass
-    this.vx -= this.mass * Math.sign(this.vx)
-    this.vy -= this.mass * Math.sign(this.vy)
+    this.vx *= this.mass
+    this.vy *= this.mass
+    if (Math.abs(Math.round(this.vx * 100) / 100) <= 0) {
+      this.vx = 0
+    }
+    if (Math.abs(Math.round(this.vy * 100) / 100) <= 0) {
+      this.vy = 0
+    }
     if (rotDir === 0) {
-      this.rv -= this.mass * Math.sign(this.rv) / 40.0
-      if (this.rv < 0) {
+      this.rv *= this.mass
+      console.log(this.rv)
+      if (Math.abs(Math.round(this.rv * 100) / 100) <= 0) {
         this.rv = 0
       }
     }
-
-    // Handle max velocity
-    console.log(this.rv)
-
-    // this.vx = Math.abs(this.vx) > this.maxSpd ? this.maxSpd : this.vx
-    // this.vy = Math.abs(this.vy) > this.maxSpd ? this.maxSpd : this.vy
-    // this.rv = Math.abs(this.rv) > this.maxRotVel ? this.maxRotVel * rotDir : this.rv
 
     // Bounds checking
     // if (this.PIXIContainer.x + this.vx < 0) {
@@ -139,8 +136,8 @@ class PlayerShip {
     // } else {
       // Update position
       this.PIXIContainer.rotation += this.rv * delta
-      this.PIXIContainer.x += Math.round(this.vx) * delta
-      this.PIXIContainer.y += Math.round(this.vy) * delta
+      this.PIXIContainer.x += this.vx * delta
+      this.PIXIContainer.y += this.vy * delta
     // }
 
     this.fireTimer += delta

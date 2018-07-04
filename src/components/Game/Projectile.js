@@ -1,26 +1,26 @@
 import * as PIXI from 'pixi.js'
-import EnemyShip from './EnemyShip'
+// import EnemyShip from './EnemyShip'
+
+const offsetAngle = 90 * Math.PI / 180
 
 class Projectile {
   PIXIContainer = new PIXI.Container()
   playRegionBounds = null
+  parentAngle = 0
   vx = 0
   vy = 0
-  dirFactor = -1
-  accel = 1.0
-  maxVel = 10.0
-  friction = 0.35
+  accel = 2.0
+  spd = 0
+  maxSpd = 12.0
+  mass = 0.35
   isAlive = true
-  // force = mass * accel
 
   constructor(parentEntity, playRegionBounds) {
+    this.parentAngle = parentEntity.PIXIContainer.rotation
     this.playRegionBounds = playRegionBounds
     this.PIXIContainer.x = parentEntity.PIXIContainer.x
     this.PIXIContainer.y = parentEntity.PIXIContainer.y
     this.PIXIContainer.addChild(this.draw())
-    if (parentEntity instanceof EnemyShip) {
-      this.dirFactor = 1
-    }
   }
 
   draw() {
@@ -32,13 +32,14 @@ class Projectile {
   }
 
   update(delta) {
-    if (this.dirFactor === 1) {
-      this.vy += this.accel
-    } else {
-      this.vy -= this.accel
+    // Set magnitude of speed
+    this.spd = Math.sqrt(this.vy * this.vy + this.vx * this.vx)
+
+    // Handle acceleration and velocity
+    if (this.spd < this.maxSpd) {
+      this.vx += this.accel * Math.cos(this.PIXIContainer.rotation + this.parentAngle - offsetAngle)
+      this.vy += this.accel * Math.sin(this.PIXIContainer.rotation + this.parentAngle - offsetAngle)
     }
-    this.vy -= this.friction * Math.sign(this.vy)
-    this.vy = Math.abs(this.vy) > this.maxVel ? this.maxVel * this.dirFactor : this.vy
 
     if (this.PIXIContainer.y + this.vy < 0) {
       this.isAlive = false
@@ -46,6 +47,7 @@ class Projectile {
       this.isAlive = false
     }
 
+    this.PIXIContainer.x += Math.round(this.vx) * delta
     this.PIXIContainer.y += Math.round(this.vy) * delta
   }
 }
