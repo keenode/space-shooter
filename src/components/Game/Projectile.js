@@ -7,9 +7,9 @@ class Projectile {
   parentAngle = 0
   vx = 0
   vy = 0
-  accel = 2.0
+  accel = 4.0
   spd = 0
-  maxSpd = 12.0
+  maxSpd = 16.0
   lifeTime = 0
   maxLifeTime = 100.0
   isAlive = true

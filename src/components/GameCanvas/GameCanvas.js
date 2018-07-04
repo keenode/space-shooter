@@ -1,22 +1,24 @@
 import React, { Component } from 'react'
 import * as PIXI from 'pixi.js'
 
-import { collisionTest } from '../../components/Game/Utility' 
+import { collisionTest } from '../Game/Utility' 
 
-import PlayerShip from '../../components/Game/PlayerShip'
-import EnemyShip from '../../components/Game/EnemyShip'
-import Projectile from '../../components/Game/Projectile'
+import Camera from '../Game/Camera'
+import PlayerShip from '../Game/PlayerShip'
+import EnemyShip from '../Game/EnemyShip'
+import Projectile from '../Game/Projectile'
 
 import styles from './GameCanvas.css'
 
-const playRegionBounds = {
-  width: 900,
-  height: 680,
+const sceneBounds = {
+  width: 1280,
+  height: 800,
   offsetTop: 40
 }
 
 class GameCanvas extends Component {
-  playReigion = new PIXI.Container()
+  camera = null
+  scene = new PIXI.Container()
   playerShip = null
   enemies = {
     data: [],
@@ -33,8 +35,9 @@ class GameCanvas extends Component {
 
   componentDidMount() {
     this.setupPIXI('game-canvas')
-    this.setupPlayRegion()
+    this.setupScene()
     this.placeEntities()
+    this.camera = new Camera(this.scene, this.playerShip.PIXIContainer, this.gameApp.renderer)
     this.gameApp.ticker.add(delta => this.gameLoop(delta))
   }
 
@@ -63,47 +66,45 @@ class GameCanvas extends Component {
     this.fpsText.x = 15
     this.fpsText.y = 15
 
-    this.gameApp.stage.addChild(this.playReigion)
+    this.gameApp.stage.addChild(this.scene)
     this.gameApp.stage.addChild(this.fpsText)
   }
 
-  setupPlayRegion() {
-    this.playReigion.x = this.gameApp.renderer.width / 2 - playRegionBounds.width / 2
-    this.playReigion.y = playRegionBounds.offsetTop
-    this.playReigion.addChild(this.drawPlayRegionBounds())
+  setupScene() {
+    this.scene.addChild(this.drawsceneBounds())
   }
 
   placeEntities() {
     // Player
-    this.playerShip = new PlayerShip(playRegionBounds)
-    this.playReigion.addChild(this.playerShip.PIXIContainer)
-    this.playReigion.addChild(this.playerProjectiles.container)
+    this.playerShip = new PlayerShip(sceneBounds)
+    this.scene.addChild(this.playerShip.PIXIContainer)
+    this.scene.addChild(this.playerProjectiles.container)
 
     // Enemies
-    const enemy1 = new EnemyShip(100, 100, playRegionBounds)
+    const enemy1 = new EnemyShip(100, 100, sceneBounds)
     this.enemies.data.push(enemy1)
     this.enemies.container.addChild(enemy1.PIXIContainer)
-    const enemy2 = new EnemyShip(200, 125, playRegionBounds)
+    const enemy2 = new EnemyShip(200, 125, sceneBounds)
     this.enemies.data.push(enemy2)
     this.enemies.container.addChild(enemy2.PIXIContainer)
-    const enemy3 = new EnemyShip(300, 75, playRegionBounds)
+    const enemy3 = new EnemyShip(300, 75, sceneBounds)
     this.enemies.data.push(enemy3)
     this.enemies.container.addChild(enemy3.PIXIContainer)
-    const enemy4 = new EnemyShip(400, 50, playRegionBounds)
+    const enemy4 = new EnemyShip(400, 50, sceneBounds)
     this.enemies.data.push(enemy4)
     this.enemies.container.addChild(enemy4.PIXIContainer)
-    const enemy5 = new EnemyShip(500, 150, playRegionBounds)
+    const enemy5 = new EnemyShip(500, 150, sceneBounds)
     this.enemies.data.push(enemy5)
     this.enemies.container.addChild(enemy5.PIXIContainer)
 
-    this.playReigion.addChild(this.enemies.container)
-    this.playReigion.addChild(this.enemyProjectiles.container)
+    this.scene.addChild(this.enemies.container)
+    this.scene.addChild(this.enemyProjectiles.container)
   }
 
-  drawPlayRegionBounds() {
+  drawsceneBounds() {
     const rect = new PIXI.Graphics()
     rect.lineStyle(1, 0x00ff00, 1)
-    rect.drawRect(0, 0, playRegionBounds.width, playRegionBounds.height)
+    rect.drawRect(0, 0, sceneBounds.width, sceneBounds.height)
     return rect
   }
 
@@ -186,6 +187,9 @@ class GameCanvas extends Component {
         projectile.isAlive = false
       }
     }
+
+    // Update camera position
+    this.camera.update(delta)
 
     // Update FPS text
     this.fpsText.text = Math.round(this.gameApp.ticker.FPS) + ' FPS'
