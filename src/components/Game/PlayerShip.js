@@ -16,7 +16,8 @@ class PlayerShip {
   maxSpd = 10.0
   rotAccel = 0.01
   maxRotVel = 0.1
-  mass = 0.95
+  mass = 0.98
+  brakeForce = 0.9
   rotating = {
     left: false,
     right: false
@@ -105,9 +106,13 @@ class PlayerShip {
       this.vx += this.accel * Math.cos(this.PIXIContainer.rotation - offsetAngle)
       this.vy += this.accel * Math.sin(this.PIXIContainer.rotation - offsetAngle)
     }
-    // if (this.isBraking) {
-    //   this.vy += this.spd
-    // }
+
+    // Handle braking
+    if (this.isBraking) {
+      this.vx *= this.brakeForce
+      this.vy *= this.brakeForce
+      this.rv *= this.brakeForce
+    }
 
     // Handle decceleration from mass
     if (!this.isThrusting) {

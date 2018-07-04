@@ -15,7 +15,8 @@ class EnemyShip {
   maxSpd = 1.0
   rotAccel = 0.005
   maxRotVel = 0.05
-  mass = 0.95
+  mass = 0.98
+  brakeForce = 0.9
   rotating = {
     left: false,
     right: false
@@ -64,6 +65,13 @@ class EnemyShip {
     if (this.isThrusting && this.spd < this.maxSpd) {
       this.vx += this.accel * Math.cos(this.PIXIContainer.rotation - offsetAngle)
       this.vy += this.accel * Math.sin(this.PIXIContainer.rotation - offsetAngle)
+    }
+
+    // Handle braking
+    if (this.isBraking) {
+      this.vx *= this.brakeForce
+      this.vy *= this.brakeForce
+      this.rv *= this.brakeForce
     }
 
     // Handle decceleration from mass
@@ -118,6 +126,10 @@ class EnemyShip {
       } else if (actionRange >= 90) {
         this.rotating.right = false
         this.rotating.left = true
+      } else if (actionRange >= 85) {
+        this.isBraking = true
+      } else if (actionRange >= 80) {
+        this.isBraking = false
       } else if (actionRange >= 40) {
         this.rotating.right = false
         this.rotating.left = false
