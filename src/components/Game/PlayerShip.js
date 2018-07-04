@@ -13,9 +13,9 @@ class PlayerShip {
   rv = 0
   accel = 2.0
   spd = 0
+  maxSpd = 10.0
   rotAccel = 0.01
   maxRotVel = 0.1
-  maxSpd = 10.0
   mass = 0.95
   rotating = {
     left: false,
@@ -110,14 +110,17 @@ class PlayerShip {
     // }
 
     // Handle decceleration from mass
-    this.vx *= this.mass
-    this.vy *= this.mass
-    if (Math.abs(Math.round(this.vx * 100) / 100) <= 0) {
-      this.vx = 0
+    if (!this.isThrusting) {
+      this.vx *= this.mass
+      this.vy *= this.mass
+      if (Math.abs(Math.round(this.vx * 100) / 100) <= 0) {
+        this.vx = 0
+      }
+      if (Math.abs(Math.round(this.vy * 100) / 100) <= 0) {
+        this.vy = 0
+      }
     }
-    if (Math.abs(Math.round(this.vy * 100) / 100) <= 0) {
-      this.vy = 0
-    }
+
     if (rotDir === 0) {
       this.rv *= this.mass
       if (Math.abs(Math.round(this.rv * 100) / 100) <= 0) {

@@ -80,17 +80,22 @@ class GameCanvas extends Component {
     this.playReigion.addChild(this.playerProjectiles.container)
 
     // Enemies
-    const enemy1 = new EnemyShip(100, 100)
+    const enemy1 = new EnemyShip(100, 100, playRegionBounds)
     this.enemies.data.push(enemy1)
     this.enemies.container.addChild(enemy1.PIXIContainer)
-    const enemy2 = new EnemyShip(200, 125)
+    const enemy2 = new EnemyShip(200, 125, playRegionBounds)
     this.enemies.data.push(enemy2)
-    this.enemies.container.addChild(enemy1.PIXIContainer)
-    const enemy3 = new EnemyShip(300, 75)
-    this.enemies.data.push(enemy3)
-    this.enemies.container.addChild(enemy1.PIXIContainer)
     this.enemies.container.addChild(enemy2.PIXIContainer)
+    const enemy3 = new EnemyShip(300, 75, playRegionBounds)
+    this.enemies.data.push(enemy3)
     this.enemies.container.addChild(enemy3.PIXIContainer)
+    const enemy4 = new EnemyShip(400, 50, playRegionBounds)
+    this.enemies.data.push(enemy4)
+    this.enemies.container.addChild(enemy4.PIXIContainer)
+    const enemy5 = new EnemyShip(500, 150, playRegionBounds)
+    this.enemies.data.push(enemy5)
+    this.enemies.container.addChild(enemy5.PIXIContainer)
+
     this.playReigion.addChild(this.enemies.container)
     this.playReigion.addChild(this.enemyProjectiles.container)
   }

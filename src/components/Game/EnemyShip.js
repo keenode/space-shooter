@@ -2,22 +2,33 @@ import * as PIXI from 'pixi.js'
 
 const shipWidth = 48
 const shipHeight = 48
+const offsetAngle = 90 * Math.PI / 180
 
 class EnemyShip {
   PIXIContainer = new PIXI.Container()
+  playRegionBounds = null
   vx = 0
   vy = 0
-  accel = 0.8
-  maxVel = 1.0
-  friction = 0.35
-  // isFiring = false
-  // fireTimer = 0
-  // fireRate = 10.0
+  rv = 0
+  accel = 2.0
+  spd = 0
+  maxSpd = 1.0
+  rotAccel = 0.005
+  maxRotVel = 0.05
+  mass = 0.95
+  rotating = {
+    left: false,
+    right: false
+  }
+  isThrusting = false
   isAlive = true
   nextAttackElapsed = 0
   nextAttackTimer = Math.random() * 175.0 + 25.0
+  aiTimeElasped = 0
+  aiNextActionTime = Math.random() * 175.0 + 25.0
 
-  constructor(xPos, yPos) {
+  constructor(xPos, yPos, playRegionBounds) {
+    this.playRegionBounds = playRegionBounds
     this.PIXIContainer.x = xPos
     this.PIXIContainer.y = yPos
     this.PIXIContainer.rotation = 180 * Math.PI / 180
@@ -40,36 +51,87 @@ class EnemyShip {
   }
 
   update(delta) {
-    // Handle acceleration direction
-    // if (this.moving.up) {
-    //   this.vy += this.accel
-    // }
-    // if (this.moving.down) {
-    //   this.vy -= this.accel
-    // }
-    // if (this.moving.left) {
-    //   this.vx -= this.accel
-    // }
-    // if (this.moving.right) {
-    //   this.vx += this.accel
-    // }
-    this.vy += this.accel
+    // Set magnitude of speed
+    this.spd = Math.sqrt(this.vy * this.vy + this.vx * this.vx)
 
-    // Handle friction
-    this.vx -= this.friction * Math.sign(this.vx)
-    this.vy -= this.friction * Math.sign(this.vy)
+    // Handle rotational acceleration and velocity
+    const rotDir = this.rotating.right ? 1 : this.rotating.left ? -1 : 0
+    if (Math.abs(this.rv) < this.maxRotVel) {
+      this.rv += this.rotAccel * rotDir
+    }
 
-    // Handle max velocity 
-    const dirFactorX = 1 //this.moving.left ? -1 : 1
-    const dirFactorY = 1 //this.moving.up ? 1 : -1
-    this.vx = Math.abs(this.vx) > this.maxVel ? this.maxVel * dirFactorX : this.vx
-    this.vy = Math.abs(this.vy) > this.maxVel ? this.maxVel * dirFactorY : this.vy
+    // Handle thrusting acceleration and velocity
+    if (this.isThrusting && this.spd < this.maxSpd) {
+      this.vx += this.accel * Math.cos(this.PIXIContainer.rotation - offsetAngle)
+      this.vy += this.accel * Math.sin(this.PIXIContainer.rotation - offsetAngle)
+    }
 
-    // Update position
-    this.PIXIContainer.x += Math.round(this.vx) * delta
-    this.PIXIContainer.y += Math.round(this.vy) * delta
+    // Handle decceleration from mass
+    if (!this.isThrusting) {
+      this.vx *= this.mass
+      this.vy *= this.mass
+      if (Math.abs(Math.round(this.vx * 100) / 100) <= 0) {
+        this.vx = 0
+      }
+      if (Math.abs(Math.round(this.vy * 100) / 100) <= 0) {
+        this.vy = 0
+      }
+    }
+
+    if (rotDir === 0) {
+      this.rv *= this.mass
+      if (Math.abs(Math.round(this.rv * 100) / 100) <= 0) {
+        this.rv = 0
+      }
+    }
+
+    // Bounds checking
+    if (this.PIXIContainer.x + this.vx < 0) {
+      this.vx = 0
+      this.vy = 0
+      this.PIXIContainer.x = 0
+    } else if (this.PIXIContainer.x + this.vx > this.playRegionBounds.width) {
+      this.vx = 0
+      this.vy = 0
+      this.PIXIContainer.x = this.playRegionBounds.width
+    } else if (this.PIXIContainer.y + this.vy < 0) {
+      this.vx = 0
+      this.vy = 0
+      this.PIXIContainer.y = 0
+    } else if (this.PIXIContainer.y + this.vy > this.playRegionBounds.height) {
+      this.vx = 0
+      this.vy = 0
+      this.PIXIContainer.y = this.playRegionBounds.height
+    } else {
+      // Update position
+      this.PIXIContainer.rotation += this.rv * delta
+      this.PIXIContainer.x += this.vx * delta
+      this.PIXIContainer.y += this.vy * delta
+    }
+
+    // TEMP: Dumb AI
+    if (this.aiTimeElasped >= this.aiNextActionTime) {
+      const actionRange = Math.floor(Math.random() * 100)
+      if (actionRange >= 95) {
+        this.rotating.left = false
+        this.rotating.right = true
+      } else if (actionRange >= 90) {
+        this.rotating.right = false
+        this.rotating.left = true
+      } else if (actionRange >= 40) {
+        this.rotating.right = false
+        this.rotating.left = false
+      } else if (actionRange >= 20) {
+        this.isThrusting = false
+      } else {
+        this.isThrusting = true
+      }
+      this.aiTimeElasped = 0
+      this.aiNextActionTime = Math.random() * 95.0 + 5.0
+    }
 
     this.nextAttackElapsed += delta
+    this.aiTimeElasped  += delta
   }
 }
 
