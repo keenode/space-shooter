@@ -111,7 +111,7 @@ class GameCanvas extends Component {
     // Hande player updates
     this.playerShip.update(delta)
     if (this.playerShip.isFiring && this.playerShip.fireTimer >= this.playerShip.fireRate) {
-      const projectile = new Projectile(this.playerShip, playRegionBounds)
+      const projectile = new Projectile(this.playerShip)
       this.playerProjectiles.data.push(projectile)
       this.playerProjectiles.container.addChild(projectile.PIXIContainer)
       this.playerShip.fireTimer = 0
@@ -122,7 +122,7 @@ class GameCanvas extends Component {
       const enemy = this.enemies.data[b]
       enemy.update(delta)
       if (enemy.nextAttackElapsed >= enemy.nextAttackTimer) {
-        const projectile = new Projectile(enemy, playRegionBounds)
+        const projectile = new Projectile(enemy)
         this.enemyProjectiles.data.push(projectile)
         this.enemyProjectiles.container.addChild(projectile.PIXIContainer)
         enemy.nextAttackElapsed = 0

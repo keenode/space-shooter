@@ -1,22 +1,21 @@
 import * as PIXI from 'pixi.js'
-// import EnemyShip from './EnemyShip'
 
 const offsetAngle = 90 * Math.PI / 180
 
 class Projectile {
   PIXIContainer = new PIXI.Container()
-  playRegionBounds = null
   parentAngle = 0
   vx = 0
   vy = 0
   accel = 2.0
   spd = 0
   maxSpd = 12.0
+  lifeTime = 0
+  maxLifeTime = 100.0
   isAlive = true
 
-  constructor(parentEntity, playRegionBounds) {
+  constructor(parentEntity) {
     this.parentAngle = parentEntity.PIXIContainer.rotation
-    this.playRegionBounds = playRegionBounds
     this.PIXIContainer.x = parentEntity.PIXIContainer.x
     this.PIXIContainer.y = parentEntity.PIXIContainer.y
     this.PIXIContainer.addChild(this.draw())
@@ -40,14 +39,14 @@ class Projectile {
       this.vy += this.accel * Math.sin(this.PIXIContainer.rotation + this.parentAngle - offsetAngle)
     }
 
-    if (this.PIXIContainer.y + this.vy < 0) {
-      this.isAlive = false
-    } else if (this.PIXIContainer.y + this.vy > this.playRegionBounds.height) {
+    if (this.lifeTime >= this.maxLifeTime) {
       this.isAlive = false
     }
 
     this.PIXIContainer.x += Math.round(this.vx) * delta
     this.PIXIContainer.y += Math.round(this.vy) * delta
+
+    this.lifeTime += delta
   }
 }
 
