@@ -120,25 +120,34 @@ class PlayerShip {
     }
     if (rotDir === 0) {
       this.rv *= this.mass
-      console.log(this.rv)
       if (Math.abs(Math.round(this.rv * 100) / 100) <= 0) {
         this.rv = 0
       }
     }
 
     // Bounds checking
-    // if (this.PIXIContainer.x + this.vx < 0) {
-    //   this.vx = 0
-    //   this.PIXIContainer.x = 0
-    // } else if (this.PIXIContainer.x + this.vx > this.playRegionBounds.width) {
-    //   this.vx = 0
-    //   this.PIXIContainer.x = this.playRegionBounds.width
-    // } else {
+    if (this.PIXIContainer.x + this.vx < 0) {
+      this.vx = 0
+      this.vy = 0
+      this.PIXIContainer.x = 0
+    } else if (this.PIXIContainer.x + this.vx > this.playRegionBounds.width) {
+      this.vx = 0
+      this.vy = 0
+      this.PIXIContainer.x = this.playRegionBounds.width
+    } else if (this.PIXIContainer.y + this.vy < 0) {
+      this.vx = 0
+      this.vy = 0
+      this.PIXIContainer.y = 0
+    } else if (this.PIXIContainer.y + this.vy > this.playRegionBounds.height) {
+      this.vx = 0
+      this.vy = 0
+      this.PIXIContainer.y = this.playRegionBounds.height
+    } else {
       // Update position
       this.PIXIContainer.rotation += this.rv * delta
       this.PIXIContainer.x += this.vx * delta
       this.PIXIContainer.y += this.vy * delta
-    // }
+    }
 
     this.fireTimer += delta
   }

@@ -12,7 +12,6 @@ class Projectile {
   accel = 2.0
   spd = 0
   maxSpd = 12.0
-  mass = 0.35
   isAlive = true
 
   constructor(parentEntity, playRegionBounds) {
