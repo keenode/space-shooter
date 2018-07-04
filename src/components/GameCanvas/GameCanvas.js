@@ -10,7 +10,7 @@ import Projectile from '../../components/Game/Projectile'
 import styles from './GameCanvas.css'
 
 const playRegionBounds = {
-  width: 440,
+  width: 800,
   height: 680,
   offsetTop: 40
 }
