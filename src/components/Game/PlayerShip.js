@@ -13,8 +13,11 @@ class PlayerShip {
   rv = 0
   strafeVelX = 0
   strafeVelY = 0
+  reverseVelX = 0
+  reverseVelY = 0
   accel = 2.0
   strafeAccel = 0.5
+  reverseAccel = 0.25
   spd = 0
   strafeSpd = 0
   lastStrafeDir = 0
@@ -37,6 +40,7 @@ class PlayerShip {
   }
   isThrusting = false
   isBraking = false
+  isReversing = false
   isFiring = false
   fireTimer = 0
   fireRate = 10.0
@@ -74,6 +78,11 @@ class PlayerShip {
       this.strafing.right = true
     }
 
+    // Handle key down for reversing
+    if (e.which === 83) {
+      this.isReversing = true
+    }
+
     // Handle key down for firing weapon
     if (e.which === 32) {
       this.isFiring = true
@@ -100,6 +109,11 @@ class PlayerShip {
       this.strafing.left = false
     } else if (e.which === 69) {
       this.strafing.right = false
+    }
+
+    // Handle key up for reversing
+    if (e.which === 83) {
+      this.isReversing = false
     }
 
     // Handle key up for firing weapon
@@ -172,6 +186,16 @@ class PlayerShip {
       this.rv *= this.brakeForce
     }
 
+    // Handle reversing
+    if (this.isReversing) {
+      const reverseForceX = this.reverseAccel * Math.cos(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)
+      const reverseForceY = this.reverseAccel * Math.sin(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)
+      this.reverseVelX += reverseForceX
+      this.reverseVelY += reverseForceY
+      this.vx += reverseForceX
+      this.vy += reverseForceY
+    }
+
     // Handle decceleration from mass
     // if (!this.isThrusting && strafeDir === 0) {
     // if (!this.isThrusting) {
@@ -195,6 +219,15 @@ class PlayerShip {
         this.strafeVelY = 0
       }
     // }
+
+    this.reverseVelX *= this.mass
+    this.reverseVelY *= this.mass
+    if (Math.abs(Math.round(this.reverseVelX * 100) / 100) <= 0) {
+      this.reverseVelX = 0
+    }
+    if (Math.abs(Math.round(this.reverseVelY * 100) / 100) <= 0) {
+      this.reverseVelY = 0
+    }
 
     if (rotDir === 0) {
       this.rv *= this.mass * 0.8
