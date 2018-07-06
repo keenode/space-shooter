@@ -11,13 +11,17 @@ class PlayerShip {
   vx = 0
   vy = 0
   rv = 0
-  strafeForceX = 0
-  strafeForceY = 0
+  strafeVelX = 0
+  strafeVelY = 0
   accel = 2.0
+  strafeAccel = 0.5
   spd = 0
-  strafeFactor = 0.25
+  strafeSpd = 0
+  lastStrafeDir = 0
+  lastStrafeSpd = 0
   angle = 0
   maxSpd = 10.0
+  maxStrafeSpd = 5.0
   rotAccel = 0.01
   maxRotVel = 0.1
   maxStrafeForce = 5.0
@@ -126,7 +130,13 @@ class PlayerShip {
 
     // Set magnitude of speed
     this.spd = Math.sqrt(this.vy * this.vy + this.vx * this.vx)
-    // this.strafeSpd = Math.sqrt(this.strafeForceY * this.strafeForceY + this.strafeForceX * this.strafeForceX)
+    this.strafeSpd = Math.sqrt(this.strafeVelY * this.strafeVelY + this.strafeVelX * this.strafeVelX)
+    // console.log(this.spd)
+    // console.log(this.strafeSpd)
+
+    if (this.spd > this.maxSpd) {
+      this.spd = this.maxSpd
+    }
 
     // Handle rotational acceleration and velocity
     const rotDir = this.rotating.right ? 1 : this.rotating.left ? -1 : 0
@@ -142,18 +152,59 @@ class PlayerShip {
 
     // Handle strafing forces
     const strafeDir = this.strafing.right ? 1 : this.strafing.left ? -1 : 0
-
-    if (this.spd < this.maxSpd * this.strafeFactor) {
-      this.strafeForceX = this.accel * this.strafeFactor * Math.cos(this.PIXIContainer.rotation) * strafeDir
-      this.strafeForceY = this.accel * this.strafeFactor * Math.sin(this.PIXIContainer.rotation) * strafeDir
-    } else {
-      this.strafeForceX = 0
-      this.strafeForceY = 0
+    let strafeForceX = this.strafeAccel * Math.cos(this.PIXIContainer.rotation) * strafeDir
+    let strafeForceY = this.strafeAccel * Math.sin(this.PIXIContainer.rotation) * strafeDir
+// console.log((this.strafeSpd) + ' < ' + (this.maxStrafeSpd))
+console.log((this.spd) + ' < ' + (this.maxSpd))
+    // if (strafeDir !== 0 && this.strafeSpd < this.maxStrafeSpd) {
+    if (strafeDir !== 0 && this.spd < this.maxSpd) {
+      this.strafeVelX += strafeForceX
+      this.strafeVelY += strafeForceY
+      this.vx += strafeForceX
+      this.vy += strafeForceY
     }
+    // else {
+    //   strafeForceX = 0
+    //   strafeForceY = 0
+    //   this.strafeSpd = 0
+    // }
+    // else if (strafeDir === 0) {
+    //   this.strafeVelX = 0
+    //   this.strafeVelY = 0
+    // }
+    // if (strafeDir !== this.lastStrafeDir) {
+    //   console.log('zero out')
+    //   // this.strafeVelX = 0
+    //   // this.strafeVelY = 0
+    //   // strafeForceX = 0
+    //   // strafeForceY = 0
+    //   // this.strafeSpd = 0
+    //   this.lastStrafeSpd = this.strafeSpd
+    //   this.strafeSpd = 0
+    //   this.lastStrafeDir = strafeDir
+    // }
+    // this.vx += strafeForceX
+    // this.vy += strafeForceY
+    console.log(this.vx)
+    // if (this.strafeSpd > this.maxStrafeSpd) {
+    //   this.strafeSpd = this.maxStrafeSpd
+    // }
+    // else {
+    //   this.strafeVelX = 0
+    //   this.strafeVelY = 0
+    // }
+    // if (strafeDir !== this.lastStrafeDir) {
+    //   console.log('zero out')
+    //   this.strafeVelX = 0
+    //   this.strafeVelY = 0
+    //   this.strafeSpd = 0
+    //   this.lastStrafeDir = strafeDir
+    // }
+    // console.log(this.strafeVelX)
 
     // Update total velocity with strafe velocity
-    this.vx += this.strafeForceX
-    this.vy += this.strafeForceY
+    // this.vx += this.strafeVelX
+    // this.vy += this.strafeVelY
 
     // Handle braking
     if (this.isBraking) {
@@ -163,7 +214,8 @@ class PlayerShip {
     }
 
     // Handle decceleration from mass
-    if (!this.isThrusting) {
+    // if (!this.isThrusting && strafeDir === 0) {
+    // if (!this.isThrusting) {
       this.vx *= this.mass
       this.vy *= this.mass
       if (Math.abs(Math.round(this.vx * 100) / 100) <= 0) {
@@ -172,16 +224,16 @@ class PlayerShip {
       if (Math.abs(Math.round(this.vy * 100) / 100) <= 0) {
         this.vy = 0
       }
-    }
+    // }
 
     // if (strafeDir === 0) {
-    //   this.strafeForceX *= this.mass
-    //   this.strafeForceY *= this.mass
-    //   if (Math.abs(Math.round(this.strafeForceX * 100) / 100) <= 0) {
-    //     this.strafeForceX = 0
+    //   this.strafeVelX *= this.mass
+    //   this.strafeVelY *= this.mass
+    //   if (Math.abs(Math.round(this.strafeVelX * 100) / 100) <= 0) {
+    //     this.strafeVelX = 0
     //   }
-    //   if (Math.abs(Math.round(this.strafeForceY * 100) / 100) <= 0) {
-    //     this.strafeForceY = 0
+    //   if (Math.abs(Math.round(this.strafeVelY * 100) / 100) <= 0) {
+    //     this.strafeVelY = 0
     //   }
     // }
 
