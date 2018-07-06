@@ -62,26 +62,27 @@ class PlayerShip {
       this.isThrusting = true
     } else if (e.which === 83 || e.which === 40) {
       this.isBraking = true
+      // this.isReversing = true
     }
 
     // Handle key down for rotating
-    if (e.which === 65 || e.which === 37) {
+    if (e.which === 65) {
       this.rotating.left = true
-    } else if (e.which === 68 || e.which === 39) {
+    } else if (e.which === 68) {
       this.rotating.right = true
     }
 
     // Handle key down for strafing
-    if (e.which === 81) {
+    if (e.which === 81 || e.which === 37) {
       this.strafing.left = true
-    } else if (e.which === 69) {
+    } else if (e.which === 69 || e.which === 39) {
       this.strafing.right = true
     }
 
     // Handle key down for reversing
-    if (e.which === 83) {
-      this.isReversing = true
-    }
+    // if (e.which === 83) {
+    //   this.isReversing = true
+    // }
 
     // Handle key down for firing weapon
     if (e.which === 32) {
@@ -95,26 +96,27 @@ class PlayerShip {
       this.isThrusting = false
     } else if (e.which === 83 || e.which === 40) {
       this.isBraking = false
+      // this.isReversing = false
     }
 
     // Handle key up for rotating
-    if (e.which === 37 || e.which === 65) {
+    if (e.which === 65) {
       this.rotating.left = false
-    } else if (e.which === 39 || e.which === 68) {
+    } else if (e.which === 68) {
       this.rotating.right = false
     }
 
     // Handle key up for strafing
-    if (e.which === 81) {
+    if (e.which === 81 || e.which === 37) {
       this.strafing.left = false
-    } else if (e.which === 69) {
+    } else if (e.which === 69 || e.which === 39) {
       this.strafing.right = false
     }
 
     // Handle key up for reversing
-    if (e.which === 83) {
-      this.isReversing = false
-    }
+    // if (e.which === 83) {
+    //   this.isReversing = false
+    // }
 
     // Handle key up for firing weapon
     if (e.which === 32) {
@@ -181,13 +183,20 @@ class PlayerShip {
 
     // Handle braking
     if (this.isBraking) {
+      console.log('isBraking')
       this.vx *= this.brakeForce
       this.vy *= this.brakeForce
       this.rv *= this.brakeForce
+      if (this.spd < 0.5) {
+        this.isReversing = true
+      }
+    } else if (this.spd > 0) {
+      this.isReversing = false
     }
 
     // Handle reversing
     if (this.isReversing) {
+      console.log('isReversing')
       const reverseForceX = this.reverseAccel * Math.cos(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)
       const reverseForceY = this.reverseAccel * Math.sin(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)
       this.reverseVelX += reverseForceX
