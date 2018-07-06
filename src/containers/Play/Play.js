@@ -12,8 +12,12 @@ class Play extends Component {
   render() {
     return (
       <div className={styles.PlayContainer}>
-        <GameCanvas />
-        <HullDash hull={this.props.hull} maxHull={this.props.maxHull} />
+        <GameCanvas
+          hull={this.props.hull}
+          hullUpdated={ hullPts => this.props.onUpdateHull(hullPts) } />
+        <HullDash
+          hull={this.props.hull}
+          maxHull={this.props.maxHull} />
       </div>
     )
   }

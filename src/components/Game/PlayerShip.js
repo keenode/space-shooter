@@ -183,7 +183,7 @@ class PlayerShip {
 
     // Handle braking
     if (this.isBraking) {
-      console.log('isBraking')
+      // console.log('isBraking')
       this.vx *= this.brakeForce
       this.vy *= this.brakeForce
       this.rv *= this.brakeForce
@@ -196,7 +196,7 @@ class PlayerShip {
 
     // Handle reversing
     if (this.isReversing) {
-      console.log('isReversing')
+      // console.log('isReversing')
       const reverseForceX = this.reverseAccel * Math.cos(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)
       const reverseForceY = this.reverseAccel * Math.sin(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)
       this.reverseVelX += reverseForceX

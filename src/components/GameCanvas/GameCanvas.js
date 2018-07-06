@@ -161,6 +161,7 @@ class GameCanvas extends Component {
       if (collisionTest(enemy.PIXIContainer, this.playerShip.PIXIContainer)) {
         console.log('crash')
         enemy.isAlive = false
+        this.props.hullUpdated(this.props.hull - 25)
       }
 
       // Check enemy collision with player projectiles
@@ -185,6 +186,7 @@ class GameCanvas extends Component {
       if (collisionTest(this.playerShip.PIXIContainer, projectile.PIXIContainer)) {
         console.log('damage')
         projectile.isAlive = false
+        this.props.hullUpdated(this.props.hull - 5)
       }
     }
 

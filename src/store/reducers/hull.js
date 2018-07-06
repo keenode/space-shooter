@@ -5,12 +5,16 @@ const initialState = {
   maxHull: 100
 }
 
+const updateHull = (state, action) => {
+  return {
+    ...state,
+    hull: action.hull
+  }
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.UPDATE_HULL:
-      return {
-        hull: action.hull
-      }
+    case actionTypes.UPDATE_HULL: return updateHull(state, action)
     default:
       return state
   }
