@@ -1,1 +1,4 @@
-export { updateHull } from './hull'
+export {
+  updateHull,
+  updateShields
+} from './hull'

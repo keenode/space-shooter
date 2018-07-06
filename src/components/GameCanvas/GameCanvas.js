@@ -96,6 +96,15 @@ class GameCanvas extends Component {
     const enemy5 = new EnemyShip(500, 150, sceneBounds)
     this.enemies.data.push(enemy5)
     this.enemies.container.addChild(enemy5.PIXIContainer)
+    const enemy6 = new EnemyShip(600, 150, sceneBounds)
+    this.enemies.data.push(enemy6)
+    this.enemies.container.addChild(enemy6.PIXIContainer)
+    const enemy7 = new EnemyShip(700, 100, sceneBounds)
+    this.enemies.data.push(enemy7)
+    this.enemies.container.addChild(enemy7.PIXIContainer)
+    const enemy8 = new EnemyShip(800, 75, sceneBounds)
+    this.enemies.data.push(enemy8)
+    this.enemies.container.addChild(enemy8.PIXIContainer)
 
     this.scene.addChild(this.enemies.container)
     this.scene.addChild(this.enemyProjectiles.container)
@@ -159,16 +168,14 @@ class GameCanvas extends Component {
 
       // Check collision with player
       if (collisionTest(enemy.PIXIContainer, this.playerShip.PIXIContainer)) {
-        console.log('crash')
         enemy.isAlive = false
-        this.props.hullDamaged(25)
+        this.props.hullDamaged(75)
       }
 
       // Check enemy collision with player projectiles
       for (let p = 0; p < this.playerProjectiles.data.length; p++) {
         const projectile = this.playerProjectiles.data[p]
         if (collisionTest(enemy.PIXIContainer, projectile.PIXIContainer)) {
-          console.log('hit')
           projectile.isAlive = false
           enemy.isAlive = false
         }
@@ -184,7 +191,6 @@ class GameCanvas extends Component {
     for (let p = 0; p < this.enemyProjectiles.data.length; p++) {
       const projectile = this.enemyProjectiles.data[p]
       if (collisionTest(this.playerShip.PIXIContainer, projectile.PIXIContainer)) {
-        console.log('damage')
         projectile.isAlive = false
         this.props.hullDamaged(5)
       }

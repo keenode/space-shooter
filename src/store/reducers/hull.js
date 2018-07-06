@@ -8,16 +8,18 @@ const initialState = {
 }
 
 const updateHull = (state, action) => {
+  const hull = action.updatedHull > 0 ? action.updatedHull : 0
   return {
     ...state,
-    hull: action.hull
+    hull
   }
 }
 
 const updateShields = (state, action) => {
+  const shields = action.updatedShields > 0 ? action.updatedShields : 0
   return {
     ...state,
-    shields: action.shields
+    shields
   }
 }
 

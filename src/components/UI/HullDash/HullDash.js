@@ -8,7 +8,7 @@ const hullDash = props => (
     <span>Speed: 0</span>
     <span>Max Speed: 200</span>
     <span>Rotation: 0deg</span>
-    <span>Shields: 100 / 100</span>
+    <span>Shields: {props.shields} / {props.shieldsMax}</span>
     <span>Hull: {props.hull} / {props.hullMax}</span>
     <span>Energy: 100 / 100</span>
     <span>Fuel: 100 / 100</span>
