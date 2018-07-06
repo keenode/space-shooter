@@ -13,3 +13,31 @@ export const updateShields = value => {
     updatedShields: value
   }
 }
+
+export const updateEnergy = value => {
+  return {
+    type: actionTypes.UPDATE_ENERGY,
+    updatedEnergy: value
+  }
+}
+
+export const updateSpeed = value => {
+  return {
+    type: actionTypes.UPDATE_SPEED,
+    updatedSpeed: value
+  }
+}
+
+export const updateRotation = value => {
+  return {
+    type: actionTypes.UPDATE_ROTATION,
+    updatedRotation: value
+  }
+}
+
+export const updateFuel = value => {
+  return {
+    type: actionTypes.UPDATE_FUEL,
+    updatedFuel: value
+  }
+}
