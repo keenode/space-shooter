@@ -49,7 +49,8 @@ const updateSpeed = (state, action) => {
 }
 
 const updateRotation = (state, action) => {
-  const rotation = action.updatedRotation > 0 ? action.updatedRotation : 0
+  const numRotations = Math.floor(action.updatedRotation / 360)
+  const rotation = action.updatedRotation - 360 * numRotations
   return {
     ...state,
     rotation

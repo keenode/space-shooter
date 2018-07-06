@@ -11,6 +11,7 @@ class PlayerShip {
   vx = 0
   vy = 0
   rv = 0
+  facingAngle = 0
   strafeVelX = 0
   strafeVelY = 0
   reverseVelX = 0
@@ -141,7 +142,7 @@ class PlayerShip {
   update(delta) {
     // Get angle of velocity
     // var angle = Math.atan2(this.vy, this.vx)
-    this.facingAngle = this.PIXIContainer.rotation
+    this.facingAngle = this.PIXIContainer.rotation * 180 / Math.PI
     // console.log(this.facingAngle)
 
     // Set magnitude of speed

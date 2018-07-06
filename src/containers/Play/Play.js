@@ -33,12 +33,17 @@ class Play extends Component {
       <div className={styles.PlayContainer}>
         <GameCanvas
           hull={this.props.hull}
-          hullDamaged={ value => this.hullDamagedHandler(value) } />
+          hullDamaged={ value => this.hullDamagedHandler(value) }
+          speedUpdated={ value => this.props.onUpdateSpeed(value) }
+          rotationUpdated={ value => this.props.onUpdateRotation(value) } />
         <HullDash
           hull={this.props.hull}
           hullMax={this.props.hullMax}
           shields={this.props.shields}
-          shieldsMax={this.props.shieldsMax} />
+          shieldsMax={this.props.shieldsMax}
+          speed={this.props.speed}
+          speedMax={this.props.speedMax}
+          rotation={this.props.rotation} />
       </div>
     )
   }
@@ -49,14 +54,19 @@ const mapStateToProps = state => {
     hull: state.hull.hull,
     hullMax: state.hull.hullMax,
     shields: state.hull.shields,
-    shieldsMax: state.hull.shieldsMax
+    shieldsMax: state.hull.shieldsMax,
+    speed: state.hull.speed,
+    speedMax: state.hull.speedMax,
+    rotation: state.hull.rotation
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     onUpdateHull: value => dispatch(actions.updateHull(value)),
-    onUpdateShields: value => dispatch(actions.updateShields(value))
+    onUpdateShields: value => dispatch(actions.updateShields(value)),
+    onUpdateSpeed: value => dispatch(actions.updateSpeed(value)),
+    onUpdateRotation: value => dispatch(actions.updateRotation(value))
   }
 }
 

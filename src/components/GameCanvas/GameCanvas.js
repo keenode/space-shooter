@@ -126,6 +126,8 @@ class GameCanvas extends Component {
       this.playerProjectiles.container.addChild(projectile.PIXIContainer)
       this.playerShip.fireTimer = 0
     }
+    this.props.speedUpdated(this.playerShip.spd)
+    this.props.rotationUpdated(this.playerShip.facingAngle)
 
     // Handle enemy updates
     for (let b = 0; b < this.enemies.data.length; b++) {
