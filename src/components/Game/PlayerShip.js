@@ -11,14 +11,23 @@ class PlayerShip {
   vx = 0
   vy = 0
   rv = 0
+  strafeForceX = 0
+  strafeForceY = 0
   accel = 2.0
   spd = 0
+  strafeFactor = 0.25
+  angle = 0
   maxSpd = 10.0
   rotAccel = 0.01
   maxRotVel = 0.1
+  maxStrafeForce = 5.0
   mass = 0.98
   brakeForce = 0.9
   rotating = {
+    left: false,
+    right: false
+  }
+  strafing = {
     left: false,
     right: false
   }
@@ -39,36 +48,57 @@ class PlayerShip {
   }
 
   handleKeyDown(e) {
+    // console.log(e.which)
+    // Handle key down for thursting & braking
     if (e.which === 87 || e.which === 38) {
       this.isThrusting = true
-    } else if (e.which === 83 || e.which === 40) { 
+    } else if (e.which === 83 || e.which === 40) {
       this.isBraking = true
     }
 
+    // Handle key down for rotating
     if (e.which === 65 || e.which === 37) {
       this.rotating.left = true
     } else if (e.which === 68 || e.which === 39) {
       this.rotating.right = true
     }
 
+    // Handle key down for strafing
+    if (e.which === 81) {
+      this.strafing.left = true
+    } else if (e.which === 69) {
+      this.strafing.right = true
+    }
+
+    // Handle key down for firing weapon
     if (e.which === 32) {
       this.isFiring = true
     }
   }
 
   handleKeyUp(e) {
+    // Handle key up for thursting & braking
     if (e.which === 87 || e.which === 38) {
       this.isThrusting = false
-    } else if (e.which === 83 || e.which === 40) { 
+    } else if (e.which === 83 || e.which === 40) {
       this.isBraking = false
     }
-    
+
+    // Handle key up for rotating
     if (e.which === 37 || e.which === 65) {
       this.rotating.left = false
     } else if (e.which === 39 || e.which === 68) {
       this.rotating.right = false
     }
 
+    // Handle key up for strafing
+    if (e.which === 81) {
+      this.strafing.left = false
+    } else if (e.which === 69) {
+      this.strafing.right = false
+    }
+
+    // Handle key up for firing weapon
     if (e.which === 32) {
       this.isFiring = false
     }
@@ -90,10 +120,13 @@ class PlayerShip {
 
   update(delta) {
     // Get angle of velocity
-    // var angle = Math.atan2(velocity.y, velocity.x);
+    // var angle = Math.atan2(this.vy, this.vx)
+    this.facingAngle = this.PIXIContainer.rotation
+    // console.log(this.facingAngle)
 
     // Set magnitude of speed
     this.spd = Math.sqrt(this.vy * this.vy + this.vx * this.vx)
+    // this.strafeSpd = Math.sqrt(this.strafeForceY * this.strafeForceY + this.strafeForceX * this.strafeForceX)
 
     // Handle rotational acceleration and velocity
     const rotDir = this.rotating.right ? 1 : this.rotating.left ? -1 : 0
@@ -106,6 +139,21 @@ class PlayerShip {
       this.vx += this.accel * Math.cos(this.PIXIContainer.rotation - offsetAngle)
       this.vy += this.accel * Math.sin(this.PIXIContainer.rotation - offsetAngle)
     }
+
+    // Handle strafing forces
+    const strafeDir = this.strafing.right ? 1 : this.strafing.left ? -1 : 0
+
+    if (this.spd < this.maxSpd * this.strafeFactor) {
+      this.strafeForceX = this.accel * this.strafeFactor * Math.cos(this.PIXIContainer.rotation) * strafeDir
+      this.strafeForceY = this.accel * this.strafeFactor * Math.sin(this.PIXIContainer.rotation) * strafeDir
+    } else {
+      this.strafeForceX = 0
+      this.strafeForceY = 0
+    }
+
+    // Update total velocity with strafe velocity
+    this.vx += this.strafeForceX
+    this.vy += this.strafeForceY
 
     // Handle braking
     if (this.isBraking) {
@@ -125,6 +173,17 @@ class PlayerShip {
         this.vy = 0
       }
     }
+
+    // if (strafeDir === 0) {
+    //   this.strafeForceX *= this.mass
+    //   this.strafeForceY *= this.mass
+    //   if (Math.abs(Math.round(this.strafeForceX * 100) / 100) <= 0) {
+    //     this.strafeForceX = 0
+    //   }
+    //   if (Math.abs(Math.round(this.strafeForceY * 100) / 100) <= 0) {
+    //     this.strafeForceY = 0
+    //   }
+    // }
 
     if (rotDir === 0) {
       this.rv *= this.mass * 0.8
