@@ -9,15 +9,19 @@ import * as actions from '../../store/actions'
 import styles from './Play.css'
 
 class Play extends Component {
+  hullDamagedHandler(value) {
+    this.props.onUpdateHull(this.props.hull - value)
+  }
+
   render() {
     return (
       <div className={styles.PlayContainer}>
         <GameCanvas
           hull={this.props.hull}
-          hullUpdated={ hullPts => this.props.onUpdateHull(hullPts) } />
+          hullDamaged={ value => this.hullDamagedHandler(value) } />
         <HullDash
           hull={this.props.hull}
-          maxHull={this.props.maxHull} />
+          hullMax={this.props.hullMax} />
       </div>
     )
   }
@@ -26,7 +30,7 @@ class Play extends Component {
 const mapStateToProps = state => {
   return {
     hull: state.hull.hull,
-    maxHull: state.hull.maxHull
+    hullMax: state.hull.hullMax
   }
 }
 

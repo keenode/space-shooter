@@ -6,3 +6,10 @@ export const updateHull = value => {
     hull: value
   }
 }
+
+export const updateShields = value => {
+  return {
+    type: actionTypes.UPDATE_SHIELDS,
+    shields: value
+  }
+}

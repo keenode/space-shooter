@@ -1,1 +1,2 @@
 export const UPDATE_HULL = 'UPDATE_HULL'
+export const UPDATE_SHIELDS = 'UPDATE_SHIELDS'
