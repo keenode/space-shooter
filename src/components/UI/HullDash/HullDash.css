@@ -1,0 +1,13 @@
+.HullDash {
+  position: absolute;
+  left: 50%;
+  bottom: 50px;
+  z-index: 10;
+
+  font-size: 12px;
+  color: white;
+}
+
+.HullDash span {
+  display: block;
+}

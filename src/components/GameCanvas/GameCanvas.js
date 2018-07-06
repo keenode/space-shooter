@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import * as PIXI from 'pixi.js'
 
-import { collisionTest } from '../Game/Utility' 
+import { collisionTest } from '../Game/Utility'
 
 import Camera from '../Game/Camera'
 import PlayerShip from '../Game/PlayerShip'
@@ -53,7 +53,7 @@ class GameCanvas extends Component {
     document.getElementById(canvasSelectorId).appendChild(this.gameApp.view)
 
     window.onresize = () => {
-      this.gameApp.renderer.resize($gameCanvas.offsetWidth, $gameCanvas.offsetHeight)      
+      this.gameApp.renderer.resize($gameCanvas.offsetWidth, $gameCanvas.offsetHeight)
     }
 
     // Add FPS counter
