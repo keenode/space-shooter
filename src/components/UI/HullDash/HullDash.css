@@ -17,7 +17,8 @@
   width: 200px;
   height: 200px;
   background-color: rgba(0, 50, 50, 0.5);
-  border: 3px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 32px rgba(0, 0, 0, 0.5) inset;
+  border: 3px solid rgba(255, 255, 255, 0.4);
   border-radius: 100%;
 }
 
@@ -196,30 +197,55 @@
   width: 200px;
   height: 200px;
   background-color: rgba(0, 50, 50, 0.5);
-  border: 3px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 32px rgba(0, 0, 0, 0.5) inset;
+  border: 3px solid rgba(255, 255, 255, 0.4);
   border-radius: 100%;
+}
+
+.SpeedometerTickContainer {
+  position: absolute;
+  top: 0;
+  width: 3px;
+  height: 50%;
+  transform-origin: center bottom;
+  /* background-color: rgba(255, 255, 255, 0.1); */
 }
 
 .SpeedometerTick {
   position: absolute;
-  top: 0;
-  width: 1px;
-  height: 50%;
-  background-color: rgba(255, 255, 255, 0.1);
-  transform-origin: center bottom;
+  width: 100%;
+  height: 8%;
+  background-color: yellow;
+  opacity: 0.5;
 }
 
 .TickLabel {
+  display: block;
+  position: absolute;
+  left: -15px;
+  top: 10px;
+  width: 30px;
+  text-align: center;
   user-select: none;
+}
+
+.Speedometer_LineContainer {
+  position: absolute;
+  top: 0;
+  width: 3px;
+  height: 50%;
+  transform-origin: center bottom;
+  transition: transform 100ms ease-in-out;
+  /* background-color: rgba(255, 255, 255, 0.5); */
 }
 
 .Speedometer_Line {
   position: absolute;
-  top: 0;
-  width: 2px;
+  top: 20%;
+  width: 100%;
   height: 50%;
-  background-color: white;
-  transform-origin: center bottom;
+  background-color: cyan;
+  box-shadow: -2px 3px 0 rgba(0, 200, 200, 0.4);
 }
 
 .SpeedDisplay {
@@ -234,10 +260,11 @@
 
 .ModeDisplay {
   position: absolute;
-  left: calc(50% - 10px);
+  left: 55%;
   bottom: 40px;
-  font-size: 14px;
   width: 20px;
+  font-size: 16px;
+  font-weight: 700;
   text-align: center;
   user-select: none;
 }

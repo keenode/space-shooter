@@ -16,10 +16,13 @@ const hullDash = props => {
     speedometerTicks.push(
       <span
         key={t}
-        className={styles.SpeedometerTick}
+        className={styles.SpeedometerTickContainer}
         style={{ transform: `rotate(${tickRotation}deg)` }}
       >
-        <span className={styles.TickLabel}>
+        <span className={styles.SpeedometerTick}></span>
+        <span
+          className={styles.TickLabel}
+          style={{ transform: `rotate(${-tickRotation}deg)` }}>
           {tickLabel}
         </span>
       </span>
@@ -113,13 +116,18 @@ const hullDash = props => {
       <div className={styles.Speedometer}>
         {speedometerTicks}
         <span
-          className={styles.Speedometer_Line}
+          className={styles.Speedometer_LineContainer}
           style={{ transform: `rotate(${(speedometerEndAngle - speedometerStartAngle) * props.speed / props.speedMax + speedometerStartAngle - speedometerAngleOffset}deg)` }}
-        ></span>
+        >
+          <span className={styles.Speedometer_Line}></span>
+        </span>
         <span className={styles.SpeedDisplay}>
           {Math.round(props.speed)}<span>ps</span>
         </span>
-        <span className={styles.ModeDisplay}>
+        <span
+          className={styles.ModeDisplay}
+          style={{ color: props.pilotMode === 'D' ? 'orange' : 'red' }}
+        >
           {props.pilotMode}
         </span>
       </div>
