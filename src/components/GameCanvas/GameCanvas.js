@@ -81,6 +81,7 @@ class GameCanvas extends Component {
       fuel: this.props.fuel,
       shieldsRegenRate: this.props.shieldsRegenRate,
       energyRegenRate: this.props.energyRegenRate,
+      speedMax: this.props.speedMax
     }, sceneBounds)
     this.scene.addChild(this.playerShip.PIXIContainer)
     this.scene.addChild(this.playerProjectiles.container)

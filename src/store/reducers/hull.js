@@ -11,7 +11,7 @@ const initialState = {
   energyMax: 100.0,
   energyRegenRate: 5.0,
   speed: 0.0,
-  speedMax: 200,
+  speedMax: 20.0,
   rotation: 0.0,
   fuel: 100.0,
   fuelMax: 100.0,

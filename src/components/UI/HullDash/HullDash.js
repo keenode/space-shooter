@@ -13,12 +13,13 @@ const hullDash = props => {
   console.log('degSpacing: ' + degSpacing)
   for (let t = 0; t < speedometerSegments; t++) {
     const tickRotation = t * degSpacing + speedometerStartAngle - speedometerAngleOffset
+    const tickLabel = Math.floor(props.speedMax * (t + 1))
     speedometerTicks.push(
       <span
         key={t}
         className={styles.SpeedometerTick}
         style={{ transform: `rotate(${tickRotation}deg)` }}
-      >{t + 1}</span>
+      >{tickLabel}</span>
     )
   }
 

@@ -68,6 +68,7 @@ class Play extends Component {
           shieldsRegenRate={this.props.shieldsRegenRate}
           energy={this.props.energy}
           fuel={this.props.fuel}
+          speedMax={this.props.speedMax}
           energyRegenRate={this.props.energyRegenRate}
           hullDamaged={ dmgAmt => this.hullDamagedHandler(dmgAmt) }
           shieldsRegenerated={ regenAmt => this.shieldsRegeneratedHandler(regenAmt) }

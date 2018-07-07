@@ -61,6 +61,7 @@ class PlayerShip {
     this.fuel = data.fuel
     this.shieldsRegenRate = data.shieldsRegenRate
     this.energyRegenRate = data.energyRegenRate
+    this.maxSpd = data.speedMax
     this.playRegionBounds = playRegionBounds
     this.PIXIContainer.x = playRegionBounds.width / 2
     this.PIXIContainer.y = playRegionBounds.height - shipHeight / 2 - shipBottomPadding
