@@ -36,6 +36,10 @@ class Play extends Component {
     this.props.onUpdateEnergy(-energyUsed)
   }
 
+  energyRegeneratedHandler(regenAmt) {
+    this.props.onUpdateEnergy(regenAmt)
+  }
+
   fuelUsedHandler(value) {
     const updatedFuelValue = this.props.fuel - value
     this.props.onUpdateFuel(updatedFuelValue)
@@ -62,8 +66,11 @@ class Play extends Component {
           hull={this.props.hull}
           shields={this.props.shields}
           shieldsRegenRate={this.props.shieldsRegenRate}
+          energy={this.props.energy}
+          energyRegenRate={this.props.energyRegenRate}
           hullDamaged={ dmgAmt => this.hullDamagedHandler(dmgAmt) }
           shieldsRegenerated={ regenAmt => this.shieldsRegeneratedHandler(regenAmt) }
+          energyRegenerated={ regenAmt => this.energyRegeneratedHandler(regenAmt) }
           energyUsed={ energyUsed => this.energyUsedHandler(energyUsed) }
           speedUpdated={ value => this.props.onUpdateSpeed(value) }
           rotationUpdated={ value => this.props.onUpdateRotation(value) }
@@ -102,6 +109,7 @@ const mapStateToProps = state => {
     shieldsRegenRate: state.hull.shieldsRegenRate,
     energy: state.hull.energy,
     energyMax: state.hull.energyMax,
+    energyRegenRate: state.hull.energyRegenRate,
     speed: state.hull.speed,
     speedMax: state.hull.speedMax,
     rotation: state.hull.rotation,

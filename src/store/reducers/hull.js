@@ -9,6 +9,7 @@ const initialState = {
   shieldsRegenRate: 10.0,
   energy: 100.0,
   energyMax: 100.0,
+  energyRegenRate: 5.0,
   speed: 0.0,
   speedMax: 200,
   rotation: 0.0,

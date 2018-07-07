@@ -78,7 +78,8 @@ class GameCanvas extends Component {
     // Player
     this.playerShip = new PlayerShip({
       shields: this.props.shields,
-      shieldsRegenRate: this.props.shieldsRegenRate
+      shieldsRegenRate: this.props.shieldsRegenRate,
+      energyRegenRate: this.props.energyRegenRate,
     }, sceneBounds)
     this.scene.addChild(this.playerShip.PIXIContainer)
     this.scene.addChild(this.playerProjectiles.container)
@@ -123,12 +124,12 @@ class GameCanvas extends Component {
   gameLoop(delta) {
     // Hande player updates
     this.playerShip.update(delta)
-    if (this.playerShip.isFiringWeapon && this.playerShip.fireTimer >= this.playerShip.fireRate) {
+    if (this.playerShip.isFiringWeapon && this.playerShip.fireTimer >= this.playerShip.fireRate && this.props.energy > 10) {
       const projectile = new Projectile(this.playerShip)
       this.playerProjectiles.data.push(projectile)
       this.playerProjectiles.container.addChild(projectile.PIXIContainer)
       this.playerShip.fireTimer = 0
-      this.props.energyUsed(5)
+      this.props.energyUsed(10)
     }
     this.props.speedUpdated(this.playerShip.spd)
     this.props.rotationUpdated(this.playerShip.facingAngle)
@@ -148,6 +149,10 @@ class GameCanvas extends Component {
     if (this.playerShip.shieldsRegenTimer >= this.playerShip.shieldsRegenRate) {
       this.props.shieldsRegenerated(1)
       this.playerShip.shieldsRegenTimer = 0
+    }
+    if (this.playerShip.energyRegenTimer >= this.playerShip.energyRegenRate) {
+      this.props.energyRegenerated(1)
+      this.playerShip.energyRegenTimer = 0
     }
 
     // Handle enemy updates
