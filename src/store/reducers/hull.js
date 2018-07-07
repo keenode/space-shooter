@@ -6,7 +6,7 @@ const initialState = {
   hullMax: 100,
   shields: 100,
   shieldsMax: 100,
-  shieldsRegenRate: 0.000000001,
+  shieldsRegenRate: 10.0,
   energy: 100.0,
   energyMax: 100.0,
   speed: 0.0,
