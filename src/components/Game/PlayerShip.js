@@ -20,11 +20,11 @@ class PlayerShip {
   strafeAccel = 0.5
   reverseAccel = 0.25
   spd = 0
+  maxSpd = 10.0
   strafeSpd = 0
   lastStrafeDir = 0
   lastStrafeSpd = 0
   angle = 0
-  maxSpd = 10.0
   maxStrafeSpd = 5.0
   rotAccel = 0.01
   maxRotVel = 0.1
