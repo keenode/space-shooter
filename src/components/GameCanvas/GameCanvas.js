@@ -145,7 +145,10 @@ class GameCanvas extends Component {
     this.props.pilotStateChanged('lateralThrustingLeft', this.playerShip.lateralThrusting.left)
     this.props.pilotStateChanged('lateralThrustingRight', this.playerShip.lateralThrusting.right)
     this.props.pilotStateChanged('firingWeapon', this.playerShip.isFiringWeapon)
-    this.props.shieldsRegenerated(this.playerShip.shields)
+    if (this.playerShip.regenTimer >= this.playerShip.regenRate) {
+      this.props.shieldsRegenerated(1)
+      this.playerShip.regenTimer = 0
+    }
 
     // Handle enemy updates
     for (let b = 0; b < this.enemies.data.length; b++) {

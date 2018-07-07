@@ -47,6 +47,8 @@ class PlayerShip {
   fireRate = 10.0
   shields = 0.0
   shieldsRegenRate = 0.0
+  regenRate = 10.0
+  regenTimer = 0
 
   constructor(data, playRegionBounds) {
     this.shields = data.shields
@@ -275,7 +277,7 @@ class PlayerShip {
     }
 
     // Regen shields
-    this.shields += this.shieldsRegenRate * delta
+    this.regenTimer += delta
 
     // Handle firing of weapon timer
     this.fireTimer += delta

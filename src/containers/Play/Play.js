@@ -13,7 +13,7 @@ class Play extends Component {
     if (this.props.shields > 0) {
       const dmgDiff = this.props.shields - dmgAmt
       this.props.onUpdateShields(-dmgAmt)
-      console.log('dmgDiff: ' + dmgDiff)
+      // console.log('dmgDiff: ' + dmgDiff)
       if (dmgDiff >= 0) {
         console.log('shields damaged: ' + dmgAmt)
       } else {
@@ -28,8 +28,8 @@ class Play extends Component {
     }
   }
 
-  shieldsRegeneratedHandler(value) {
-    // this.props.onUpdateShields(value)
+  shieldsRegeneratedHandler(regenAmt) {
+    this.props.onUpdateShields(regenAmt)
   }
 
   energyUsedHandler(energyUsed) {
@@ -63,7 +63,7 @@ class Play extends Component {
           shields={this.props.shields}
           shieldsRegenRate={this.props.shieldsRegenRate}
           hullDamaged={ dmgAmt => this.hullDamagedHandler(dmgAmt) }
-          shieldsRegenerated={ value => this.shieldsRegeneratedHandler(value) }
+          shieldsRegenerated={ regenAmt => this.shieldsRegeneratedHandler(regenAmt) }
           energyUsed={ energyUsed => this.energyUsedHandler(energyUsed) }
           speedUpdated={ value => this.props.onUpdateSpeed(value) }
           rotationUpdated={ value => this.props.onUpdateRotation(value) }
