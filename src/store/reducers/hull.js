@@ -13,7 +13,7 @@ const initialState = {
   fuel: 100.0,
   fuelMax: 100.0,
   mass: 30.0,
-  mode: 'D'
+  pilotMode: 'D'
 }
 
 const updateHull = (state, action) => {
@@ -65,6 +65,13 @@ const updateFuel = (state, action) => {
   }
 }
 
+const setPilotMode = (state, action) => {
+  return {
+    ...state,
+    pilotMode: action.newPilotMode
+  }
+}
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.UPDATE_HULL: return updateHull(state, action)
@@ -73,6 +80,7 @@ const reducer = (state = initialState, action) => {
     case actionTypes.UPDATE_SPEED: return updateSpeed(state, action)
     case actionTypes.UPDATE_ROTATION: return updateRotation(state, action)
     case actionTypes.UPDATE_FUEL: return updateFuel(state, action)
+    case actionTypes.SET_PILOT_MODE: return setPilotMode(state, action)
     default:
       return state
   }

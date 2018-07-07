@@ -47,7 +47,8 @@ class Play extends Component {
           energyUsed={ value => this.energyUsedHandler(value) }
           speedUpdated={ value => this.props.onUpdateSpeed(value) }
           rotationUpdated={ value => this.props.onUpdateRotation(value) }
-          fuelUsed={ value => this.fuelUsedHandler(value) } />
+          fuelUsed={ value => this.fuelUsedHandler(value) }
+          pilotModeChanged={ mode => this.props.onSetPilotMode(mode) } />
         <HullDash
           hull={this.props.hull}
           hullMax={this.props.hullMax}
@@ -59,7 +60,8 @@ class Play extends Component {
           speedMax={this.props.speedMax}
           rotation={this.props.rotation}
           fuel={this.props.fuel}
-          fuelMax={this.props.fuelMax} />
+          fuelMax={this.props.fuelMax}
+          pilotMode={this.props.pilotMode} />
       </div>
     )
   }
@@ -77,7 +79,8 @@ const mapStateToProps = state => {
     speedMax: state.hull.speedMax,
     rotation: state.hull.rotation,
     fuel: state.hull.fuel,
-    fuelMax: state.hull.fuelMax
+    fuelMax: state.hull.fuelMax,
+    pilotMode: state.hull.pilotMode
   }
 }
 
@@ -88,7 +91,8 @@ const mapDispatchToProps = dispatch => {
     onUpdateEnergy: value => dispatch(actions.updateEnergy(value)),
     onUpdateSpeed: value => dispatch(actions.updateSpeed(value)),
     onUpdateFuel: value => dispatch(actions.updateFuel(value)),
-    onUpdateRotation: value => dispatch(actions.updateRotation(value))
+    onUpdateRotation: value => dispatch(actions.updateRotation(value)),
+    onSetPilotMode: mode => dispatch(actions.setPilotMode(mode))
   }
 }
 

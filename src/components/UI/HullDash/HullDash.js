@@ -71,7 +71,7 @@ const hullDash = props => (
         {Math.round(props.speed)}ps
       </span>
       <span className={styles.ModeDisplay}>
-        D
+        {props.pilotMode}
       </span>
     </div>
     <div className={styles.RotationGuage}>

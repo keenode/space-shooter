@@ -132,6 +132,11 @@ class GameCanvas extends Component {
     if (this.playerShip.isThrusting) {
       this.props.fuelUsed(0.1)
     }
+    if (this.playerShip.isReversing) {
+      this.props.pilotModeChanged('R')
+    } else {
+      this.props.pilotModeChanged('D')
+    }
 
     // Handle enemy updates
     for (let b = 0; b < this.enemies.data.length; b++) {

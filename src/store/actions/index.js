@@ -4,5 +4,6 @@ export {
   updateEnergy,
   updateSpeed,
   updateRotation,
-  updateFuel
+  updateFuel,
+  setPilotMode
 } from './hull'

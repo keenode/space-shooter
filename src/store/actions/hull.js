@@ -41,3 +41,10 @@ export const updateFuel = value => {
     updatedFuel: value
   }
 }
+
+export const setPilotMode = mode => {
+  return {
+    type: actionTypes.SET_PILOT_MODE,
+    newPilotMode: mode
+  }
+}
