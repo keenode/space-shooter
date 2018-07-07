@@ -48,7 +48,10 @@ const hullDash = props => {
         <span className={styles.FuelMeterTick}></span>
         <span
           className={styles.TickLabel}
-          style={{ transform: `rotate(${-tickRotation}deg)` }}>
+          style={{
+            left: tickLabel === 'E' ? -25 : 0,
+            transform: `rotate(${-tickRotation}deg)`
+          }}>
           {tickLabel}
         </span>
       </span>
