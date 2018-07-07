@@ -10,14 +10,23 @@ const hullDash = props => (
       </div>
       <div className={styles.HullGraphicContainer}>
         <div className={styles.HullGraphic}></div>
-        <span className={styles.Indicator_Thrust}>
+        <span
+          className={styles.Indicator_Thrust}
+          style={{
+            display: props.isThrusting ? 'flex' : 'none',
+          }}>
           <span></span>
           <span></span>
         </span>
-        <span className={styles.Indicator_LateralThrust_Left}></span>
-        <span className={styles.Indicator_LateralThrust_Right}></span>
-        <span className={styles.Indicator_Brakes}></span>
-        <span className={styles.Indicator_Weapons}>
+        <span className={styles.Indicator_LateralThrust_Left} style={{ display: props.isLateralThrustingLeft ? 'block' : 'none' }}></span>
+        <span className={styles.Indicator_LateralThrust_Right} style={{ display: props.isLateralThrustingRight ? 'block' : 'none' }}></span>
+        <span
+          className={styles.Indicator_Brakes}
+          style={{
+            display: props.isBraking ? 'block' : 'none',
+            backgroundColor: props.pilotMode === 'R' ? 'white' : 'red'
+          }}></span>
+        <span className={styles.Indicator_Weapons} style={{ display: props.isFiringWeapon ? 'flex' : 'none' }}>
           <span></span>
           <span></span>
         </span>

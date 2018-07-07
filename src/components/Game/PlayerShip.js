@@ -35,14 +35,14 @@ class PlayerShip {
     left: false,
     right: false
   }
-  strafing = {
+  lateralThrusting = {
     left: false,
     right: false
   }
   isThrusting = false
   isBraking = false
   isReversing = false
-  isFiring = false
+  isFiringWeapon = false
   fireTimer = 0
   fireRate = 10.0
 
@@ -73,11 +73,11 @@ class PlayerShip {
       this.rotating.right = true
     }
 
-    // Handle key down for strafing
+    // Handle key down for lateral thrusting
     if (e.which === 81 || e.which === 37) {
-      this.strafing.left = true
+      this.lateralThrusting.left = true
     } else if (e.which === 69 || e.which === 39) {
-      this.strafing.right = true
+      this.lateralThrusting.right = true
     }
 
     // Handle key down for reversing
@@ -87,7 +87,7 @@ class PlayerShip {
 
     // Handle key down for firing weapon
     if (e.which === 32) {
-      this.isFiring = true
+      this.isFiringWeapon = true
     }
   }
 
@@ -107,11 +107,11 @@ class PlayerShip {
       this.rotating.right = false
     }
 
-    // Handle key up for strafing
+    // Handle key up for lateral thrusting
     if (e.which === 81 || e.which === 37) {
-      this.strafing.left = false
+      this.lateralThrusting.left = false
     } else if (e.which === 69 || e.which === 39) {
-      this.strafing.right = false
+      this.lateralThrusting.right = false
     }
 
     // Handle key up for reversing
@@ -121,7 +121,7 @@ class PlayerShip {
 
     // Handle key up for firing weapon
     if (e.which === 32) {
-      this.isFiring = false
+      this.isFiringWeapon = false
     }
   }
 
@@ -171,8 +171,8 @@ class PlayerShip {
       this.vy += this.accel * Math.sin(this.PIXIContainer.rotation - offsetAngle)
     }
 
-    // Handle strafing forces
-    const strafeDir = this.strafing.right ? 1 : this.strafing.left ? -1 : 0
+    // Handle lateralThrusting forces
+    const strafeDir = this.lateralThrusting.right ? 1 : this.lateralThrusting.left ? -1 : 0
     if (strafeDir !== 0 && this.strafeSpd < this.maxStrafeSpd) {
       const strafeForceX = this.strafeAccel * Math.cos(this.PIXIContainer.rotation) * strafeDir
       const strafeForceY = this.strafeAccel * Math.sin(this.PIXIContainer.rotation) * strafeDir

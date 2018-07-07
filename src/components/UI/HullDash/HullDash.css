@@ -72,18 +72,6 @@
 
 .Indicator_LateralThrust_Left {
   position: absolute;
-  left: -25px;
-  top: 15px;
-  width: 0; 
-  height: 0; 
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent; 
-  border-right: 12px solid yellow; 
-  opacity: 0.8;
-}
-
-.Indicator_LateralThrust_Right {
-  position: absolute;
   right: -25px;
   top: 15px;
   width: 0; 
@@ -91,6 +79,18 @@
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
   border-left: 12px solid yellow;
+  opacity: 0.8;
+}
+
+.Indicator_LateralThrust_Right {
+  position: absolute;
+  left: -25px;
+  top: 15px;
+  width: 0; 
+  height: 0; 
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent; 
+  border-right: 12px solid yellow; 
   opacity: 0.8;
 }
 

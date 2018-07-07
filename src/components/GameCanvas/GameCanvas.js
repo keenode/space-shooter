@@ -120,7 +120,7 @@ class GameCanvas extends Component {
   gameLoop(delta) {
     // Hande player updates
     this.playerShip.update(delta)
-    if (this.playerShip.isFiring && this.playerShip.fireTimer >= this.playerShip.fireRate) {
+    if (this.playerShip.isFiringWeapon && this.playerShip.fireTimer >= this.playerShip.fireRate) {
       const projectile = new Projectile(this.playerShip)
       this.playerProjectiles.data.push(projectile)
       this.playerProjectiles.container.addChild(projectile.PIXIContainer)
@@ -137,6 +137,11 @@ class GameCanvas extends Component {
     } else {
       this.props.pilotModeChanged('D')
     }
+    this.props.pilotStateChanged('thrusting', this.playerShip.isThrusting)
+    this.props.pilotStateChanged('braking', this.playerShip.isBraking)
+    this.props.pilotStateChanged('lateralThrustingLeft', this.playerShip.lateralThrusting.left)
+    this.props.pilotStateChanged('lateralThrustingRight', this.playerShip.lateralThrusting.right)
+    this.props.pilotStateChanged('firingWeapon', this.playerShip.isFiringWeapon)
 
     // Handle enemy updates
     for (let b = 0; b < this.enemies.data.length; b++) {

@@ -5,5 +5,10 @@ export {
   updateSpeed,
   updateRotation,
   updateFuel,
-  setPilotMode
+  setPilotMode,
+  setIsThrusting,
+  setIsBraking,
+  setIsLateralThrustingLeft,
+  setIsLateralThrustingRight,
+  setIsFiringWeapon
 } from './hull'

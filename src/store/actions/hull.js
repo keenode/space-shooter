@@ -48,3 +48,38 @@ export const setPilotMode = mode => {
     newPilotMode: mode
   }
 }
+
+export const setIsThrusting = isThrusting => {
+  return {
+    type: actionTypes.SET_IS_THRUSTING,
+    isThrusting
+  }
+}
+
+export const setIsBraking = isBraking => {
+  return {
+    type: actionTypes.SET_IS_BRAKING,
+    isBraking
+  }
+}
+
+export const setIsLateralThrustingLeft = isLateralThrustingLeft => {
+  return {
+    type: actionTypes.SET_IS_LATERAL_THRUSTING_LEFT,
+    isLateralThrustingLeft
+  }
+}
+
+export const setIsLateralThrustingRight = isLateralThrustingRight => {
+  return {
+    type: actionTypes.SET_IS_LATERAL_THRUSTING_RIGHT,
+    isLateralThrustingRight
+  }
+}
+
+export const setIsFiringWeapon = isFiringWeapon => {
+  return {
+    type: actionTypes.SET_IS_FIRING_WEAPON,
+    isFiringWeapon
+  }
+}

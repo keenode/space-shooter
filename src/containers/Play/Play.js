@@ -38,6 +38,20 @@ class Play extends Component {
     this.props.onUpdateFuel(updatedFuelValue)
   }
 
+  pilotStateChangedHandler(pilotState, value) {
+    if (pilotState === 'thrusting') {
+      this.props.onSetIsThrusting(value)
+    } else if (pilotState === 'braking') {
+      this.props.onSetIsBraking(value)
+    } else if (pilotState === 'lateralThrustingLeft') {
+      this.props.onSetIsLateralThrustingLeft(value)
+    } else if (pilotState === 'lateralThrustingRight') {
+      this.props.onSetIsLateralThrustingRight(value)
+    } else if (pilotState === 'firingWeapon') {
+      this.props.onSetIsFiringWeapon(value)
+    }
+  }
+
   render() {
     return (
       <div className={styles.PlayContainer}>
@@ -48,7 +62,8 @@ class Play extends Component {
           speedUpdated={ value => this.props.onUpdateSpeed(value) }
           rotationUpdated={ value => this.props.onUpdateRotation(value) }
           fuelUsed={ value => this.fuelUsedHandler(value) }
-          pilotModeChanged={ mode => this.props.onSetPilotMode(mode) } />
+          pilotModeChanged={ mode => this.props.onSetPilotMode(mode) }
+          pilotStateChanged={ (pilotState, value) => this.pilotStateChangedHandler(pilotState, value) } />
         <HullDash
           hull={this.props.hull}
           hullMax={this.props.hullMax}
@@ -61,7 +76,12 @@ class Play extends Component {
           rotation={this.props.rotation}
           fuel={this.props.fuel}
           fuelMax={this.props.fuelMax}
-          pilotMode={this.props.pilotMode} />
+          pilotMode={this.props.pilotMode}
+          isThrusting={this.props.isThrusting}
+          isBraking={this.props.isBraking}
+          isLateralThrustingLeft={this.props.isLateralThrustingLeft}
+          isLateralThrustingRight={this.props.isLateralThrustingRight}
+          isFiringWeapon={this.props.isFiringWeapon} />
       </div>
     )
   }
@@ -80,7 +100,12 @@ const mapStateToProps = state => {
     rotation: state.hull.rotation,
     fuel: state.hull.fuel,
     fuelMax: state.hull.fuelMax,
-    pilotMode: state.hull.pilotMode
+    pilotMode: state.hull.pilotMode,
+    isThrusting: state.hull.isThrusting,
+    isBraking: state.hull.isBraking,
+    isLateralThrustingLeft: state.hull.isLateralThrustingLeft,
+    isLateralThrustingRight: state.hull.isLateralThrustingRight,
+    isFiringWeapon: state.hull.isFiringWeapon
   }
 }
 
@@ -92,7 +117,12 @@ const mapDispatchToProps = dispatch => {
     onUpdateSpeed: value => dispatch(actions.updateSpeed(value)),
     onUpdateFuel: value => dispatch(actions.updateFuel(value)),
     onUpdateRotation: value => dispatch(actions.updateRotation(value)),
-    onSetPilotMode: mode => dispatch(actions.setPilotMode(mode))
+    onSetPilotMode: mode => dispatch(actions.setPilotMode(mode)),
+    onSetIsThrusting: isThrusting => dispatch(actions.setIsThrusting(isThrusting)),
+    onSetIsBraking: isBraking => dispatch(actions.setIsBraking(isBraking)),
+    onSetIsLateralThrustingLeft: isLateralThrustingLeft => dispatch(actions.setIsLateralThrustingLeft(isLateralThrustingLeft)),
+    onSetIsLateralThrustingRight: isLateralThrustingRight => dispatch(actions.setIsLateralThrustingRight(isLateralThrustingRight)),
+    onSetIsFiringWeapon: isFiringWeapon => dispatch(actions.setIsFiringWeapon(isFiringWeapon))
   }
 }
 
