@@ -5,7 +5,6 @@ import styles from './HullDash.css'
 const hullDash = props => (
   <div className={styles.HullDash}>
     <div>
-      <span>Energy: 100 / 100</span>
       <span>Fuel: 100 / 100</span>
     </div>
     <div className={styles.HullVitals}>
@@ -29,6 +28,17 @@ const hullDash = props => (
         </div>
         <span className={styles.VitalsLabel}>
           {props.hull}
+        </span>
+      </div>
+      <div className={styles.VitalsRow}>
+        <div className={[styles.VitalsBar, styles.VitalsBar_Energy].join(' ')}>
+          <span
+            className={styles.VitalsBar_Fill}
+            style={{ width: (props.energy / props.energyMax) * 100 + '%' }}
+          ></span>
+        </div>
+        <span className={[styles.VitalsLabel, styles.VitalsLabel_Energy].join(' ')}>
+          {props.energy}
         </span>
       </div>
     </div>

@@ -58,7 +58,7 @@
 
 .VitalsBar {
   margin-bottom: 5px;
-  width: 80%;
+  width: 85%;
   height: 24px;
   background-color: #111;
 }
@@ -77,11 +77,24 @@
   background-color: #56f356;
 }
 
+.VitalsBar_Energy {
+  height: 16px;
+}
+
+.VitalsBar_Energy .VitalsBar_Fill {
+  background-color: #f0f356;
+}
+
 .VitalsLabel {
-  width: 20%;
+  padding-right: 5px;
+  width: 15%;
   font-size: 20px;
-  text-align: center;
+  text-align: right;
   user-select: none;
+}
+
+.VitalsLabel_Energy {
+  font-size: 14px;
 }
 
 .RotationGuage {

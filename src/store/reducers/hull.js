@@ -5,7 +5,7 @@ const initialState = {
   hullMax: 100,
   shields: 100,
   shieldsMax: 100,
-  energy: 0,
+  energy: 100,
   energyMax: 100,
   speed: 0.0,
   speedMax: 200,

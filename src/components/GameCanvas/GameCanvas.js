@@ -125,6 +125,7 @@ class GameCanvas extends Component {
       this.playerProjectiles.data.push(projectile)
       this.playerProjectiles.container.addChild(projectile.PIXIContainer)
       this.playerShip.fireTimer = 0
+      this.props.energyUsed(5)
     }
     this.props.speedUpdated(this.playerShip.spd)
     this.props.rotationUpdated(this.playerShip.facingAngle)

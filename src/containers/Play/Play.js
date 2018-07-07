@@ -28,12 +28,18 @@ class Play extends Component {
     }
   }
 
+  energyUsedHandler(value) {
+    const updatedEnergyValue = this.props.energy - value
+    this.props.onUpdateEnergy(updatedEnergyValue)
+  }
+
   render() {
     return (
       <div className={styles.PlayContainer}>
         <GameCanvas
           hull={this.props.hull}
           hullDamaged={ value => this.hullDamagedHandler(value) }
+          energyUsed={ value => this.energyUsedHandler(value) }
           speedUpdated={ value => this.props.onUpdateSpeed(value) }
           rotationUpdated={ value => this.props.onUpdateRotation(value) } />
         <HullDash
@@ -41,6 +47,8 @@ class Play extends Component {
           hullMax={this.props.hullMax}
           shields={this.props.shields}
           shieldsMax={this.props.shieldsMax}
+          energy={this.props.energy}
+          energyMax={this.props.energyMax}
           speed={this.props.speed}
           speedMax={this.props.speedMax}
           rotation={this.props.rotation} />
@@ -55,6 +63,8 @@ const mapStateToProps = state => {
     hullMax: state.hull.hullMax,
     shields: state.hull.shields,
     shieldsMax: state.hull.shieldsMax,
+    energy: state.hull.energy,
+    energyMax: state.hull.energyMax,
     speed: state.hull.speed,
     speedMax: state.hull.speedMax,
     rotation: state.hull.rotation
@@ -65,6 +75,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onUpdateHull: value => dispatch(actions.updateHull(value)),
     onUpdateShields: value => dispatch(actions.updateShields(value)),
+    onUpdateEnergy: value => dispatch(actions.updateEnergy(value)),
     onUpdateSpeed: value => dispatch(actions.updateSpeed(value)),
     onUpdateRotation: value => dispatch(actions.updateRotation(value))
   }
