@@ -7,6 +7,11 @@ const offsetAngle = 90 * Math.PI / 180
 
 class PlayerShip {
   PIXIContainer = new PIXI.Container()
+  gfxThrusting = new PIXI.Container()
+  gfxLateralThrustingLeft = new PIXI.Container()
+  gfxLateralThrustingRight = new PIXI.Container()
+  gfxBraking = new PIXI.Container()
+  gfxReversing = new PIXI.Container()
   playRegionBounds = null
   vx = 0
   vy = 0
@@ -59,6 +64,28 @@ class PlayerShip {
     this.playRegionBounds = playRegionBounds
     this.PIXIContainer.x = playRegionBounds.width / 2
     this.PIXIContainer.y = playRegionBounds.height - shipHeight / 2 - shipBottomPadding
+    this.gfxThrusting.addChild(this.drawThrustingForce(180))
+    this.gfxThrusting.position.y = 47
+    this.gfxThrusting.visible = false
+    this.PIXIContainer.addChild(this.gfxThrusting)
+    this.gfxLateralThrustingLeft.addChild(this.drawThrustingForce(-90, 0.3))
+    this.gfxLateralThrustingLeft.position.x = -35
+    this.gfxLateralThrustingLeft.visible = false
+    this.PIXIContainer.addChild(this.gfxLateralThrustingLeft)
+    this.gfxLateralThrustingRight.addChild(this.drawThrustingForce(90, 0.3))
+    this.gfxLateralThrustingRight.position.x = 35
+    this.gfxLateralThrustingRight.visible = false
+    this.PIXIContainer.addChild(this.gfxLateralThrustingRight)
+    this.gfxBraking.addChild(this.drawBrakingForce())
+    this.gfxBraking.position.x = -shipWidth / 2
+    this.gfxBraking.position.y = shipHeight / 2 + 5
+    this.gfxBraking.visible = false
+    this.PIXIContainer.addChild(this.gfxBraking)
+    this.gfxReversing.addChild(this.drawBrakingForce(0xffffff))
+    this.gfxReversing.position.x = -shipWidth / 2
+    this.gfxReversing.position.y = shipHeight / 2 + 5
+    this.gfxReversing.visible = false
+    this.PIXIContainer.addChild(this.gfxReversing)
     this.PIXIContainer.addChild(this.draw())
     this.fireTimer = this.fireRate
     document.addEventListener('keydown', this.handleKeyDown.bind(this), false)
@@ -134,6 +161,38 @@ class PlayerShip {
     ])
     triangle.endFill()
     return triangle
+  }
+
+  drawThrustingForce(rotation = 0, scale = 0.4) {
+    const triangle = new PIXI.Graphics()
+    triangle.beginFill(0xffff00)
+    triangle.drawPolygon([
+      -shipWidth / 2, shipHeight / 2,
+      shipWidth / 2, shipHeight / 2,
+      0, -shipHeight / 2,
+      -shipWidth / 2, shipHeight / 2
+    ])
+    triangle.endFill()
+    triangle.scale.x = scale
+    triangle.scale.y = scale
+    triangle.rotation = rotation * Math.PI / 180
+    return triangle
+  }
+
+  drawBrakingForce(color = 0xff0000) {
+    const rect = new PIXI.Graphics()
+    rect.beginFill(color)
+    rect.drawRect(0, 0, shipWidth, 4)
+    rect.endFill()
+    return rect
+  }
+
+  handleGfxDisplay() {
+    this.gfxThrusting.visible = this.fuel > 0 ? this.isThrusting : false
+    this.gfxLateralThrustingLeft.visible = this.fuel > 0 ? this.lateralThrusting.right : false
+    this.gfxLateralThrustingRight.visible = this.fuel > 0 ? this.lateralThrusting.left : false
+    this.gfxBraking.visible = this.isBraking
+    this.gfxReversing.visible = this.isReversing
   }
 
   update(delta) {
@@ -270,6 +329,8 @@ class PlayerShip {
 
     // Handle firing of weapon timer
     this.fireTimer += delta
+
+    this.handleGfxDisplay()
   }
 }
 

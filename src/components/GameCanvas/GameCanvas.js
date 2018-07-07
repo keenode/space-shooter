@@ -48,7 +48,7 @@ class GameCanvas extends Component {
       height: $gameCanvas.offsetHeight,
       // antialias: true
     })
-    this.gameApp.renderer.backgroundColor = 0x050404
+    this.gameApp.renderer.backgroundColor = 0x0a182f
     this.gameApp.renderer.autoResize = true
     document.getElementById(canvasSelectorId).appendChild(this.gameApp.view)
 
