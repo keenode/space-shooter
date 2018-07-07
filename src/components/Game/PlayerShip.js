@@ -185,15 +185,15 @@ class PlayerShip {
       this.vx *= this.brakeForce
       this.vy *= this.brakeForce
       this.rv *= this.brakeForce
-      if (this.spd < 0.5 && this.fuel > 0) {
-        this.isReversing = true
+      if (this.spd < 0.5) {
+        this.isReversing = this.fuel > 0 ? true : false
       }
     } else if (this.spd > 0) {
       this.isReversing = false
     }
 
     // Handle reversing
-    if (this.isReversing) {
+    if (this.isReversing && this.fuel > 0) {
       // console.log('isReversing')
       const reverseForceX = this.reverseAccel * Math.cos(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)
       const reverseForceY = this.reverseAccel * Math.sin(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)

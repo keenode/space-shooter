@@ -222,7 +222,7 @@ class GameCanvas extends Component {
       const projectile = this.enemyProjectiles.data[p]
       if (collisionTest(this.playerShip.PIXIContainer, projectile.PIXIContainer)) {
         projectile.isAlive = false
-        this.props.hullDamaged(5)
+        this.props.hullDamaged(15)
       }
     }
 
