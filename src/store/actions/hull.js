@@ -1,23 +1,23 @@
 import * as actionTypes from './actionTypes'
 
-export const updateHull = value => {
+export const updateHull = changeAmt => {
   return {
     type: actionTypes.UPDATE_HULL,
-    updatedHull: value
+    changeAmt
   }
 }
 
-export const updateShields = value => {
+export const updateShields = changeAmt => {
   return {
     type: actionTypes.UPDATE_SHIELDS,
-    updatedShields: value
+    changeAmt
   }
 }
 
-export const updateEnergy = value => {
+export const updateEnergy = changeAmt => {
   return {
     type: actionTypes.UPDATE_ENERGY,
-    updatedEnergy: value
+    changeAmt
   }
 }
 

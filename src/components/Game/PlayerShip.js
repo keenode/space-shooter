@@ -45,8 +45,12 @@ class PlayerShip {
   isFiringWeapon = false
   fireTimer = 0
   fireRate = 10.0
+  shields = 0.0
+  shieldsRegenRate = 0.0
 
-  constructor(playRegionBounds) {
+  constructor(data, playRegionBounds) {
+    this.shields = data.shields
+    this.shieldsRegenRate = data.shieldsRegenRate
     this.playRegionBounds = playRegionBounds
     this.PIXIContainer.x = playRegionBounds.width / 2
     this.PIXIContainer.y = playRegionBounds.height - shipHeight / 2 - shipBottomPadding
@@ -270,6 +274,10 @@ class PlayerShip {
       this.PIXIContainer.y += this.vy * delta
     }
 
+    // Regen shields
+    this.shields += this.shieldsRegenRate * delta
+
+    // Handle firing of weapon timer
     this.fireTimer += delta
   }
 }

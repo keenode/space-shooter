@@ -76,7 +76,10 @@ class GameCanvas extends Component {
 
   placeEntities() {
     // Player
-    this.playerShip = new PlayerShip(sceneBounds)
+    this.playerShip = new PlayerShip({
+      shields: this.props.shields,
+      shieldsRegenRate: this.props.shieldsRegenRate
+    }, sceneBounds)
     this.scene.addChild(this.playerShip.PIXIContainer)
     this.scene.addChild(this.playerProjectiles.container)
 
@@ -142,6 +145,7 @@ class GameCanvas extends Component {
     this.props.pilotStateChanged('lateralThrustingLeft', this.playerShip.lateralThrusting.left)
     this.props.pilotStateChanged('lateralThrustingRight', this.playerShip.lateralThrusting.right)
     this.props.pilotStateChanged('firingWeapon', this.playerShip.isFiringWeapon)
+    this.props.shieldsRegenerated(this.playerShip.shields)
 
     // Handle enemy updates
     for (let b = 0; b < this.enemies.data.length; b++) {

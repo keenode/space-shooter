@@ -1,10 +1,12 @@
 import * as actionTypes from '../actions/actionTypes'
+import { checkBounds } from '../../shared/utility'
 
 const initialState = {
   hull: 100,
   hullMax: 100,
   shields: 100,
   shieldsMax: 100,
+  shieldsRegenRate: 0.5,
   energy: 100.0,
   energyMax: 100.0,
   speed: 0.0,
@@ -22,7 +24,7 @@ const initialState = {
 }
 
 const updateHull = (state, action) => {
-  const hull = action.updatedHull > 0 ? action.updatedHull : 0
+  const hull = checkBounds(state.hull, state.hullMax, action.changeAmt)
   return {
     ...state,
     hull
@@ -30,7 +32,7 @@ const updateHull = (state, action) => {
 }
 
 const updateShields = (state, action) => {
-  const shields = action.updatedShields > 0 ? action.updatedShields : 0
+  const shields = checkBounds(state.shields, state.shieldsMax, action.changeAmt)
   return {
     ...state,
     shields
@@ -38,7 +40,7 @@ const updateShields = (state, action) => {
 }
 
 const updateEnergy = (state, action) => {
-  const energy = action.updatedEnergy > 0 ? action.updatedEnergy : 0
+  const energy = checkBounds(state.energy, state.energyMax, action.changeAmt)
   return {
     ...state,
     energy

@@ -9,28 +9,31 @@ import * as actions from '../../store/actions'
 import styles from './Play.css'
 
 class Play extends Component {
-  hullDamagedHandler(value) {
+  hullDamagedHandler(dmgAmt) {
     if (this.props.shields > 0) {
-      const updatedShieldsValue = this.props.shields - value
-      this.props.onUpdateShields(updatedShieldsValue)
-      if (updatedShieldsValue >= 0) {
-        console.log('shields damaged: ' + value)
+      const dmgDiff = this.props.shields - dmgAmt
+      this.props.onUpdateShields(-dmgAmt)
+      console.log('dmgDiff: ' + dmgDiff)
+      if (dmgDiff >= 0) {
+        console.log('shields damaged: ' + dmgAmt)
       } else {
-        const updatedHullValue = Math.abs(updatedShieldsValue)
-        const shieldsDamageAmt = value - updatedHullValue
+        const shieldsDamageAmt = dmgDiff + dmgAmt
         console.log('shields damaged: ' + shieldsDamageAmt)
-        console.log('hull damaged: ' + updatedHullValue)
-        this.props.onUpdateHull(this.props.hull - updatedHullValue)
+        console.log('hull damaged: ' + Math.abs(dmgDiff))
+        this.props.onUpdateHull(dmgDiff)
       }
     } else {
-      this.props.onUpdateHull(this.props.hull - value)
-      console.log('hull damaged: ' + value)
+      this.props.onUpdateHull(-dmgAmt)
+      console.log('hull damaged: ' + dmgAmt)
     }
   }
 
-  energyUsedHandler(value) {
-    const updatedEnergyValue = this.props.energy - value
-    this.props.onUpdateEnergy(updatedEnergyValue)
+  shieldsRegeneratedHandler(value) {
+    // this.props.onUpdateShields(value)
+  }
+
+  energyUsedHandler(energyUsed) {
+    this.props.onUpdateEnergy(-energyUsed)
   }
 
   fuelUsedHandler(value) {
@@ -57,8 +60,11 @@ class Play extends Component {
       <div className={styles.PlayContainer}>
         <GameCanvas
           hull={this.props.hull}
-          hullDamaged={ value => this.hullDamagedHandler(value) }
-          energyUsed={ value => this.energyUsedHandler(value) }
+          shields={this.props.shields}
+          shieldsRegenRate={this.props.shieldsRegenRate}
+          hullDamaged={ dmgAmt => this.hullDamagedHandler(dmgAmt) }
+          shieldsRegenerated={ value => this.shieldsRegeneratedHandler(value) }
+          energyUsed={ energyUsed => this.energyUsedHandler(energyUsed) }
           speedUpdated={ value => this.props.onUpdateSpeed(value) }
           rotationUpdated={ value => this.props.onUpdateRotation(value) }
           fuelUsed={ value => this.fuelUsedHandler(value) }
@@ -93,6 +99,7 @@ const mapStateToProps = state => {
     hullMax: state.hull.hullMax,
     shields: state.hull.shields,
     shieldsMax: state.hull.shieldsMax,
+    shieldsRegenRate: state.hull.shieldsRegenRate,
     energy: state.hull.energy,
     energyMax: state.hull.energyMax,
     speed: state.hull.speed,
