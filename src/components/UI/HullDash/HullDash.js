@@ -4,8 +4,13 @@ import styles from './HullDash.css'
 
 const hullDash = props => (
   <div className={styles.HullDash}>
-    <div>
-      <span>Fuel: 100 / 100</span>
+    <div className={styles.HullStatus}>
+      <div className={styles.FuelGuage}>
+        Fuel: {props.fuel} / {props.fuelMax}
+      </div>
+      <div className={styles.HullGraphic}>
+        <span></span>
+      </div>
     </div>
     <div className={styles.HullVitals}>
       <div className={styles.VitalsRow}>
@@ -38,7 +43,7 @@ const hullDash = props => (
           ></span>
         </div>
         <span className={[styles.VitalsLabel, styles.VitalsLabel_Energy].join(' ')}>
-          {props.energy}
+          {Math.round(props.energy)}
         </span>
       </div>
     </div>

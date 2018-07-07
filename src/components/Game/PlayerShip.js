@@ -16,7 +16,7 @@ class PlayerShip {
   strafeVelY = 0
   reverseVelX = 0
   reverseVelY = 0
-  accel = 2.0
+  accel = 0.5
   strafeAccel = 0.5
   reverseAccel = 0.25
   spd = 0

@@ -51,7 +51,9 @@ class Play extends Component {
           energyMax={this.props.energyMax}
           speed={this.props.speed}
           speedMax={this.props.speedMax}
-          rotation={this.props.rotation} />
+          rotation={this.props.rotation}
+          fuel={this.props.fuel}
+          fuelMax={this.props.fuelMax} />
       </div>
     )
   }
@@ -67,7 +69,9 @@ const mapStateToProps = state => {
     energyMax: state.hull.energyMax,
     speed: state.hull.speed,
     speedMax: state.hull.speedMax,
-    rotation: state.hull.rotation
+    rotation: state.hull.rotation,
+    fuel: state.hull.fuel,
+    fuelMax: state.hull.fuelMax
   }
 }
 
