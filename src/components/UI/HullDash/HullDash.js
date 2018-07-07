@@ -88,13 +88,14 @@ const hullDash = props => (
     </div>
     <div className={styles.Speedometer}>
       <span className={styles.SpeedDisplay}>
-        {Math.round(props.speed)}ps
+        {Math.round(props.speed)}<span>ps</span>
       </span>
       <span className={styles.ModeDisplay}>
         {props.pilotMode}
       </span>
     </div>
     <div className={styles.RotationGuage}>
+      <span className={styles.RotationGuage_Stick} style={{ transform: `rotate(${props.rotation}deg)` }}></span>
       <span className={styles.RotationDisplay}>
         {Math.round(props.rotation)}&deg;
       </span>
