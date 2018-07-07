@@ -86,31 +86,12 @@ class GameCanvas extends Component {
     this.scene.addChild(this.playerProjectiles.container)
 
     // Enemies
-    const enemy1 = new EnemyShip(100, 100, sceneBounds)
-    this.enemies.data.push(enemy1)
-    this.enemies.container.addChild(enemy1.PIXIContainer)
-    const enemy2 = new EnemyShip(200, 125, sceneBounds)
-    this.enemies.data.push(enemy2)
-    this.enemies.container.addChild(enemy2.PIXIContainer)
-    const enemy3 = new EnemyShip(300, 75, sceneBounds)
-    this.enemies.data.push(enemy3)
-    this.enemies.container.addChild(enemy3.PIXIContainer)
-    const enemy4 = new EnemyShip(400, 50, sceneBounds)
-    this.enemies.data.push(enemy4)
-    this.enemies.container.addChild(enemy4.PIXIContainer)
-    const enemy5 = new EnemyShip(500, 150, sceneBounds)
-    this.enemies.data.push(enemy5)
-    this.enemies.container.addChild(enemy5.PIXIContainer)
-    const enemy6 = new EnemyShip(600, 150, sceneBounds)
-    this.enemies.data.push(enemy6)
-    this.enemies.container.addChild(enemy6.PIXIContainer)
-    const enemy7 = new EnemyShip(700, 100, sceneBounds)
-    this.enemies.data.push(enemy7)
-    this.enemies.container.addChild(enemy7.PIXIContainer)
-    const enemy8 = new EnemyShip(800, 75, sceneBounds)
-    this.enemies.data.push(enemy8)
-    this.enemies.container.addChild(enemy8.PIXIContainer)
-
+    const numEnemies = 16
+    for (let e = 0; e < numEnemies; e++) {
+      const enemy = new EnemyShip(Math.random() * sceneBounds.width, Math.random() * sceneBounds.height, sceneBounds)
+      this.enemies.data.push(enemy)
+      this.enemies.container.addChild(enemy.PIXIContainer)
+    }
     this.scene.addChild(this.enemies.container)
     this.scene.addChild(this.enemyProjectiles.container)
   }
