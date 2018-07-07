@@ -129,6 +129,9 @@ class GameCanvas extends Component {
     }
     this.props.speedUpdated(this.playerShip.spd)
     this.props.rotationUpdated(this.playerShip.facingAngle)
+    if (this.playerShip.isThrusting) {
+      this.props.fuelUsed(0.1)
+    }
 
     // Handle enemy updates
     for (let b = 0; b < this.enemies.data.length; b++) {

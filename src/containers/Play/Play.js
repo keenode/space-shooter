@@ -33,6 +33,11 @@ class Play extends Component {
     this.props.onUpdateEnergy(updatedEnergyValue)
   }
 
+  fuelUsedHandler(value) {
+    const updatedFuelValue = this.props.fuel - value
+    this.props.onUpdateFuel(updatedFuelValue)
+  }
+
   render() {
     return (
       <div className={styles.PlayContainer}>
@@ -41,7 +46,8 @@ class Play extends Component {
           hullDamaged={ value => this.hullDamagedHandler(value) }
           energyUsed={ value => this.energyUsedHandler(value) }
           speedUpdated={ value => this.props.onUpdateSpeed(value) }
-          rotationUpdated={ value => this.props.onUpdateRotation(value) } />
+          rotationUpdated={ value => this.props.onUpdateRotation(value) }
+          fuelUsed={ value => this.fuelUsedHandler(value) } />
         <HullDash
           hull={this.props.hull}
           hullMax={this.props.hullMax}
@@ -81,6 +87,7 @@ const mapDispatchToProps = dispatch => {
     onUpdateShields: value => dispatch(actions.updateShields(value)),
     onUpdateEnergy: value => dispatch(actions.updateEnergy(value)),
     onUpdateSpeed: value => dispatch(actions.updateSpeed(value)),
+    onUpdateFuel: value => dispatch(actions.updateFuel(value)),
     onUpdateRotation: value => dispatch(actions.updateRotation(value))
   }
 }

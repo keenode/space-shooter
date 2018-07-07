@@ -6,7 +6,7 @@ const hullDash = props => (
   <div className={styles.HullDash}>
     <div className={styles.HullStatus}>
       <div className={styles.FuelGuage}>
-        Fuel: {props.fuel} / {props.fuelMax}<br />
+        Fuel: {Math.round(props.fuel)} / {props.fuelMax}<br />
         [thrust/brake force indicators]
       </div>
       <div className={styles.HullGraphic}>
