@@ -11,8 +11,8 @@ import Projectile from '../Game/Projectile'
 import styles from './GameCanvas.css'
 
 const sceneBounds = {
-  width: 1280,
-  height: 800,
+  width: 3000,
+  height: 2000,
   offsetTop: 40
 }
 
@@ -78,6 +78,7 @@ class GameCanvas extends Component {
     // Player
     this.playerShip = new PlayerShip({
       shields: this.props.shields,
+      fuel: this.props.fuel,
       shieldsRegenRate: this.props.shieldsRegenRate,
       energyRegenRate: this.props.energyRegenRate,
     }, sceneBounds)
@@ -133,8 +134,9 @@ class GameCanvas extends Component {
     }
     this.props.speedUpdated(this.playerShip.spd)
     this.props.rotationUpdated(this.playerShip.facingAngle)
-    if (this.playerShip.isThrusting) {
+    if ((this.playerShip.isThrusting || this.playerShip.lateralThrusting.left || this.playerShip.lateralThrusting.right || this.playerShip.isReversing) && this.props.fuel > 0) {
       this.props.fuelUsed(0.1)
+      this.playerShip.fuel = this.props.fuel
     }
     if (this.playerShip.isReversing) {
       this.props.pilotModeChanged('R')

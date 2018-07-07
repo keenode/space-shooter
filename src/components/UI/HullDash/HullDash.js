@@ -14,12 +14,23 @@ const hullDash = props => (
           className={styles.Indicator_Thrust}
           style={{
             display: props.isThrusting ? 'flex' : 'none',
+            opacity: props.fuel <= 0 ? 0.2 : 0.8
           }}>
           <span></span>
           <span></span>
         </span>
-        <span className={styles.Indicator_LateralThrust_Left} style={{ display: props.isLateralThrustingLeft ? 'block' : 'none' }}></span>
-        <span className={styles.Indicator_LateralThrust_Right} style={{ display: props.isLateralThrustingRight ? 'block' : 'none' }}></span>
+        <span
+          className={styles.Indicator_LateralThrust_Left}
+          style={{
+            display: props.isLateralThrustingLeft ? 'block' : 'none',
+            opacity: props.fuel <= 0 ? 0.2 : 0.8
+          }}></span>
+        <span
+          className={styles.Indicator_LateralThrust_Right}
+          style={{
+            display: props.isLateralThrustingRight ? 'block' : 'none',
+            opacity: props.fuel <= 0 ? 0.2 : 0.8
+          }}></span>
         <span
           className={styles.Indicator_Brakes}
           style={{
