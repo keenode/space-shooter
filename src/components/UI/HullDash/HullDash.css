@@ -209,6 +209,19 @@
   transform-origin: center bottom;
 }
 
+.TickLabel {
+  user-select: none;
+}
+
+.Speedometer_Line {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 50%;
+  background-color: white;
+  transform-origin: center bottom;
+}
+
 .SpeedDisplay {
   font-size: 40px;
   user-select: none;
