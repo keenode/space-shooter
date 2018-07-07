@@ -7,8 +7,13 @@ const speedometerSegments = 10
 const speedometerStartAngle = 30
 const speedometerEndAngle = 270
 
+const fuelMeterAngleOffset = -180
+const fuelMeterSegments = 10
+const fuelMeterStartAngle = 45
+const fuelMeterEndAngle = 135
+
 const hullDash = props => {
-  let speedometerTicks = []
+  const speedometerTicks = []
   const degSpacing = (speedometerEndAngle - speedometerStartAngle) / (speedometerSegments - 1)
   for (let t = 0; t < speedometerSegments; t++) {
     const tickRotation = t * degSpacing + speedometerStartAngle - speedometerAngleOffset
@@ -29,12 +34,41 @@ const hullDash = props => {
     )
   }
 
+  const fuelMeterTicks = []
+  const fuelDegSpacing = (fuelMeterEndAngle - fuelMeterStartAngle) / (fuelMeterSegments - 1)
+  for (let t = 0; t < fuelMeterSegments; t++) {
+    const tickRotation = t * fuelDegSpacing + fuelMeterStartAngle - fuelMeterAngleOffset
+    const tickLabel = t === 0 ? 'E' : t === fuelMeterSegments - 1 ? 'F' : null
+    fuelMeterTicks.push(
+      <span
+        key={t}
+        className={styles.FuelMeterTickContainer}
+        style={{ transform: `rotate(${tickRotation}deg)` }}
+      >
+        <span className={styles.FuelMeterTick}></span>
+        <span
+          className={styles.TickLabel}
+          style={{ transform: `rotate(${-tickRotation}deg)` }}>
+          {tickLabel}
+        </span>
+      </span>
+    )
+  }
+
   return (
     <div className={styles.HullDash}>
       <div className={styles.HullStatus}>
-        <div className={styles.FuelGuage}>
-          Fuel: {Math.round(props.fuel)} / {props.fuelMax}
+        {fuelMeterTicks}
+        <div className={styles.FuelFractionDisplay}>
+          <span className={styles.FuelAmount}>{Math.round(props.fuel)}</span>
+          <span className={styles.FuelMaxAmount}>{props.fuelMax}</span>
         </div>
+        <span
+          className={styles.FuelMeter_LineContainer}
+          style={{ transform: `rotate(${(fuelMeterEndAngle - fuelMeterStartAngle) * props.fuel / props.fuelMax + fuelMeterStartAngle - fuelMeterAngleOffset}deg)` }}
+        >
+          <span className={styles.FuelMeter_Line}></span>
+        </span>
         <div className={styles.HullGraphicContainer}>
           <div className={styles.HullGraphic}></div>
           <span
