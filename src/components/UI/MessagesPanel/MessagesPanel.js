@@ -36,12 +36,12 @@ class MessagesPanel extends Component {
   render() {
     const messages = this.props.messages.length > 0 ?
     this.props.messages.map((message, index) => {
-      // TODO: Format time properly depending on how old it is
       const date = new Date(message.sent)
-      const dateSent = date.toUTCString()
+      const seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()
+      const dateSent = date.toLocaleDateString().split('/').join('.') + ' - ' + date.getHours() + ':' + date.getMinutes() + ':' + seconds
       return (
         <li key={index} className={styles.Message}>
-          <span className={styles.MessageTimestamp}>[{dateSent}]</span>
+          <span className={styles.MessageTimestamp}>{dateSent}</span>
           <span style={{ color: messageColors[message.type] }}>
             {message.contents}
           </span>

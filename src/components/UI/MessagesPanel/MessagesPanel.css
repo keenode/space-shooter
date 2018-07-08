@@ -26,18 +26,13 @@
 .MessagesPanelTab {
   padding: 3px 8px 2px 8px;
   font-size: 12px;
+  letter-spacing: 2px;
   background-color: rgba(0, 30, 30, 0.5);
   user-select: none;
   transition: color 200ms ease;
 }
 
-.MessagesPanelTab:hover {
-  color: var(--theme-color-white);
-}
-
 .MessagesPanelTabActive {
-  color: var(--theme-color-white);
-  background-color: var(--ui-btn-primary-color);
   pointer-events: none;
 }
 
@@ -47,13 +42,11 @@
 }
 
 .Message {
-  color: var(--theme-color-white);
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: 12px;
 }
 
 .MessageTimestamp {
   margin-right: 5px;
-  color: var(--ui-info-text-color);
+  color: #84c8ff;
   font-size: 9px;
 }
