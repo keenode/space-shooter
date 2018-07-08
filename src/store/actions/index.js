@@ -12,3 +12,5 @@ export {
   setIsLateralThrustingRight,
   setIsFiringWeapon
 } from './hull'
+
+export { addMessage } from './messages'

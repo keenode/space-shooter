@@ -34,6 +34,8 @@ class GameCanvas extends Component {
   }
   starFieldDepth = 4
   starFieldAmbientBGs = []
+  playerDeadReported = false
+  playerNoFuelReported = false
 
   componentDidMount() {
     this.setupPIXI('game-canvas')
@@ -116,6 +118,10 @@ class GameCanvas extends Component {
     if (this.props.hull <= 0) {
       this.playerShip.isAlive = false
       this.playerShip.PIXIContainer.alpha = 0.25
+      if (!this.playerDeadReported) {
+        this.props.messageReported('Your ship has been destroyed!', 'playerShipDestroyed')
+        this.playerDeadReported = true
+      }
     }
     this.playerShip.update(delta)
     if (this.playerShip.isFiringWeapon && this.playerShip.fireTimer >= this.playerShip.fireRate && this.props.energy > 10) {
@@ -130,6 +136,10 @@ class GameCanvas extends Component {
     if ((this.playerShip.isThrusting || this.playerShip.lateralThrusting.left || this.playerShip.lateralThrusting.right || this.playerShip.isReversing) && this.props.fuel > 0) {
       this.props.fuelUsed(0.1)
       this.playerShip.fuel = this.props.fuel
+    }
+    if (this.props.fuel <= 0 && !this.playerNoFuelReported) {
+      this.props.messageReported('You ran out of fuel!', 'noFuel')
+      this.playerNoFuelReported = true
     }
     if (this.playerShip.isReversing) {
       this.props.pilotModeChanged('R')

@@ -11,21 +11,23 @@ import styles from './Play.css'
 
 class Play extends Component {
   hullDamagedHandler(dmgAmt) {
+    if (this.props.hull <= 0) {
+      return false
+    }
     if (this.props.shields > 0) {
       const dmgDiff = this.props.shields - dmgAmt
       this.props.onUpdateShields(-dmgAmt)
-      // console.log('dmgDiff: ' + dmgDiff)
       if (dmgDiff >= 0) {
-        console.log('shields damaged: ' + dmgAmt)
+        this.props.onAddMessage(`Shields absorbed ${dmgAmt} damage!`, 'shieldsDamaged')
       } else {
         const shieldsDamageAmt = dmgDiff + dmgAmt
-        console.log('shields damaged: ' + shieldsDamageAmt)
-        console.log('hull damaged: ' + Math.abs(dmgDiff))
+        this.props.onAddMessage(`Shields absorbed ${shieldsDamageAmt} damage!`, 'shieldsDamaged')
+        this.props.onAddMessage(`Hull took ${Math.abs(dmgDiff)} damage!`, 'hullDamaged')
         this.props.onUpdateHull(dmgDiff)
       }
     } else {
       this.props.onUpdateHull(-dmgAmt)
-      console.log('hull damaged: ' + dmgAmt)
+      this.props.onAddMessage(`Hull took ${dmgAmt} damage!`, 'hullDamaged')
     }
   }
 
@@ -79,8 +81,9 @@ class Play extends Component {
           rotationUpdated={ value => this.props.onUpdateRotation(value) }
           fuelUsed={ value => this.fuelUsedHandler(value) }
           pilotModeChanged={ mode => this.props.onSetPilotMode(mode) }
-          pilotStateChanged={ (pilotState, value) => this.pilotStateChangedHandler(pilotState, value) } />
-        <MessagesPanel messages={[]} />
+          pilotStateChanged={ (pilotState, value) => this.pilotStateChangedHandler(pilotState, value) }
+          messageReported={ (message, type) => this.props.onAddMessage(message, type) } />
+        <MessagesPanel messages={this.props.messages} />
         <HullDash
           hull={this.props.hull}
           hullMax={this.props.hullMax}
@@ -124,7 +127,8 @@ const mapStateToProps = state => {
     isBraking: state.hull.isBraking,
     isLateralThrustingLeft: state.hull.isLateralThrustingLeft,
     isLateralThrustingRight: state.hull.isLateralThrustingRight,
-    isFiringWeapon: state.hull.isFiringWeapon
+    isFiringWeapon: state.hull.isFiringWeapon,
+    messages: state.messages.messages
   }
 }
 
@@ -141,7 +145,8 @@ const mapDispatchToProps = dispatch => {
     onSetIsBraking: isBraking => dispatch(actions.setIsBraking(isBraking)),
     onSetIsLateralThrustingLeft: isLateralThrustingLeft => dispatch(actions.setIsLateralThrustingLeft(isLateralThrustingLeft)),
     onSetIsLateralThrustingRight: isLateralThrustingRight => dispatch(actions.setIsLateralThrustingRight(isLateralThrustingRight)),
-    onSetIsFiringWeapon: isFiringWeapon => dispatch(actions.setIsFiringWeapon(isFiringWeapon))
+    onSetIsFiringWeapon: isFiringWeapon => dispatch(actions.setIsFiringWeapon(isFiringWeapon)),
+    onAddMessage: (message, type) => dispatch(actions.addMessage(message, type))
   }
 }
 

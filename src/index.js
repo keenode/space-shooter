@@ -9,12 +9,14 @@ import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 
 import hullReducer from './store/reducers/hull'
+import messagesReducer from './store/reducers/messages'
 
 import './index.css'
 
 
 const rootReducer = combineReducers({
-  hull: hullReducer
+  hull: hullReducer,
+  messages: messagesReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
