@@ -10,12 +10,14 @@ class Projectile {
   accel = 4.0
   spd = 0
   maxSpd = 20.0
+  parentSpd = 0.0
   lifeTime = 0
   maxLifeTime = 200.0
   isAlive = true
 w
   constructor(parentEntity) {
     this.parentAngle = parentEntity.PIXIContainer.rotation
+    this.parentSpd = parentEntity.spd
     this.PIXIContainer.x = parentEntity.PIXIContainer.x
     this.PIXIContainer.y = parentEntity.PIXIContainer.y
     this.PIXIContainer.addChild(this.draw())
@@ -32,9 +34,8 @@ w
   update(delta) {
     // Set magnitude of speed
     this.spd = Math.sqrt(this.vy * this.vy + this.vx * this.vx)
-
     // Handle acceleration and velocity
-    if (this.spd < this.maxSpd) {
+    if (this.spd < this.maxSpd + this.parentSpd) {
       this.vx += this.accel * Math.cos(this.PIXIContainer.rotation + this.parentAngle - offsetAngle)
       this.vy += this.accel * Math.sin(this.PIXIContainer.rotation + this.parentAngle - offsetAngle)
     }

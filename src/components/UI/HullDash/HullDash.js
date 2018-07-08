@@ -8,7 +8,7 @@ const speedometerStartAngle = 30
 const speedometerEndAngle = 270
 
 const fuelMeterAngleOffset = -180
-const fuelMeterSegments = 10
+const fuelMeterSegments = 4
 const fuelMeterStartAngle = 45
 const fuelMeterEndAngle = 135
 

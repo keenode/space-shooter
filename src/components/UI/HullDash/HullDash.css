@@ -28,7 +28,6 @@
   width: 2px;
   height: 50%;
   transform-origin: center bottom;
-  /* background-color: rgba(255, 255, 255, 0.1); */
 }
 
 .FuelMeterTick {
@@ -45,7 +44,6 @@
   width: 2px;
   height: 50%;
   transform-origin: center bottom;
-  /* background-color: rgba(255, 255, 255, 0.5); */
 }
 
 .FuelMeter_Line {
@@ -258,7 +256,6 @@
   width: 3px;
   height: 50%;
   transform-origin: center bottom;
-  /* background-color: rgba(255, 255, 255, 0.1); */
 }
 
 .SpeedometerTick {
@@ -288,7 +285,6 @@
   height: 50%;
   transform-origin: center bottom;
   transition: transform 100ms ease-in-out;
-  /* background-color: rgba(255, 255, 255, 0.5); */
 }
 
 .Speedometer_Line {
