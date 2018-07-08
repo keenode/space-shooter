@@ -113,7 +113,7 @@ const hullDash = props => {
             <div className={[styles.VitalsBar, styles.VitalsBar_Shields].join(' ')}>
               <span
                 className={styles.VitalsBar_Fill}
-                style={{ width: (props.shields / props.shieldsMax) * 100 + '%' }}
+                style={{ transform: `scaleX(${props.shields / props.shieldsMax})` }}
               ></span>
             </div>
             <span className={styles.VitalsLabel}>
@@ -124,7 +124,7 @@ const hullDash = props => {
             <div className={[styles.VitalsBar, styles.VitalsBar_Hull].join(' ')}>
               <span
                 className={styles.VitalsBar_Fill}
-                style={{ width: (props.hull / props.hullMax) * 100 + '%' }}
+                style={{ transform: `scaleX(${props.hull / props.hullMax})` }}
               ></span>
             </div>
             <span className={styles.VitalsLabel}>
@@ -135,7 +135,7 @@ const hullDash = props => {
             <div className={[styles.VitalsBar, styles.VitalsBar_Energy].join(' ')}>
               <span
                 className={styles.VitalsBar_Fill}
-                style={{ width: (props.energy / props.energyMax) * 100 + '%' }}
+                style={{ transform: `scaleX(${props.energy / props.energyMax})` }}
               ></span>
             </div>
             <span className={[styles.VitalsLabel, styles.VitalsLabel_Energy].join(' ')}>
@@ -163,7 +163,7 @@ const hullDash = props => {
         </span>
         <span
           className={styles.ModeDisplay}
-          style={{ color: props.pilotMode === 'D' ? 'orange' : 'red' }}
+          style={{ color: props.pilotMode === 'D' ? 'orange' : 'yellow' }}
         >
           {props.pilotMode}
         </span>

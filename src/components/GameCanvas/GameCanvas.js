@@ -83,8 +83,8 @@ class GameCanvas extends Component {
       energyRegenRate: this.props.energyRegenRate,
       speedMax: this.props.speedMax
     }, sceneBounds)
-    this.scene.addChild(this.playerShip.PIXIContainer)
     this.scene.addChild(this.playerProjectiles.container)
+    this.scene.addChild(this.playerShip.PIXIContainer)
 
     // Enemies
     const numEnemies = 16
