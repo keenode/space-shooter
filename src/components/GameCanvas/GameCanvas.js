@@ -22,6 +22,7 @@ class GameCanvas extends Component {
   scene = new PIXI.Container()
   sceneBg = new PIXI.Container()
   sceneFg = new PIXI.Container()
+  // sceneRadialDarken = new PIXI.Container()
   playerShip = null
   enemies = {
     data: [], 
@@ -85,16 +86,36 @@ class GameCanvas extends Component {
     }
     this.sceneFg.addChild(this.drawsceneBounds())
 
-    const sceneFilter = new AdvancedBloomFilter()
-    sceneFilter.threshold = 0.3
-    sceneFilter.bloomScale = 1
-    sceneFilter.brightness = 1
-    sceneFilter.blur = 4
-    sceneFilter.quality = 8
-    this.sceneFg.filters = [sceneFilter]
+    const bloomFilter = new AdvancedBloomFilter()
+    bloomFilter.threshold = 0.3
+    bloomFilter.bloomScale = 1
+    bloomFilter.brightness = 1
+    bloomFilter.blur = 4
+    bloomFilter.quality = 8
+    this.sceneFg.filters = [bloomFilter]
 
     this.scene.addChild(this.sceneBg)
     this.scene.addChild(this.sceneFg)
+
+    // this.sceneRadialDarken.addChild(this.drawRadialDarken())
+    // this.sceneRadialDarken.position.x = this.gameApp.renderer.width / 2
+    // this.sceneRadialDarken.position.y = this.gameApp.renderer.height / 2
+    // const glowFilter = new GlowFilter()
+    // glowFilter.distance = 20wwww
+    // glowFilter.outerStrength = 0
+    // glowFilter.innerStrength = 200
+    // glowFilter.color = 0xff0000
+    // glowFilter.quality = 1
+    // this.sceneRadialDarken.filters = [glowFilter]
+    // this.gameApp.stage.addChild(this.sceneRadialDarken)
+  }
+
+  drawRadialDarken() {
+    const ellipse = new PIXI.Graphics()
+    ellipse.beginFill(0xffffff, 1)
+    ellipse.drawEllipse(0, 0, this.gameApp.renderer.width / 2, this.gameApp.renderer.height / 2)
+    ellipse.endFill()
+    return ellipse
   }
 
   placeEntities() {

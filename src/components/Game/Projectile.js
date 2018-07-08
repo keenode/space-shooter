@@ -47,11 +47,11 @@ class Projectile {
   }
 
   draw(size = 2, color = 0x00ff00) {
-    const circle = new PIXI.Graphics()
-    circle.beginFill(color)
-    circle.drawEllipse(0, 0, size, size * 5)
-    circle.endFill()
-    return circle
+    const ellipse = new PIXI.Graphics()
+    ellipse.beginFill(color)
+    ellipse.drawEllipse(0, 0, size, size * 5)
+    ellipse.endFill()
+    return ellipse
   }
 
   update(delta) {
