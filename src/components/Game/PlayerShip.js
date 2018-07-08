@@ -55,6 +55,9 @@ class PlayerShip {
   energyRegenRate = 0
   energyRegenTimer = 0
   fuel = 0.0
+  shieldsRegenIsReady = true
+  shieldsRegenReadyTime = 100.0
+  shieldsRegenReadyTimer = 0
 
   constructor(data, playRegionBounds) {
     this.shields = data.shields
@@ -324,6 +327,12 @@ class PlayerShip {
 
     // Handle shields regen timer
     this.shieldsRegenTimer += delta
+    this.shieldsRegenReadyTimer += delta
+
+    if (this.shieldsRegenReadyTimer >= this.shieldsRegenReadyTime) {
+      this.shieldsRegenIsReady = true
+      this.shieldsRegenReadyTimer = 0
+    }
 
     // Handle energy regen time
     this.energyRegenTimer += delta

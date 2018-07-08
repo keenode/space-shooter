@@ -130,7 +130,7 @@ class GameCanvas extends Component {
     this.props.pilotStateChanged('lateralThrustingLeft', this.playerShip.lateralThrusting.left)
     this.props.pilotStateChanged('lateralThrustingRight', this.playerShip.lateralThrusting.right)
     this.props.pilotStateChanged('firingWeapon', this.playerShip.isFiringWeapon)
-    if (this.playerShip.shieldsRegenTimer >= this.playerShip.shieldsRegenRate) {
+    if (this.playerShip.shieldsRegenTimer >= this.playerShip.shieldsRegenRate && this.playerShip.shieldsRegenIsReady) {
       this.props.shieldsRegenerated(1)
       this.playerShip.shieldsRegenTimer = 0
     }
@@ -182,6 +182,7 @@ class GameCanvas extends Component {
       if (collisionTest(enemy.PIXIContainer, this.playerShip.PIXIContainer)) {
         enemy.isAlive = false
         this.props.hullDamaged(75)
+        this.playerShip.shieldsRegenIsReady = false
       }
 
       // Check enemy collision with player projectiles
@@ -205,6 +206,7 @@ class GameCanvas extends Component {
       if (collisionTest(this.playerShip.PIXIContainer, projectile.PIXIContainer)) {
         projectile.isAlive = false
         this.props.hullDamaged(15)
+        this.playerShip.shieldsRegenIsReady = false
       }
     }
 
