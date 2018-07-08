@@ -131,7 +131,7 @@ const hullDash = props => {
               {props.hull}
             </span>
           </div>
-          <div className={styles.VitalsRow}>
+          <div className={[styles.VitalsRow, styles.VitalsRow_Energy].join(' ')}>
             <div className={[styles.VitalsBar, styles.VitalsBar_Energy].join(' ')}>
               <span
                 className={styles.VitalsBar_Fill}
