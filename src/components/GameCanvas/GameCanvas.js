@@ -17,7 +17,7 @@ const sceneBounds = {
   width: 4000,
   height: 4000
 }
-const motionBlurMultiplier = 4.0
+const motionBlurMultiplier = 3.0
 
 class GameCanvas extends Component {
   camera = null
@@ -27,9 +27,6 @@ class GameCanvas extends Component {
   entitiesContainer = new PIXI.Container()
   worldContainer = new PIXI.Container()
   bloomContainer = new PIXI.Container()
-  // sceneFg = new PIXI.Container()
-  // nonPlayerContainer = new PIXI.Container()
-  // sceneRadialDarken = new PIXI.Container()
   playerShip = null
   enemies = {
     data: [], 
@@ -100,9 +97,6 @@ class GameCanvas extends Component {
     bloomFilter.brightness = 1
     bloomFilter.blur = 4
     bloomFilter.quality = 8
-    this.bloomContainer.filters = [bloomFilter]
-
-    this.sceneBg.filters = [this.motionBlurFilter]
 
     this.bloomContainer.addChild(this.worldContainer)
     this.bloomContainer.addChild(this.entitiesContainer)
@@ -110,13 +104,11 @@ class GameCanvas extends Component {
 
     this.scene.addChild(this.sceneBg)
     this.scene.addChild(this.bloomContainer)
-    // this.scene.addChild(this.worldContainer)
-    // this.scene.addChild(this.entitiesContainer)
-    // this.scene.addChild(this.playerContainer)
 
+    this.bloomContainer.filters = [bloomFilter]
+    this.sceneBg.filters = [this.motionBlurFilter]
     this.worldContainer.filters = [this.motionBlurFilter]
-    this.entitiesContainer.filters = [this.motionBlurFilter]
-    // this.playerContainer.filters = [bloomFilter]
+    // this.entitiesContainer.filters = [this.motionBlurFilter]
   }
 
   drawRadialDarken() {
@@ -278,6 +270,7 @@ class GameCanvas extends Component {
     // Update camera position
     this.camera.update(delta)
 
+    // Update motion blur FX
     this.motionBlurFilter.velocity = [this.playerShip.vx * motionBlurMultiplier, this.playerShip.vy * motionBlurMultiplier]
 
     // Update FPS text
