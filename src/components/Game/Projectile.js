@@ -4,6 +4,7 @@ const offsetAngle = 90 * Math.PI / 180
 
 class Projectile {
   PIXIContainer = new PIXI.Container()
+  projectileContainer = new PIXI.Container()
   parentAngle = 0
   vx = 0
   vy = 0
@@ -20,10 +21,11 @@ class Projectile {
     this.parentSpd = parentEntity.spd
     this.PIXIContainer.x = parentEntity.PIXIContainer.x
     this.PIXIContainer.y = parentEntity.PIXIContainer.y
+    this.projectileContainer.rotation = this.parentAngle
     const projectileShape = this.draw()
-    projectileShape.rotation = this.parentAngle
-    this.PIXIContainer.addChild(projectileShape)
+    this.projectileContainer.addChild(projectileShape)
     this.addFiltersFX(projectileShape)
+    this.PIXIContainer.addChild(this.projectileContainer)
   }
 
   addFiltersFX(projectileShape) {
@@ -34,14 +36,14 @@ class Projectile {
     const blurFilterInner = new PIXI.filters.BlurFilter()
     blurFilterInner.blur = 4
     blurFxInner.filters = [blurFilterInner]
-    this.PIXIContainer.addChild(blurFxInner)
+    this.projectileContainer.addChild(blurFxInner)
     const blurFxOuter = this.draw(4, 0xffff00)
     const blurFilterOuter = new PIXI.filters.BlurFilter()
     blurFilterOuter.blur = 12
     blurFilterOuter.resolution = 4
     blurFxOuter.filters = [blurFilterOuter]
     blurFxOuter.alpha = 0.5
-    this.PIXIContainer.addChild(blurFxOuter)
+    this.projectileContainer.addChild(blurFxOuter)
   }
 
   draw(size = 2, color = 0x00ff00) {

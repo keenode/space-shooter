@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 
-const numStars = 512
+const numStars = 2048
 const starColors = [
   0xffffff,
   0xffbcc4,
@@ -32,7 +32,7 @@ class StarFieldAmbientBG {
       const color = starColors[Math.floor(Math.random() * starColors.length)]
       const xPos = Math.floor(Math.random() * this.sceneBounds.width)
       const yPos = Math.floor(Math.random() * this.sceneBounds.height)
-      let radius = Math.round((Math.random() * 5 * 100) / this.depth) / 100
+      let radius = Math.round((Math.random() * 4 * 100) / this.depth) / 100
       const alpha = Math.round(Math.random() * 1 * 100) / 100
       if (radius < 1) {
         radius = 1
