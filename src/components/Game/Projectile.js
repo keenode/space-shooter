@@ -20,13 +20,33 @@ class Projectile {
     this.parentSpd = parentEntity.spd
     this.PIXIContainer.x = parentEntity.PIXIContainer.x
     this.PIXIContainer.y = parentEntity.PIXIContainer.y
-    this.PIXIContainer.addChild(this.draw())
+    const projectileShape = this.draw()
+    this.PIXIContainer.addChild(projectileShape)
+    this.addFiltersFX(projectileShape)
   }
 
-  draw() {
+  addFiltersFX(projectileShape) {
+    const blurFilter = new PIXI.filters.BlurFilter()
+    blurFilter.blur = 1
+    projectileShape.filters = [blurFilter]
+    const blurFxInner = this.draw(5, 0x00ffff)
+    const blurFilterInner = new PIXI.filters.BlurFilter()
+    blurFilterInner.blur = 8
+    blurFilterInner.resolution = 4
+    blurFxInner.filters = [blurFilterInner]
+    this.PIXIContainer.addChild(blurFxInner)
+    const blurFxOuter = this.draw(6)
+    const blurFilterOuter = new PIXI.filters.BlurFilter()
+    blurFilterOuter.blur = 16
+    blurFilterOuter.resolution = 8
+    blurFxOuter.filters = [blurFilterOuter]
+    this.PIXIContainer.addChild(blurFxOuter)
+  }
+
+  draw(radius = 4, color = 0xffff00) {
     const circle = new PIXI.Graphics()
-    circle.beginFill(0xffff00)
-    circle.drawCircle(0, 0, 4)
+    circle.beginFill(color)
+    circle.drawCircle(0, 0, radius)
     circle.endFill()
     return circle
   }
