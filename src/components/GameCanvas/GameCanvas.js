@@ -12,9 +12,8 @@ import StarFieldAmbientBG from '../Game/StarFieldAmbientBG'
 import styles from './GameCanvas.css'
 
 const sceneBounds = {
-  width: 3000,
-  height: 2000,
-  offsetTop: 40
+  width: 4000,
+  height: 3000
 }
 
 class GameCanvas extends Component {
@@ -33,14 +32,14 @@ class GameCanvas extends Component {
     data: [],
     container: new PIXI.Container()
   }
-  starFieldDepth = 2
+  starFieldDepth = 4
   starFieldAmbientBGs = []
 
   componentDidMount() {
     this.setupPIXI('game-canvas')
     this.setupScene()
     this.placeEntities()
-    this.camera = new Camera(this.scene, this.playerShip.PIXIContainer, this.gameApp.renderer)
+    this.camera = new Camera(this.scene, this.playerShip.PIXIContainer, this.gameApp.renderer, this.starFieldAmbientBGs)
     this.gameApp.ticker.add(delta => this.gameLoop(delta))
   }
 
@@ -49,7 +48,7 @@ class GameCanvas extends Component {
     this.gameApp = new PIXI.Application({
       width: $gameCanvas.offsetWidth,
       height: $gameCanvas.offsetHeight,
-      // antialias: true
+      antialias: true
     })
     this.gameApp.renderer.backgroundColor = 0x0a182f
     this.gameApp.renderer.autoResize = true
@@ -95,7 +94,7 @@ class GameCanvas extends Component {
     this.scene.addChild(this.playerShip.PIXIContainer)
 
     // Enemies
-    const numEnemies = 20
+    const numEnemies = 32
     for (let e = 0; e < numEnemies; e++) {
       const enemy = new EnemyShip(Math.random() * sceneBounds.width, Math.random() * sceneBounds.height, sceneBounds)
       this.enemies.data.push(enemy)

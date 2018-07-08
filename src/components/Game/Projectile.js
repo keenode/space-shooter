@@ -25,7 +25,7 @@ class Projectile {
 
   draw() {
     const circle = new PIXI.Graphics()
-    circle.beginFill(0x00ffff)
+    circle.beginFill(0xffff00)
     circle.drawCircle(0, 0, 4)
     circle.endFill()
     return circle

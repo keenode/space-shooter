@@ -25,18 +25,20 @@ class StarFieldAmbientBG {
       const color = starColors[Math.floor(Math.random() * starColors.length)]
       const xPos = Math.floor(Math.random() * this.sceneBounds.width)
       const yPos = Math.floor(Math.random() * this.sceneBounds.height)
-      const radius = Math.floor(Math.random() * 6) / this.depth
+      let radius = Math.round((Math.random() * 5 * 100) / this.depth) / 100
       const alpha = Math.round(Math.random() * 1 * 100) / 100
-      circle.beginFill(color)
+      if (radius < 1) {
+        radius = 1
+      }
+      circle.beginFill(color, alpha)
       circle.drawCircle(xPos, yPos, radius)
-      circle.alpha = alpha
       circle.endFill()
     }
     return circle
   }
 
-  update(delta) {
-  }
+  // update(delta) {
+  // }
 }
 
 export default StarFieldAmbientBG
