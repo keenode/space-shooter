@@ -58,6 +58,7 @@ class PlayerShip {
   shieldsRegenIsReady = true
   shieldsRegenReadyTime = 100.0
   shieldsRegenReadyTimer = 0
+  isAlive = true
 
   constructor(data, playRegionBounds) {
     this.shields = data.shields
@@ -98,6 +99,10 @@ class PlayerShip {
 
   handleKeyDown(e) {
     // console.log(e.which)
+    if (!this.isAlive) {
+      return false
+    }
+
     // Handle key down for thursting & braking
     if (e.which === 87 || e.which === 38) {
       this.isThrusting = true
@@ -126,6 +131,10 @@ class PlayerShip {
   }
 
   handleKeyUp(e) {
+    if (!this.isAlive) {
+      return false
+    }
+
     // Handle key up for thursting & braking
     if (e.which === 87 || e.which === 38) {
       this.isThrusting = false

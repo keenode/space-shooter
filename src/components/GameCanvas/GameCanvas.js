@@ -106,6 +106,10 @@ class GameCanvas extends Component {
 
   gameLoop(delta) {
     // Hande player updates
+    if (this.props.hull <= 0) {
+      this.playerShip.isAlive = false
+      this.playerShip.PIXIContainer.alpha = 0.25
+    }
     this.playerShip.update(delta)
     if (this.playerShip.isFiringWeapon && this.playerShip.fireTimer >= this.playerShip.fireRate && this.props.energy > 10) {
       const projectile = new Projectile(this.playerShip)
@@ -130,11 +134,11 @@ class GameCanvas extends Component {
     this.props.pilotStateChanged('lateralThrustingLeft', this.playerShip.lateralThrusting.left)
     this.props.pilotStateChanged('lateralThrustingRight', this.playerShip.lateralThrusting.right)
     this.props.pilotStateChanged('firingWeapon', this.playerShip.isFiringWeapon)
-    if (this.playerShip.shieldsRegenTimer >= this.playerShip.shieldsRegenRate && this.playerShip.shieldsRegenIsReady) {
+    if (this.playerShip.shieldsRegenTimer >= this.playerShip.shieldsRegenRate && this.playerShip.shieldsRegenIsReady && this.playerShip.isAlive) {
       this.props.shieldsRegenerated(1)
       this.playerShip.shieldsRegenTimer = 0
     }
-    if (this.playerShip.energyRegenTimer >= this.playerShip.energyRegenRate) {
+    if (this.playerShip.energyRegenTimer >= this.playerShip.energyRegenRate && this.playerShip.isAlive) {
       this.props.energyRegenerated(1)
       this.playerShip.energyRegenTimer = 0
     }
