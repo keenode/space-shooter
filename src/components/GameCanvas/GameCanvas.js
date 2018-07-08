@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import * as PIXI from 'pixi.js'
 import { AdvancedBloomFilter } from '@pixi/filter-advanced-bloom'
+import { MotionBlurFilter } from '@pixi/filter-motion-blur'
 
 import { collisionTest } from '../Game/Utility'
 
@@ -16,12 +17,18 @@ const sceneBounds = {
   width: 4000,
   height: 4000
 }
+const motionBlurMultiplier = 4.0
 
 class GameCanvas extends Component {
   camera = null
   scene = new PIXI.Container()
   sceneBg = new PIXI.Container()
-  sceneFg = new PIXI.Container()
+  playerContainer = new PIXI.Container()
+  entitiesContainer = new PIXI.Container()
+  worldContainer = new PIXI.Container()
+  bloomContainer = new PIXI.Container()
+  // sceneFg = new PIXI.Container()
+  // nonPlayerContainer = new PIXI.Container()
   // sceneRadialDarken = new PIXI.Container()
   playerShip = null
   enemies = {
@@ -40,6 +47,7 @@ class GameCanvas extends Component {
   starFieldAmbientBGs = []
   playerDeadReported = false
   playerNoFuelReported = false
+  motionBlurFilter = new MotionBlurFilter()
 
   componentDidMount() {
     this.setupPIXI('game-canvas')
@@ -84,7 +92,7 @@ class GameCanvas extends Component {
       this.starFieldAmbientBGs.push(starFieldBg)
       this.sceneBg.addChild(starFieldBg.PIXIContainer)
     }
-    this.sceneFg.addChild(this.drawsceneBounds())
+    this.worldContainer.addChild(this.drawsceneBounds())
 
     const bloomFilter = new AdvancedBloomFilter()
     bloomFilter.threshold = 0.3
@@ -92,22 +100,23 @@ class GameCanvas extends Component {
     bloomFilter.brightness = 1
     bloomFilter.blur = 4
     bloomFilter.quality = 8
-    this.sceneFg.filters = [bloomFilter]
+    this.bloomContainer.filters = [bloomFilter]
+
+    this.sceneBg.filters = [this.motionBlurFilter]
+
+    this.bloomContainer.addChild(this.worldContainer)
+    this.bloomContainer.addChild(this.entitiesContainer)
+    this.bloomContainer.addChild(this.playerContainer)
 
     this.scene.addChild(this.sceneBg)
-    this.scene.addChild(this.sceneFg)
+    this.scene.addChild(this.bloomContainer)
+    // this.scene.addChild(this.worldContainer)
+    // this.scene.addChild(this.entitiesContainer)
+    // this.scene.addChild(this.playerContainer)
 
-    // this.sceneRadialDarken.addChild(this.drawRadialDarken())
-    // this.sceneRadialDarken.position.x = this.gameApp.renderer.width / 2
-    // this.sceneRadialDarken.position.y = this.gameApp.renderer.height / 2
-    // const glowFilter = new GlowFilter()
-    // glowFilter.distance = 20wwww
-    // glowFilter.outerStrength = 0
-    // glowFilter.innerStrength = 200
-    // glowFilter.color = 0xff0000
-    // glowFilter.quality = 1
-    // this.sceneRadialDarken.filters = [glowFilter]
-    // this.gameApp.stage.addChild(this.sceneRadialDarken)
+    this.worldContainer.filters = [this.motionBlurFilter]
+    this.entitiesContainer.filters = [this.motionBlurFilter]
+    // this.playerContainer.filters = [bloomFilter]
   }
 
   drawRadialDarken() {
@@ -127,8 +136,8 @@ class GameCanvas extends Component {
       energyRegenRate: this.props.energyRegenRate,
       speedMax: this.props.speedMax
     }, sceneBounds)
-    this.sceneFg.addChild(this.playerProjectiles.container)
-    this.sceneFg.addChild(this.playerShip.PIXIContainer)
+    this.playerContainer.addChild(this.playerProjectiles.container)
+    this.playerContainer.addChild(this.playerShip.PIXIContainer)
 
     // Enemies
     const numEnemies = 32
@@ -137,8 +146,8 @@ class GameCanvas extends Component {
       this.enemies.data.push(enemy)
       this.enemies.container.addChild(enemy.PIXIContainer)
     }
-    this.sceneFg.addChild(this.enemies.container)
-    this.sceneFg.addChild(this.enemyProjectiles.container)
+    this.entitiesContainer.addChild(this.enemies.container)
+    this.entitiesContainer.addChild(this.enemyProjectiles.container)
   }
 
   drawsceneBounds() {
@@ -268,6 +277,8 @@ class GameCanvas extends Component {
 
     // Update camera position
     this.camera.update(delta)
+
+    this.motionBlurFilter.velocity = [this.playerShip.vx * motionBlurMultiplier, this.playerShip.vy * motionBlurMultiplier]
 
     // Update FPS text
     this.fpsText.text = Math.round(this.gameApp.ticker.FPS) + ' FPS'
