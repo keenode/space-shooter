@@ -17,6 +17,10 @@ class StarFieldAmbientBG {
     this.sceneBounds = sceneBounds
     this.depth = depth
     this.PIXIContainer.addChild(this.draw())
+    this.addFiltersFX()
+  }
+
+  addFiltersFX() {
     const blurFilter = new PIXI.filters.BlurFilter()
     blurFilter.blur = 0.6
     this.PIXIContainer.filters = [blurFilter]

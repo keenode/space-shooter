@@ -21,6 +21,7 @@ class Projectile {
     this.PIXIContainer.x = parentEntity.PIXIContainer.x
     this.PIXIContainer.y = parentEntity.PIXIContainer.y
     const projectileShape = this.draw()
+    projectileShape.rotation = this.parentAngle
     this.PIXIContainer.addChild(projectileShape)
     this.addFiltersFX(projectileShape)
   }
@@ -29,24 +30,24 @@ class Projectile {
     const blurFilter = new PIXI.filters.BlurFilter()
     blurFilter.blur = 1
     projectileShape.filters = [blurFilter]
-    const blurFxInner = this.draw(5, 0x00ffff)
+    const blurFxInner = this.draw(2)
     const blurFilterInner = new PIXI.filters.BlurFilter()
-    blurFilterInner.blur = 8
-    blurFilterInner.resolution = 4
+    blurFilterInner.blur = 4
     blurFxInner.filters = [blurFilterInner]
     this.PIXIContainer.addChild(blurFxInner)
-    const blurFxOuter = this.draw(6)
+    const blurFxOuter = this.draw(4, 0xffff00)
     const blurFilterOuter = new PIXI.filters.BlurFilter()
-    blurFilterOuter.blur = 16
-    blurFilterOuter.resolution = 8
+    blurFilterOuter.blur = 12
+    blurFilterOuter.resolution = 4
     blurFxOuter.filters = [blurFilterOuter]
+    blurFxOuter.alpha = 0.5
     this.PIXIContainer.addChild(blurFxOuter)
   }
 
-  draw(radius = 4, color = 0xffff00) {
+  draw(size = 2, color = 0x00ff00) {
     const circle = new PIXI.Graphics()
     circle.beginFill(color)
-    circle.drawCircle(0, 0, radius)
+    circle.drawEllipse(0, 0, size, size * 5)
     circle.endFill()
     return circle
   }

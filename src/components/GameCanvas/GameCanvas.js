@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import * as PIXI from 'pixi.js'
+import { AdvancedBloomFilter } from '@pixi/filter-advanced-bloom'
 
 import { collisionTest } from '../Game/Utility'
 
@@ -19,9 +20,11 @@ const sceneBounds = {
 class GameCanvas extends Component {
   camera = null
   scene = new PIXI.Container()
+  sceneBg = new PIXI.Container()
+  sceneFg = new PIXI.Container()
   playerShip = null
   enemies = {
-    data: [],
+    data: [], 
     container: new PIXI.Container()
   }
   playerProjectiles = {
@@ -78,9 +81,20 @@ class GameCanvas extends Component {
     for (let i = 0; i < this.starFieldDepth; i++) {
       const starFieldBg = new StarFieldAmbientBG(sceneBounds, i + 1)
       this.starFieldAmbientBGs.push(starFieldBg)
-      this.scene.addChild(starFieldBg.PIXIContainer)
+      this.sceneBg.addChild(starFieldBg.PIXIContainer)
     }
-    this.scene.addChild(this.drawsceneBounds())
+    this.sceneFg.addChild(this.drawsceneBounds())
+
+    const sceneFilter = new AdvancedBloomFilter()
+    sceneFilter.threshold = 0.3
+    sceneFilter.bloomScale = 1
+    sceneFilter.brightness = 1
+    sceneFilter.blur = 4
+    sceneFilter.quality = 8
+    this.sceneFg.filters = [sceneFilter]
+
+    this.scene.addChild(this.sceneBg)
+    this.scene.addChild(this.sceneFg)
   }
 
   placeEntities() {
@@ -92,8 +106,8 @@ class GameCanvas extends Component {
       energyRegenRate: this.props.energyRegenRate,
       speedMax: this.props.speedMax
     }, sceneBounds)
-    this.scene.addChild(this.playerProjectiles.container)
-    this.scene.addChild(this.playerShip.PIXIContainer)
+    this.sceneFg.addChild(this.playerProjectiles.container)
+    this.sceneFg.addChild(this.playerShip.PIXIContainer)
 
     // Enemies
     const numEnemies = 32
@@ -102,8 +116,8 @@ class GameCanvas extends Component {
       this.enemies.data.push(enemy)
       this.enemies.container.addChild(enemy.PIXIContainer)
     }
-    this.scene.addChild(this.enemies.container)
-    this.scene.addChild(this.enemyProjectiles.container)
+    this.sceneFg.addChild(this.enemies.container)
+    this.sceneFg.addChild(this.enemyProjectiles.container)
   }
 
   drawsceneBounds() {
