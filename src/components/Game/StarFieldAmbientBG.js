@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 
-const numStars = 256
+const numStars = 512
 const starColors = [
   0xffffff,
   0xffbcc4,

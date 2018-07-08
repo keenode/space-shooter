@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import GameCanvas from '../../components/GameCanvas/GameCanvas'
 import HullDash from '../../components/UI/HullDash/HullDash'
+import MessagesPanel from '../../components/UI/MessagesPanel/MessagesPanel'
 
 import * as actions from '../../store/actions'
 
@@ -79,6 +80,7 @@ class Play extends Component {
           fuelUsed={ value => this.fuelUsedHandler(value) }
           pilotModeChanged={ mode => this.props.onSetPilotMode(mode) }
           pilotStateChanged={ (pilotState, value) => this.pilotStateChangedHandler(pilotState, value) } />
+        <MessagesPanel messages={[]} />
         <HullDash
           hull={this.props.hull}
           hullMax={this.props.hullMax}

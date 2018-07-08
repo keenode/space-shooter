@@ -13,7 +13,7 @@ import styles from './GameCanvas.css'
 
 const sceneBounds = {
   width: 4000,
-  height: 3000
+  height: 4000
 }
 
 class GameCanvas extends Component {

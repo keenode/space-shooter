@@ -4,7 +4,7 @@
   align-items: center;
   position: absolute;
   left: calc(50% - 400px);
-  bottom: 20px;
+  bottom: 15px;
   width: 800px;
   z-index: 10;
 }
