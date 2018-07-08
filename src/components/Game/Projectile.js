@@ -14,7 +14,7 @@ class Projectile {
   lifeTime = 0
   maxLifeTime = 200.0
   isAlive = true
-w
+
   constructor(parentEntity) {
     this.parentAngle = parentEntity.PIXIContainer.rotation
     this.parentSpd = parentEntity.spd

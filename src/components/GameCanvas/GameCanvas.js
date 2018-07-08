@@ -7,6 +7,7 @@ import Camera from '../Game/Camera'
 import PlayerShip from '../Game/PlayerShip'
 import EnemyShip from '../Game/EnemyShip'
 import Projectile from '../Game/Projectile'
+import StarFieldAmbientBG from '../Game/StarFieldAmbientBG'
 
 import styles from './GameCanvas.css'
 
@@ -32,6 +33,8 @@ class GameCanvas extends Component {
     data: [],
     container: new PIXI.Container()
   }
+  starFieldDepth = 2
+  starFieldAmbientBGs = []
 
   componentDidMount() {
     this.setupPIXI('game-canvas')
@@ -71,6 +74,11 @@ class GameCanvas extends Component {
   }
 
   setupScene() {
+    for (let i = 0; i < this.starFieldDepth; i++) {
+      const starFieldBg = new StarFieldAmbientBG(sceneBounds, i + 1)
+      this.starFieldAmbientBGs.push(starFieldBg)
+      this.scene.addChild(starFieldBg.PIXIContainer)
+    }
     this.scene.addChild(this.drawsceneBounds())
   }
 
@@ -87,7 +95,7 @@ class GameCanvas extends Component {
     this.scene.addChild(this.playerShip.PIXIContainer)
 
     // Enemies
-    const numEnemies = 16
+    const numEnemies = 20
     for (let e = 0; e < numEnemies; e++) {
       const enemy = new EnemyShip(Math.random() * sceneBounds.width, Math.random() * sceneBounds.height, sceneBounds)
       this.enemies.data.push(enemy)

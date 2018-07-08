@@ -12,7 +12,7 @@ class PlayerShip {
   gfxLateralThrustingRight = new PIXI.Container()
   gfxBraking = new PIXI.Container()
   gfxReversing = new PIXI.Container()
-  playRegionBounds = null
+  sceneBounds = null
   vx = 0
   vy = 0
   rv = 0
@@ -60,15 +60,15 @@ class PlayerShip {
   shieldsRegenReadyTimer = 0
   isAlive = true
 
-  constructor(data, playRegionBounds) {
+  constructor(data, sceneBounds) {
     this.shields = data.shields
     this.fuel = data.fuel
     this.shieldsRegenRate = data.shieldsRegenRate
     this.energyRegenRate = data.energyRegenRate
     this.maxSpd = data.speedMax
-    this.playRegionBounds = playRegionBounds
-    this.PIXIContainer.x = playRegionBounds.width / 2
-    this.PIXIContainer.y = playRegionBounds.height - shipHeight / 2 - shipBottomPadding
+    this.sceneBounds = sceneBounds
+    this.PIXIContainer.x = sceneBounds.width / 2
+    this.PIXIContainer.y = sceneBounds.height - shipHeight / 2 - shipBottomPadding
     this.gfxThrusting.addChild(this.drawThrustingForce(180))
     this.gfxThrusting.position.y = 47
     this.gfxThrusting.visible = false
@@ -315,18 +315,18 @@ class PlayerShip {
       this.vx = 0
       this.vy = 0
       this.PIXIContainer.x = 0
-    } else if (this.PIXIContainer.x + this.vx > this.playRegionBounds.width) {
+    } else if (this.PIXIContainer.x + this.vx > this.sceneBounds.width) {
       this.vx = 0
       this.vy = 0
-      this.PIXIContainer.x = this.playRegionBounds.width
+      this.PIXIContainer.x = this.sceneBounds.width
     } else if (this.PIXIContainer.y + this.vy < 0) {
       this.vx = 0
       this.vy = 0
       this.PIXIContainer.y = 0
-    } else if (this.PIXIContainer.y + this.vy > this.playRegionBounds.height) {
+    } else if (this.PIXIContainer.y + this.vy > this.sceneBounds.height) {
       this.vx = 0
       this.vy = 0
-      this.PIXIContainer.y = this.playRegionBounds.height
+      this.PIXIContainer.y = this.sceneBounds.height
     } else {
       // Update position
       this.PIXIContainer.rotation += this.rv * delta
