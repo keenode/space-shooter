@@ -144,10 +144,10 @@ const hullDash = props => {
           </div>
         </div>
         <ul className={styles.ExpansionBays}>
-          <li className={[styles.ExpansionBay, styles.ExpansionBay_Active].join(' ')}><span>0</span></li>
-          <li className={styles.ExpansionBay}><span>1</span></li>
+          <li className={[styles.ExpansionBay, styles.ExpansionBay_Active].join(' ')}><span>1</span></li>
           <li className={styles.ExpansionBay}><span>2</span></li>
           <li className={styles.ExpansionBay}><span>3</span></li>
+          <li className={styles.ExpansionBay}><span>4</span></li>
         </ul>
       </div>
       <div className={styles.Speedometer}>

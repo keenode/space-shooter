@@ -62,7 +62,7 @@ class GameCanvas extends Component {
 
     // Add FPS counter
     const style = new PIXI.TextStyle({
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+      fontFamily: '"Audiowide", monospace',
       fontSize: 20,
       fill: 'cyan'
     })
@@ -202,7 +202,7 @@ class GameCanvas extends Component {
       // Check collision with player
       if (collisionTest(enemy.PIXIContainer, this.playerShip.PIXIContainer)) {
         enemy.isAlive = false
-        this.props.hullDamaged(75)
+        this.props.hullDamaged(Math.floor(Math.random() * 25) + 50)
         this.playerShip.shieldsRegenIsReady = false
       }
 
@@ -226,7 +226,7 @@ class GameCanvas extends Component {
       const projectile = this.enemyProjectiles.data[p]
       if (collisionTest(this.playerShip.PIXIContainer, projectile.PIXIContainer)) {
         projectile.isAlive = false
-        this.props.hullDamaged(15)
+        this.props.hullDamaged(Math.floor(Math.random() * 10) + 5)
         this.playerShip.shieldsRegenIsReady = false
       }
     }

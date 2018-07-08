@@ -65,6 +65,7 @@ table {
   --base-bg-color: var(--color-deep-forest);
   --base-font-color: var(--color-off-white);
   --base-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  --ui-dash-font-family: 'Audiowide', monospace;
   --grid-max-width: 1440px;
   --grid-gutter: 30px;
 }
@@ -74,6 +75,8 @@ body {
   background-color: var(--base-bg-color);
   font-family: var(--base-font-family);
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 p {
