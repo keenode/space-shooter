@@ -41,9 +41,12 @@ class GameCanvas extends Component {
     data: [],
     container: new PIXI.Container()
   }
+  nebulas = {
+    data: [],
+    container: new PIXI.Container()
+  }
   starFieldDepth = 4
   starFieldAmbientBGs = []
-  nebulas = []
   playerDeadReported = false
   playerNoFuelReported = false
   motionBlurFilter = new MotionBlurFilter()
@@ -52,7 +55,7 @@ class GameCanvas extends Component {
     this.setupPIXI('game-canvas')
     this.setupScene()
     this.placeEntities()
-    this.camera = new Camera(this.scene, this.playerShip.PIXIContainer, this.gameApp.renderer, this.starFieldAmbientBGs)
+    this.camera = new Camera(this.scene, this.playerShip.PIXIContainer, this.gameApp.renderer, this.starFieldAmbientBGs, this.nebulas.container)
     this.gameApp.ticker.add(delta => this.gameLoop(delta))
   }
 
@@ -93,9 +96,10 @@ class GameCanvas extends Component {
     }
     for (let i = 0; i < 10; i++) {
       const nebula = new Nebula(sceneBounds)
-      this.nebulas.push(nebula)
-      this.sceneBg.addChild(nebula.PIXIContainer)
+      this.nebulas.data.push(nebula)
+      this.nebulas.container.addChild(nebula.PIXIContainer)
     }
+    this.sceneBg.addChild(this.nebulas.container)
     this.worldContainer.addChild(this.drawsceneBounds())
 
     const bloomFilter = new AdvancedBloomFilter()
@@ -276,8 +280,8 @@ class GameCanvas extends Component {
     }
 
     // Update nebulas
-    for (let n = 0; n < this.nebulas.length; n++) {
-      this.nebulas[n].update(delta)
+    for (let n = 0; n < this.nebulas.data.length; n++) {
+      this.nebulas.data[n].update(delta)
     }
 
     // Update camera position
