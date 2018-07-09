@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import * as PIXI from 'pixi.js'
 import { AdvancedBloomFilter } from '@pixi/filter-advanced-bloom'
 import { MotionBlurFilter } from '@pixi/filter-motion-blur'
+import { Howl } from 'howler'
 
 import { collisionTest } from '../Game/Utility'
 
@@ -50,6 +51,8 @@ class GameCanvas extends Component {
   playerDeadReported = false
   playerNoFuelReported = false
   motionBlurFilter = new MotionBlurFilter()
+  thrustSfx = null
+  thrustsSfxIsPlaying = false
 
   componentDidMount() {
     this.setupPIXI('game-canvas')
@@ -57,6 +60,18 @@ class GameCanvas extends Component {
     this.placeEntities()
     this.camera = new Camera(this.scene, this.playerShip.PIXIContainer, this.gameApp.renderer, this.starFieldAmbientBGs, this.nebulas.container)
     this.gameApp.ticker.add(delta => this.gameLoop(delta))
+
+    // Play atmosphere SFX
+    const atmosphereSfx = new Howl({
+      src: ['assets/audio/fx/atmosphere.flac'],
+      loop: true,
+      volume: 0.3
+    })
+    atmosphereSfx.play()
+
+    this.thrustSfx = new Howl({
+      src: ['assets/audio/fx/thrusters.wav']
+    })
   }
 
   setupPIXI(canvasSelectorId) {
@@ -169,6 +184,12 @@ class GameCanvas extends Component {
       if (!this.playerDeadReported) {
         this.props.messageReported('Your ship has been destroyed!', 'playerShipDestroyed')
         this.playerDeadReported = true
+
+        const hitSfx = new Howl({
+          src: ['assets/audio/fx/explode.wav'],
+          volume: 0.5
+        })
+        hitSfx.play()
       }
     }
     this.playerShip.update(delta)
@@ -178,12 +199,26 @@ class GameCanvas extends Component {
       this.playerProjectiles.container.addChild(projectile.PIXIContainer)
       this.playerShip.fireTimer = 0
       this.props.energyUsed(10)
+
+      const laserSfx = new Howl({
+        src: ['assets/audio/fx/laser.wav'],
+        volume: 0.3
+      })
+      laserSfx.play()
     }
     this.props.speedUpdated(this.playerShip.spd)
     this.props.rotationUpdated(this.playerShip.facingAngle)
     if ((this.playerShip.isThrusting || this.playerShip.lateralThrusting.left || this.playerShip.lateralThrusting.right || this.playerShip.isReversing) && this.props.fuel > 0) {
       this.props.fuelUsed(0.1)
       this.playerShip.fuel = this.props.fuel
+
+      if (!this.thrustsSfxIsPlaying) {
+        this.thrustSfx.play()
+        this.thrustsSfxIsPlaying = true
+      }
+    } else {
+      this.thrustSfx.stop()
+      this.thrustsSfxIsPlaying = false
     }
     if (this.props.fuel <= 0 && !this.playerNoFuelReported) {
       this.props.messageReported('You ran out of fuel!', 'noFuel')
@@ -218,6 +253,12 @@ class GameCanvas extends Component {
         this.enemyProjectiles.container.addChild(projectile.PIXIContainer)
         enemy.nextAttackElapsed = 0
         enemy.nextAttackTimer = Math.random() * 175.0 + 25.0
+
+        // const laserSfx = new Howl({
+        //   src: ['assets/audio/fx/laser.wav'],
+        //   volume: 0.1
+        // })
+        // laserSfx.play()
       }
     }
 
@@ -252,6 +293,12 @@ class GameCanvas extends Component {
         enemy.isAlive = false
         this.props.hullDamaged(Math.floor(Math.random() * 25) + 50)
         this.playerShip.shieldsRegenIsReady = false
+
+        const hitSfx = new Howl({
+          src: ['assets/audio/fx/explode.wav'],
+          volume: 0.3
+        })
+        hitSfx.play()
       }
 
       // Check enemy collision with player projectiles
@@ -260,6 +307,12 @@ class GameCanvas extends Component {
         if (collisionTest(enemy.PIXIContainer, projectile.PIXIContainer)) {
           projectile.isAlive = false
           enemy.isAlive = false
+
+          const hitSfx = new Howl({
+            src: ['assets/audio/fx/explode.wav'],
+            volume: 0.3
+          })
+          hitSfx.play()
         }
       }
 
@@ -276,6 +329,12 @@ class GameCanvas extends Component {
         projectile.isAlive = false
         this.props.hullDamaged(Math.floor(Math.random() * 10) + 5)
         this.playerShip.shieldsRegenIsReady = false
+
+        const hitSfx = new Howl({
+          src: ['assets/audio/fx/hit.wav'],
+          volume: 0.3
+        })
+        hitSfx.play()
       }
     }
 
