@@ -10,6 +10,7 @@ import PlayerShip from '../Game/PlayerShip'
 import EnemyShip from '../Game/EnemyShip'
 import Projectile from '../Game/Projectile'
 import StarFieldAmbientBG from '../Game/StarFieldAmbientBG'
+import Nebula from '../Game/Nebula'
 
 import styles from './GameCanvas.css'
 
@@ -42,6 +43,7 @@ class GameCanvas extends Component {
   }
   starFieldDepth = 4
   starFieldAmbientBGs = []
+  nebulas = []
   playerDeadReported = false
   playerNoFuelReported = false
   motionBlurFilter = new MotionBlurFilter()
@@ -89,6 +91,11 @@ class GameCanvas extends Component {
       this.starFieldAmbientBGs.push(starFieldBg)
       this.sceneBg.addChild(starFieldBg.PIXIContainer)
     }
+    for (let i = 0; i < 10; i++) {
+      const nebula = new Nebula(sceneBounds)
+      this.nebulas.push(nebula)
+      this.sceneBg.addChild(nebula.PIXIContainer)
+    }
     this.worldContainer.addChild(this.drawsceneBounds())
 
     const bloomFilter = new AdvancedBloomFilter()
@@ -101,6 +108,7 @@ class GameCanvas extends Component {
     this.bloomContainer.addChild(this.worldContainer)
     this.bloomContainer.addChild(this.entitiesContainer)
     this.bloomContainer.addChild(this.playerContainer)
+    // this.bloomContainer.addChild(this.sceneBg)
 
     this.scene.addChild(this.sceneBg)
     this.scene.addChild(this.bloomContainer)
@@ -265,6 +273,11 @@ class GameCanvas extends Component {
         this.props.hullDamaged(Math.floor(Math.random() * 10) + 5)
         this.playerShip.shieldsRegenIsReady = false
       }
+    }
+
+    // Update nebulas
+    for (let n = 0; n < this.nebulas.length; n++) {
+      this.nebulas[n].update(delta)
     }
 
     // Update camera position

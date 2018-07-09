@@ -22,7 +22,7 @@ class StarFieldAmbientBG {
 
   addFiltersFX() {
     const blurFilter = new PIXI.filters.BlurFilter()
-    blurFilter.blur = 0.6
+    blurFilter.blur = 0.5
     this.PIXIContainer.filters = [blurFilter]
   }
 
@@ -43,9 +43,6 @@ class StarFieldAmbientBG {
     }
     return circle
   }
-
-  // update(delta) {
-  // }
 }
 
 export default StarFieldAmbientBG
