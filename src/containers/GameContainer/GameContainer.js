@@ -7,9 +7,9 @@ import MessagesPanel from '../../components/UI/MessagesPanel/MessagesPanel'
 
 import * as actions from '../../store/actions'
 
-import styles from './Play.css'
+import styles from './GameContainer.css'
 
-class Play extends Component {
+class GameContainer extends Component {
   hullDamagedHandler(dmgAmt) {
     if (this.props.hull <= 0) {
       return false
@@ -64,7 +64,7 @@ class Play extends Component {
 
   render() {
     return (
-      <div className={styles.PlayContainer}>
+      <div className={styles.GameContainer}>
         <GameCanvas
           hull={this.props.hull}
           shields={this.props.shields}
@@ -150,4 +150,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Play)
+export default connect(mapStateToProps, mapDispatchToProps)(GameContainer)
