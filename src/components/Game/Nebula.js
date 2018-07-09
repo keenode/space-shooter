@@ -19,8 +19,8 @@ class Nebula {
       // on top of a bitmap, and not use the root stage Container
       this.PIXIContainer,
       [
-        PIXI.Texture.fromImage('assets/particles/smokeparticle.png'),
-        PIXI.Texture.fromImage('assets/particles/particle.png')
+        PIXI.Texture.fromImage('assets/images/particles/smokeparticle.png'),
+        PIXI.Texture.fromImage('assets/images/particles/particle.png')
       ],
       {
         "alpha": {
