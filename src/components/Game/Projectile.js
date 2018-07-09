@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js'
 
+import gfxConfig from '../../config/graphics'
+
 const offsetAngle = 90 * Math.PI / 180
 
 class Projectile {
@@ -24,7 +26,9 @@ class Projectile {
     this.projectileContainer.rotation = this.parentAngle
     const projectileShape = this.draw()
     this.projectileContainer.addChild(projectileShape)
-    this.addFiltersFX(projectileShape)
+    if (gfxConfig.blur) {
+      this.addFiltersFX(projectileShape)
+    }
     this.PIXIContainer.addChild(this.projectileContainer)
   }
 

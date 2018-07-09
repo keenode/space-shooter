@@ -1,5 +1,7 @@
 import * as PIXI from 'pixi.js'
 
+import gfxConfig from '../../config/graphics'
+
 const numStars = 2048
 const starColors = [
   0xffffff,
@@ -17,7 +19,9 @@ class StarFieldAmbientBG {
     this.sceneBounds = sceneBounds
     this.depth = depth
     this.PIXIContainer.addChild(this.draw())
-    this.addFiltersFX()
+    if (gfxConfig.blur) {
+      this.addFiltersFX()
+    }
   }
 
   addFiltersFX() {

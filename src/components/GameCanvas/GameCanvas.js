@@ -13,6 +13,8 @@ import Projectile from '../Game/Projectile'
 import StarFieldAmbientBG from '../Game/StarFieldAmbientBG'
 import Nebula from '../Game/Nebula'
 
+import gfxConfig from '../../config/graphics'
+
 import styles from './GameCanvas.css'
 
 const sceneBounds = {
@@ -31,7 +33,7 @@ class GameCanvas extends Component {
   bloomContainer = new PIXI.Container()
   playerShip = null
   enemies = {
-    data: [], 
+    data: [],
     container: new PIXI.Container()
   }
   playerProjectiles = {
@@ -46,7 +48,6 @@ class GameCanvas extends Component {
     data: [],
     container: new PIXI.Container()
   }
-  starFieldDepth = 4
   starFieldAmbientBGs = []
   playerDeadReported = false
   playerNoFuelReported = false
@@ -104,25 +105,34 @@ class GameCanvas extends Component {
   }
 
   setupScene() {
-    for (let i = 0; i < this.starFieldDepth; i++) {
+    // Add ambient star field
+    for (let i = 0; i < gfxConfig.starFieldDepth; i++) {
       const starFieldBg = new StarFieldAmbientBG(sceneBounds, i + 1)
       this.starFieldAmbientBGs.push(starFieldBg)
       this.sceneBg.addChild(starFieldBg.PIXIContainer)
     }
-    for (let i = 0; i < 10; i++) {
-      const nebula = new Nebula(sceneBounds)
-      this.nebulas.data.push(nebula)
-      this.nebulas.container.addChild(nebula.PIXIContainer)
+
+    // Add ambient nebula
+    if (gfxConfig.nebula) {
+      for (let i = 0; i < 10; i++) {
+        const nebula = new Nebula(sceneBounds)
+        this.nebulas.data.push(nebula)
+        this.nebulas.container.addChild(nebula.PIXIContainer)
+      }
+      this.sceneBg.addChild(this.nebulas.container)
     }
-    this.sceneBg.addChild(this.nebulas.container)
+
     this.worldContainer.addChild(this.drawsceneBounds())
 
-    const bloomFilter = new AdvancedBloomFilter()
-    bloomFilter.threshold = 0.3
-    bloomFilter.bloomScale = 1
-    bloomFilter.brightness = 1
-    bloomFilter.blur = 4
-    bloomFilter.quality = 8
+    if (gfxConfig.bloom) {
+      const bloomFilter = new AdvancedBloomFilter()
+      bloomFilter.threshold = 0.3
+      bloomFilter.bloomScale = 1
+      bloomFilter.brightness = 1
+      bloomFilter.blur = 4
+      bloomFilter.quality = 8
+      this.bloomContainer.filters = [bloomFilter]
+    }
 
     this.bloomContainer.addChild(this.worldContainer)
     this.bloomContainer.addChild(this.entitiesContainer)
@@ -132,18 +142,11 @@ class GameCanvas extends Component {
     this.scene.addChild(this.sceneBg)
     this.scene.addChild(this.bloomContainer)
 
-    this.bloomContainer.filters = [bloomFilter]
-    this.sceneBg.filters = [this.motionBlurFilter]
-    this.worldContainer.filters = [this.motionBlurFilter]
+    if (gfxConfig.motionBlur) {
+      this.sceneBg.filters = [this.motionBlurFilter]
+      this.worldContainer.filters = [this.motionBlurFilter]
+    }
     // this.entitiesContainer.filters = [this.motionBlurFilter]
-  }
-
-  drawRadialDarken() {
-    const ellipse = new PIXI.Graphics()
-    ellipse.beginFill(0xffffff, 1)
-    ellipse.drawEllipse(0, 0, this.gameApp.renderer.width / 2, this.gameApp.renderer.height / 2)
-    ellipse.endFill()
-    return ellipse
   }
 
   placeEntities() {
