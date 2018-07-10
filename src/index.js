@@ -7,14 +7,14 @@ import thunk from 'redux-thunk'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 
-import hullReducer from './store/reducers/hull'
+import playerShipReducer from './store/reducers/playerShip'
 import messagesReducer from './store/reducers/messages'
 
 import './index.css'
 
 
 const rootReducer = combineReducers({
-  hull: hullReducer,
+  playerShip: playerShipReducer,
   messages: messagesReducer
 })
 

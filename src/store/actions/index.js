@@ -11,6 +11,6 @@ export {
   setIsLateralThrustingLeft,
   setIsLateralThrustingRight,
   setIsFiringWeapon
-} from './hull'
+} from './playerShip'
 
 export { addMessage } from './messages'

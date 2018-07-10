@@ -11,11 +11,11 @@ import styles from './GameContainer.css'
 
 class GameContainer extends Component {
   hullDamagedHandler(dmgAmt) {
-    if (this.props.hull <= 0) {
+    if (this.props.playerShip.hull <= 0) {
       return false
     }
-    if (this.props.shields > 0) {
-      const dmgDiff = this.props.shields - dmgAmt
+    if (this.props.playerShip.shields > 0) {
+      const dmgDiff = this.props.playerShip.shields - dmgAmt
       this.props.onUpdateShields(-dmgAmt)
       if (dmgDiff >= 0) {
         this.props.onAddMessage(`Shields absorbed ${dmgAmt} damage!`, 'shieldsDamaged')
@@ -44,7 +44,7 @@ class GameContainer extends Component {
   }
 
   fuelUsedHandler(value) {
-    const updatedFuelValue = this.props.fuel - value
+    const updatedFuelValue = this.props.playerShip.fuel - value
     this.props.onUpdateFuel(updatedFuelValue)
   }
 
@@ -66,13 +66,13 @@ class GameContainer extends Component {
     return (
       <div className={styles.GameContainer}>
         <GameCanvas
-          hull={this.props.hull}
-          shields={this.props.shields}
-          shieldsRegenRate={this.props.shieldsRegenRate}
-          energy={this.props.energy}
-          fuel={this.props.fuel}
-          speedMax={this.props.speedMax}
-          energyRegenRate={this.props.energyRegenRate}
+          hull={this.props.playerShip.hull}
+          shields={this.props.playerShip.shields}
+          shieldsRegenRate={this.props.playerShip.shieldsRegenRate}
+          energy={this.props.playerShip.energy}
+          fuel={this.props.playerShip.fuel}
+          speedMax={this.props.playerShip.speedMax}
+          energyRegenRate={this.props.playerShip.energyRegenRate}
           hullDamaged={ dmgAmt => this.hullDamagedHandler(dmgAmt) }
           shieldsRegenerated={ regenAmt => this.shieldsRegeneratedHandler(regenAmt) }
           energyRegenerated={ regenAmt => this.energyRegeneratedHandler(regenAmt) }
@@ -85,23 +85,23 @@ class GameContainer extends Component {
           messageReported={ (message, type) => this.props.onAddMessage(message, type) } />
         <MessagesPanel messages={this.props.messages} />
         <HullDash
-          hull={this.props.hull}
-          hullMax={this.props.hullMax}
-          shields={this.props.shields}
-          shieldsMax={this.props.shieldsMax}
-          energy={this.props.energy}
-          energyMax={this.props.energyMax}
-          speed={this.props.speed}
-          speedMax={this.props.speedMax}
-          rotation={this.props.rotation}
-          fuel={this.props.fuel}
-          fuelMax={this.props.fuelMax}
-          pilotMode={this.props.pilotMode}
-          isThrusting={this.props.isThrusting}
-          isBraking={this.props.isBraking}
-          isLateralThrustingLeft={this.props.isLateralThrustingLeft}
-          isLateralThrustingRight={this.props.isLateralThrustingRight}
-          isFiringWeapon={this.props.isFiringWeapon} />
+          hull={this.props.playerShip.hull}
+          hullMax={this.props.playerShip.hullMax}
+          shields={this.props.playerShip.shields}
+          shieldsMax={this.props.playerShip.shieldsMax}
+          energy={this.props.playerShip.energy}
+          energyMax={this.props.playerShip.energyMax}
+          speed={this.props.playerShip.speed}
+          speedMax={this.props.playerShip.speedMax}
+          rotation={this.props.playerShip.rotation}
+          fuel={this.props.playerShip.fuel}
+          fuelMax={this.props.playerShip.fuelMax}
+          pilotMode={this.props.playerShip.pilotMode}
+          isThrusting={this.props.playerShip.isThrusting}
+          isBraking={this.props.playerShip.isBraking}
+          isLateralThrustingLeft={this.props.playerShip.isLateralThrustingLeft}
+          isLateralThrustingRight={this.props.playerShip.isLateralThrustingRight}
+          isFiringWeapon={this.props.playerShip.isFiringWeapon} />
       </div>
     )
   }
@@ -109,25 +109,27 @@ class GameContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    hull: state.hull.hull,
-    hullMax: state.hull.hullMax,
-    shields: state.hull.shields,
-    shieldsMax: state.hull.shieldsMax,
-    shieldsRegenRate: state.hull.shieldsRegenRate,
-    energy: state.hull.energy,
-    energyMax: state.hull.energyMax,
-    energyRegenRate: state.hull.energyRegenRate,
-    speed: state.hull.speed,
-    speedMax: state.hull.speedMax,
-    rotation: state.hull.rotation,
-    fuel: state.hull.fuel,
-    fuelMax: state.hull.fuelMax,
-    pilotMode: state.hull.pilotMode,
-    isThrusting: state.hull.isThrusting,
-    isBraking: state.hull.isBraking,
-    isLateralThrustingLeft: state.hull.isLateralThrustingLeft,
-    isLateralThrustingRight: state.hull.isLateralThrustingRight,
-    isFiringWeapon: state.hull.isFiringWeapon,
+    playerShip: {
+      hull: state.playerShip.hull,
+      hullMax: state.playerShip.hullMax,
+      shields: state.playerShip.shields,
+      shieldsMax: state.playerShip.shieldsMax,
+      shieldsRegenRate: state.playerShip.shieldsRegenRate,
+      energy: state.playerShip.energy,
+      energyMax: state.playerShip.energyMax,
+      energyRegenRate: state.playerShip.energyRegenRate,
+      speed: state.playerShip.speed,
+      speedMax: state.playerShip.speedMax,
+      rotation: state.playerShip.rotation,
+      fuel: state.playerShip.fuel,
+      fuelMax: state.playerShip.fuelMax,
+      pilotMode: state.playerShip.pilotMode,
+      isThrusting: state.playerShip.isThrusting,
+      isBraking: state.playerShip.isBraking,
+      isLateralThrustingLeft: state.playerShip.isLateralThrustingLeft,
+      isLateralThrustingRight: state.playerShip.isLateralThrustingRight,
+      isFiringWeapon: state.playerShip.isFiringWeapon
+    },
     messages: state.messages.messages
   }
 }

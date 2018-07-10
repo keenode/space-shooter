@@ -1,4 +1,4 @@
-// Hull --
+// Player Ship --
 export const UPDATE_HULL = 'UPDATE_HULL'
 export const UPDATE_SHIELDS = 'UPDATE_SHIELDS'
 export const UPDATE_ENERGY = 'UPDATE_ENERGY'
