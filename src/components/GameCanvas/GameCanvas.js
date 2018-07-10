@@ -184,9 +184,36 @@ class GameCanvas extends Component {
     // Hande player updates
 
     const playerShipUpdates = {
-
+      shields: 0,
+      hull: 0,
+      energy: 0,
+      fuel: 0,
+      position: {
+        x: 0,
+        y: 0
+      },
+      rotation: 0.0,
+      speed: 0.0,
+      velocity: {
+        x: 0,
+        y: 0
+      },
+      rotationalVelocity: 0,
+      lateralThrustForce: {
+        x: 0,
+        y: 0
+      },
+      reverseThrustForce: {
+        x: 0,
+        y: 0
+      },
+      isThrusting: false,
+      isLateralThrustingLeft: false,
+      isLateralThrustingRight: false,
+      isBraking: false,
+      isFiringWeapon: false
     }
-    this.props.gameloopPlayerShipRequest(playerShipUpdates)
+    this.props.gameloopPlayerShipUpdated(playerShipUpdates)
 
     if (this.props.playerShip.hull <= 0) {
       this.playerShip.isAlive = false

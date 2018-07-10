@@ -18,6 +18,7 @@ const initialState = {
     y: 0
   },
   rotation: 0.0,
+  speed: 0.0,
   velocity: {
     x: 0,
     y: 0
@@ -43,7 +44,6 @@ const initialState = {
 
   // Specs
   mass: 30.0,
-  speed: 0.0,
   speedMax: 20.0,
   lateralThrustSpdMax: 5.0,
   thrustPower: 0.5, // was accel
@@ -56,7 +56,7 @@ const initialState = {
   weaponFireRate: 10.0 // was fireRate
 }
 
-const gameloopPlayerShip = (state, action) => {
+const gameloopPlayerShipUpdate = (state, action) => {
   return {
     ...state,
     // TODO: Figure it out...
@@ -156,7 +156,7 @@ const setIsFiringWeapon = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.GAMELOOP_PLAYER_SHIP: return gameloopPlayerShip(state, action)
+    case actionTypes.GAMELOOP_PLAYER_SHIP_UPDATE: return gameloopPlayerShipUpdate(state, action)
     case actionTypes.UPDATE_HULL: return updateHull(state, action)
     case actionTypes.UPDATE_SHIELDS: return updateShields(state, action)
     case actionTypes.UPDATE_ENERGY: return updateEnergy(state, action)

@@ -29,7 +29,6 @@ class PlayerShip {
   maxLateralThrustSpd = 5.0
   rotAccel = 0.01
   maxRotVel = 0.1
-  maxStrafeForce = 5.0
   mass = 0.98
   brakeForce = 0.9
   rotating = {

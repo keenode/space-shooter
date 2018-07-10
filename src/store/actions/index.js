@@ -1,5 +1,5 @@
 export {
-  gameloopPlayerShip,
+  gameloopPlayerShipUpdate,
   updateHull,
   updateShields,
   updateEnergy,
