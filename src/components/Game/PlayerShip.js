@@ -13,23 +13,20 @@ class PlayerShip {
   gfxBraking = new PIXI.Container()
   gfxReversing = new PIXI.Container()
   sceneBounds = null
+
   vx = 0
   vy = 0
   rv = 0
-  facingAngle = 0
-  strafeVelX = 0
-  strafeVelY = 0
+  lateralThrustVelX = 0
+  lateralThrustVelY = 0
   reverseVelX = 0
   reverseVelY = 0
   accel = 0.5
-  strafeAccel = 0.5
+  lateralThrustAccel = 0.5
   reverseAccel = 0.25
   spd = 0
   maxSpd = 10.0
-  lateralThrustSpd = 0
-  lastlateralThrustDir = 0
   maxLateralThrustSpd = 5.0
-  angle = 0
   rotAccel = 0.01
   maxRotVel = 0.1
   maxStrafeForce = 5.0
@@ -47,18 +44,22 @@ class PlayerShip {
   isBraking = false
   isReversing = false
   isFiringWeapon = false
-  fireTimer = 0
   fireRate = 10.0
   shields = 0.0
   shieldsRegenRate = 0
-  shieldsRegenTimer = 0
   energyRegenRate = 0
-  energyRegenTimer = 0
   fuel = 0.0
+  isAlive = true
+
+  // Internal vars
+  facingAngle = 0
+  lateralThrustSpd = 0
+  shieldsRegenTimer = 0
+  energyRegenTimer = 0
+  fireTimer = 0
   shieldsRegenIsReady = true
   shieldsRegenReadyTime = 100.0
   shieldsRegenReadyTimer = 0
-  isAlive = true
 
   constructor(data, sceneBounds) {
     this.shields = data.shields
@@ -216,7 +217,7 @@ class PlayerShip {
 
     // Set magnitude of speed
     this.spd = Math.sqrt(this.vy * this.vy + this.vx * this.vx)
-    this.lateralThrustSpd = Math.sqrt(this.strafeVelY * this.strafeVelY + this.strafeVelX * this.strafeVelX)
+    this.lateralThrustSpd = Math.sqrt(this.lateralThrustVelY * this.lateralThrustVelY + this.lateralThrustVelX * this.lateralThrustVelX)
     // console.log(this.spd)
     // console.log(this.lateralThrustSpd)
 
@@ -243,10 +244,10 @@ class PlayerShip {
     // Handle lateralThrusting forces
     const lateralThrustDir = this.lateralThrusting.right ? 1 : this.lateralThrusting.left ? -1 : 0
     if (lateralThrustDir !== 0 && this.lateralThrustSpd < this.maxLateralThrustSpd && this.fuel > 0) {
-      const strafeForceX = this.strafeAccel * Math.cos(this.PIXIContainer.rotation) * lateralThrustDir
-      const strafeForceY = this.strafeAccel * Math.sin(this.PIXIContainer.rotation) * lateralThrustDir
-      this.strafeVelX += strafeForceX
-      this.strafeVelY += strafeForceY
+      const strafeForceX = this.lateralThrustAccel * Math.cos(this.PIXIContainer.rotation) * lateralThrustDir
+      const strafeForceY = this.lateralThrustAccel * Math.sin(this.PIXIContainer.rotation) * lateralThrustDir
+      this.lateralThrustVelX += strafeForceX
+      this.lateralThrustVelY += strafeForceY
       this.vx += strafeForceX
       this.vy += strafeForceY
     }
@@ -285,13 +286,13 @@ class PlayerShip {
       this.vy = 0
     }
 
-    this.strafeVelX *= this.mass
-    this.strafeVelY *= this.mass
-    if (Math.abs(Math.round(this.strafeVelX * 100) / 100) <= 0) {
-      this.strafeVelX = 0
+    this.lateralThrustVelX *= this.mass
+    this.lateralThrustVelY *= this.mass
+    if (Math.abs(Math.round(this.lateralThrustVelX * 100) / 100) <= 0) {
+      this.lateralThrustVelX = 0
     }
-    if (Math.abs(Math.round(this.strafeVelY * 100) / 100) <= 0) {
-      this.strafeVelY = 0
+    if (Math.abs(Math.round(this.lateralThrustVelY * 100) / 100) <= 0) {
+      this.lateralThrustVelY = 0
     }
 
     this.reverseVelX *= this.mass

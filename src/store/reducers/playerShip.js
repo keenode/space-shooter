@@ -2,26 +2,58 @@ import * as actionTypes from '../actions/actionTypes'
 import { checkBounds } from '../../shared/utility'
 
 const initialState = {
+  // Vitals
   shields: 100,
   shieldsMax: 100,
-  shieldsRegenRate: 10.0,
   hull: 100,
   hullMax: 100,
   energy: 100.0,
   energyMax: 100.0,
-  energyRegenRate: 5.0,
-  speed: 0.0,
-  speedMax: 20.0,
-  rotation: 0.0,
   fuel: 100.0,
   fuelMax: 100.0,
-  mass: 30.0,
-  pilotMode: 'D',
+
+  // Position, Velocity & Forces
+  position: {
+    x: 0,
+    y: 0
+  },
+  rotation: 0.0,
+  velocity: {
+    x: 0,
+    y: 0
+  },
+  rotationalVelocity: 0,
+  lateralThrustForce: {
+    x: 0,
+    y: 0
+  },
+  reverseThrustForce: {
+    x: 0,
+    y: 0
+  },
+
+  // Piloting states
+  isAlive: true,
   isThrusting: false,
-  isBraking: false,
   isLateralThrustingLeft: false,
   isLateralThrustingRight: false,
-  isFiringWeapon: false
+  isBraking: false,
+  isFiringWeapon: false,
+  pilotMode: 'D',
+
+  // Specs
+  mass: 30.0,
+  speed: 0.0,
+  speedMax: 20.0,
+  lateralThrustSpdMax: 5.0,
+  thrustPower: 0.5, // was accel
+  lateralThrustPower: 0.5, // was lateralThrustAccel
+  reverseThrustPower: 0.25, //  was reverseAccel
+  rotationalPower: 0.01, // was rotAccel
+  rotSpdMax: 0.1, // was maxRotVel
+  shieldsRegenRate: 10.0,
+  energyRegenRate: 5.0,
+  weaponFireRate: 10.0 // was fireRate
 }
 
 const updateHull = (state, action) => {
