@@ -48,8 +48,9 @@ const initialState = {
   lateralThrustSpdMax: 5.0,
   thrustPower: 0.5, // was accel
   lateralThrustPower: 0.5, // was lateralThrustAccel
+  brakePower: 0.9, // was brakeForce
   reverseThrustPower: 0.25, //  was reverseAccel
-  rotationalPower: 0.01, // was rotAccel
+  rotAccel: 0.01, // was rotAccel
   rotSpdMax: 0.1, // was maxRotVel
   shieldsRegenRate: 10.0,
   energyRegenRate: 5.0,
