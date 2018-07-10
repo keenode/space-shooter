@@ -66,13 +66,9 @@ class GameContainer extends Component {
     return (
       <div className={styles.GameContainer}>
         <GameCanvas
-          hull={this.props.playerShip.hull}
-          shields={this.props.playerShip.shields}
-          shieldsRegenRate={this.props.playerShip.shieldsRegenRate}
-          energy={this.props.playerShip.energy}
-          fuel={this.props.playerShip.fuel}
-          speedMax={this.props.playerShip.speedMax}
-          energyRegenRate={this.props.playerShip.energyRegenRate}
+          playerShip={this.props.playerShip}
+          gameloopPlayerShipRequest={ data => this.props.onGameloopPlayerShip(data) }
+
           hullDamaged={ dmgAmt => this.hullDamagedHandler(dmgAmt) }
           shieldsRegenerated={ regenAmt => this.shieldsRegeneratedHandler(regenAmt) }
           energyRegenerated={ regenAmt => this.energyRegeneratedHandler(regenAmt) }
@@ -116,6 +112,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    onGameloopPlayerShip: data => dispatch(actions.gameloopPlayerShip(data)),
     onUpdateHull: value => dispatch(actions.updateHull(value)),
     onUpdateShields: value => dispatch(actions.updateShields(value)),
     onUpdateEnergy: value => dispatch(actions.updateEnergy(value)),

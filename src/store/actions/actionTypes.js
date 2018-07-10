@@ -1,4 +1,5 @@
 // Player Ship --
+export const GAMELOOP_PLAYER_SHIP = 'GAMELOOP_PLAYER_SHIP'
 export const UPDATE_HULL = 'UPDATE_HULL'
 export const UPDATE_SHIELDS = 'UPDATE_SHIELDS'
 export const UPDATE_ENERGY = 'UPDATE_ENERGY'

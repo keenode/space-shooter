@@ -56,6 +56,13 @@ const initialState = {
   weaponFireRate: 10.0 // was fireRate
 }
 
+const gameloopPlayerShip = (state, action) => {
+  return {
+    ...state,
+    // TODO: Figure it out...
+  }
+}
+
 const updateHull = (state, action) => {
   const hull = checkBounds(state.hull, state.hullMax, action.changeAmt)
   return {
@@ -149,6 +156,7 @@ const setIsFiringWeapon = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.GAMELOOP_PLAYER_SHIP: return gameloopPlayerShip(state, action)
     case actionTypes.UPDATE_HULL: return updateHull(state, action)
     case actionTypes.UPDATE_SHIELDS: return updateShields(state, action)
     case actionTypes.UPDATE_ENERGY: return updateEnergy(state, action)

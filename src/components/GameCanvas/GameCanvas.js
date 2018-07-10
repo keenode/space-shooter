@@ -151,13 +151,14 @@ class GameCanvas extends Component {
 
   placeEntities() {
     // Player
-    this.playerShip = new PlayerShip({
-      shields: this.props.shields,
-      fuel: this.props.fuel,
-      shieldsRegenRate: this.props.shieldsRegenRate,
-      energyRegenRate: this.props.energyRegenRate,
-      speedMax: this.props.speedMax
-    }, sceneBounds)
+    // this.playerShip = new PlayerShip({
+    //   shields: this.props.playerShip.shields,
+    //   fuel: this.props.playerShip.fuel,
+    //   shieldsRegenRate: this.props.playerShip.shieldsRegenRate,
+    //   energyRegenRate: this.props.playerShip.energyRegenRate,
+    //   speedMax: this.props.playerShip.speedMax
+    // }, sceneBounds)
+    this.playerShip = new PlayerShip(this.props.playerShip, sceneBounds)
     this.playerContainer.addChild(this.playerProjectiles.container)
     this.playerContainer.addChild(this.playerShip.PIXIContainer)
 
@@ -181,7 +182,13 @@ class GameCanvas extends Component {
 
   gameLoop(delta) {
     // Hande player updates
-    if (this.props.hull <= 0) {
+
+    const playerShipUpdates = {
+
+    }
+    this.props.gameloopPlayerShipRequest(playerShipUpdates)
+
+    if (this.props.playerShip.hull <= 0) {
       this.playerShip.isAlive = false
       this.playerShip.PIXIContainer.alpha = 0.25
       if (!this.playerDeadReported) {
@@ -196,7 +203,7 @@ class GameCanvas extends Component {
       }
     }
     this.playerShip.update(delta)
-    if (this.playerShip.isFiringWeapon && this.playerShip.fireTimer >= this.playerShip.fireRate && this.props.energy > 10) {
+    if (this.playerShip.isFiringWeapon && this.playerShip.fireTimer >= this.playerShip.fireRate && this.props.playerShip.energy > 10) {
       const projectile = new Projectile(this.playerShip)
       this.playerProjectiles.data.push(projectile)
       this.playerProjectiles.container.addChild(projectile.PIXIContainer)
@@ -211,9 +218,9 @@ class GameCanvas extends Component {
     }
     this.props.speedUpdated(this.playerShip.spd)
     this.props.rotationUpdated(this.playerShip.facingAngle)
-    if ((this.playerShip.isThrusting || this.playerShip.lateralThrusting.left || this.playerShip.lateralThrusting.right || this.playerShip.isReversing) && this.props.fuel > 0) {
+    if ((this.playerShip.isThrusting || this.playerShip.lateralThrusting.left || this.playerShip.lateralThrusting.right || this.playerShip.isReversing) && this.props.playerShip.fuel > 0) {
       this.props.fuelUsed(0.1)
-      this.playerShip.fuel = this.props.fuel
+      this.playerShip.fuel = this.props.playerShip.fuel
 
       if (!this.thrustsSfxIsPlaying) {
         this.thrustSfx.play()
@@ -223,7 +230,7 @@ class GameCanvas extends Component {
       this.thrustSfx.stop()
       this.thrustsSfxIsPlaying = false
     }
-    if (this.props.fuel <= 0 && !this.playerNoFuelReported) {
+    if (this.props.playerShip.fuel <= 0 && !this.playerNoFuelReported) {
       this.props.notificationReported('You ran out of fuel!', 'noFuel')
       this.playerNoFuelReported = true
     }

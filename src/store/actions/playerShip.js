@@ -1,5 +1,12 @@
 import * as actionTypes from './actionTypes'
 
+export const gameloopPlayerShip = data => {
+  return {
+    type: actionTypes.GAMELOOP_PLAYER_SHIP,
+    data
+  }
+}
+
 export const updateHull = changeAmt => {
   return {
     type: actionTypes.UPDATE_HULL,
