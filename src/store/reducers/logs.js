@@ -1,7 +1,7 @@
 import * as actionTypes from '../actions/actionTypes'
 
 const initialState = {
-  messages: [
+  notifications: [
     {
       type: 'log',
       contents: 'Welcome to outer space!',
@@ -10,22 +10,22 @@ const initialState = {
   ]
 }
 
-const addMessage = (state, action) => {
-  const newMessage = {
-    contents: action.messageContents,
-    type: action.messageType,
+const addNotification = (state, action) => {
+  const newNotification = {
+    contents: action.notificationContents,
+    type: action.notificationType,
     sent: new Date()
   }
-  const updatedMessages = [...state.messages, newMessage]
+  const updatedNotifications = [...state.notifications, newNotification]
   return {
     ...state,
-    messages: updatedMessages
+    notifications: updatedNotifications
   }
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.ADD_MESSAGE: return addMessage(state, action)
+    case actionTypes.ADD_NOTIFICATION: return addNotification(state, action)
     default:
       return state
   }

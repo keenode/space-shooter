@@ -8,14 +8,14 @@ import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 
 import playerShipReducer from './store/reducers/playerShip'
-import messagesReducer from './store/reducers/messages'
+import logsReducer from './store/reducers/logs'
 
 import './index.css'
 
 
 const rootReducer = combineReducers({
   playerShip: playerShipReducer,
-  messages: messagesReducer
+  logs: logsReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose

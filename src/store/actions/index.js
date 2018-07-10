@@ -13,4 +13,4 @@ export {
   setIsFiringWeapon
 } from './playerShip'
 
-export { addMessage } from './messages'
+export { addNotification } from './logs'

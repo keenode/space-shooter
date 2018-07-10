@@ -185,7 +185,7 @@ class GameCanvas extends Component {
       this.playerShip.isAlive = false
       this.playerShip.PIXIContainer.alpha = 0.25
       if (!this.playerDeadReported) {
-        this.props.messageReported('Your ship has been destroyed!', 'playerShipDestroyed')
+        this.props.notificationReported('Your ship has been destroyed!', 'playerShipDestroyed')
         this.playerDeadReported = true
 
         const hitSfx = new Howl({
@@ -224,7 +224,7 @@ class GameCanvas extends Component {
       this.thrustsSfxIsPlaying = false
     }
     if (this.props.fuel <= 0 && !this.playerNoFuelReported) {
-      this.props.messageReported('You ran out of fuel!', 'noFuel')
+      this.props.notificationReported('You ran out of fuel!', 'noFuel')
       this.playerNoFuelReported = true
     }
     if (this.playerShip.isReversing) {

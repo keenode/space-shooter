@@ -2,11 +2,11 @@ import * as actionTypes from '../actions/actionTypes'
 import { checkBounds } from '../../shared/utility'
 
 const initialState = {
-  hull: 100,
-  hullMax: 100,
   shields: 100,
   shieldsMax: 100,
   shieldsRegenRate: 10.0,
+  hull: 100,
+  hullMax: 100,
   energy: 100.0,
   energyMax: 100.0,
   energyRegenRate: 5.0,

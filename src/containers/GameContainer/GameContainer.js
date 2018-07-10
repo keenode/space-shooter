@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import GameCanvas from '../../components/GameCanvas/GameCanvas'
 import HullDash from '../../components/UI/HullDash/HullDash'
-import MessagesPanel from '../../components/UI/MessagesPanel/MessagesPanel'
+import LogsPanel from '../../components/UI/LogsPanel/LogsPanel'
 
 import * as actions from '../../store/actions'
 
@@ -18,16 +18,16 @@ class GameContainer extends Component {
       const dmgDiff = this.props.playerShip.shields - dmgAmt
       this.props.onUpdateShields(-dmgAmt)
       if (dmgDiff >= 0) {
-        this.props.onAddMessage(`Shields absorbed ${dmgAmt} damage!`, 'shieldsDamaged')
+        this.props.onAddNotification(`Shields absorbed ${dmgAmt} damage!`, 'shieldsDamaged')
       } else {
         const shieldsDamageAmt = dmgDiff + dmgAmt
-        this.props.onAddMessage(`Shields absorbed ${shieldsDamageAmt} damage!`, 'shieldsDamaged')
-        this.props.onAddMessage(`Hull took ${Math.abs(dmgDiff)} damage!`, 'hullDamaged')
+        this.props.onAddNotification(`Shields absorbed ${shieldsDamageAmt} damage!`, 'shieldsDamaged')
+        this.props.onAddNotification(`Hull took ${Math.abs(dmgDiff)} damage!`, 'hullDamaged')
         this.props.onUpdateHull(dmgDiff)
       }
     } else {
       this.props.onUpdateHull(-dmgAmt)
-      this.props.onAddMessage(`Hull took ${dmgAmt} damage!`, 'hullDamaged')
+      this.props.onAddNotification(`Hull took ${dmgAmt} damage!`, 'hullDamaged')
     }
   }
 
@@ -82,8 +82,8 @@ class GameContainer extends Component {
           fuelUsed={ value => this.fuelUsedHandler(value) }
           pilotModeChanged={ mode => this.props.onSetPilotMode(mode) }
           pilotStateChanged={ (pilotState, value) => this.pilotStateChangedHandler(pilotState, value) }
-          messageReported={ (message, type) => this.props.onAddMessage(message, type) } />
-        <MessagesPanel messages={this.props.messages} />
+          notificationReported={ (message, type) => this.props.onAddNotification(message, type) } />
+        <LogsPanel logs={this.props.logs} />
         <HullDash
           hull={this.props.playerShip.hull}
           hullMax={this.props.playerShip.hullMax}
@@ -109,28 +109,8 @@ class GameContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    playerShip: {
-      hull: state.playerShip.hull,
-      hullMax: state.playerShip.hullMax,
-      shields: state.playerShip.shields,
-      shieldsMax: state.playerShip.shieldsMax,
-      shieldsRegenRate: state.playerShip.shieldsRegenRate,
-      energy: state.playerShip.energy,
-      energyMax: state.playerShip.energyMax,
-      energyRegenRate: state.playerShip.energyRegenRate,
-      speed: state.playerShip.speed,
-      speedMax: state.playerShip.speedMax,
-      rotation: state.playerShip.rotation,
-      fuel: state.playerShip.fuel,
-      fuelMax: state.playerShip.fuelMax,
-      pilotMode: state.playerShip.pilotMode,
-      isThrusting: state.playerShip.isThrusting,
-      isBraking: state.playerShip.isBraking,
-      isLateralThrustingLeft: state.playerShip.isLateralThrustingLeft,
-      isLateralThrustingRight: state.playerShip.isLateralThrustingRight,
-      isFiringWeapon: state.playerShip.isFiringWeapon
-    },
-    messages: state.messages.messages
+    playerShip: state.playerShip,
+    logs: state.logs.notifications
   }
 }
 
@@ -148,7 +128,7 @@ const mapDispatchToProps = dispatch => {
     onSetIsLateralThrustingLeft: isLateralThrustingLeft => dispatch(actions.setIsLateralThrustingLeft(isLateralThrustingLeft)),
     onSetIsLateralThrustingRight: isLateralThrustingRight => dispatch(actions.setIsLateralThrustingRight(isLateralThrustingRight)),
     onSetIsFiringWeapon: isFiringWeapon => dispatch(actions.setIsFiringWeapon(isFiringWeapon)),
-    onAddMessage: (message, type) => dispatch(actions.addMessage(message, type))
+    onAddNotification: (notification, type) => dispatch(actions.addNotification(notification, type))
   }
 }
 
