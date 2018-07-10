@@ -14,43 +14,45 @@ class PlayerShip {
   gfxReversing = new PIXI.Container()
   sceneBounds = null
 
-  vx = 0
-  vy = 0
-  rv = 0
-  lateralThrustVelX = 0
-  lateralThrustVelY = 0
-  reverseVelX = 0
-  reverseVelY = 0
-  accel = 0.5
-  lateralThrustAccel = 0.5
-  reverseAccel = 0.25
-  spd = 0
-  maxSpd = 10.0
-  maxLateralThrustSpd = 5.0
-  rotAccel = 0.01
-  maxRotVel = 0.1
-  mass = 0.98
-  brakeForce = 0.9
+  // vx = 0
+  // vy = 0
+  // rv = 0
+  // lateralThrustVelX = 0
+  // lateralThrustVelY = 0
+  // reverseVelX = 0
+  // reverseVelY = 0
+  // accel = 0.5
+  // lateralThrustAccel = 0.5
+  // reverseAccel = 0.25
+  // spd = 0
+  // maxSpd = 10.0
+  // maxLateralThrustSpd = 5.0
+  // rotAccel = 0.01
+  // maxRotVel = 0.1
+  // mass = 0.98
+  // brakeForce = 0.9
+  // isThrusting = false
+  // isBraking = false
+  // isReversing = false
+  // isFiringWeapon = false
+  // fireRate = 10.0
+  // shields = 0.0
+  // shieldsRegenRate = 0
+  // energyRegenRate = 0
+  // fuel = 0.0
+  // isAlive = true
+
+  // Internal vars
   rotating = {
     left: false,
     right: false
   }
-  lateralThrusting = {
-    left: false,
-    right: false
-  }
-  isThrusting = false
-  isBraking = false
-  isReversing = false
-  isFiringWeapon = false
-  fireRate = 10.0
-  shields = 0.0
-  shieldsRegenRate = 0
-  energyRegenRate = 0
-  fuel = 0.0
-  isAlive = true
-
-  // Internal vars
+  // lateralThrusting = {
+  //   left: false,
+  //   right: false
+  // }
+  isLateralThrustingLeft = false
+  isLateralThrustingRight = false
   facingAngle = 0
   lateralThrustSpd = 0
   shieldsRegenTimer = 0
@@ -60,12 +62,10 @@ class PlayerShip {
   shieldsRegenReadyTime = 100.0
   shieldsRegenReadyTimer = 0
 
-  constructor(data, sceneBounds) {
-    this.shields = data.shields
-    this.fuel = data.fuel
-    this.shieldsRegenRate = data.shieldsRegenRate
-    this.energyRegenRate = data.energyRegenRate
-    this.maxSpd = data.speedMax
+  data = null
+
+  constructor(props, sceneBounds) {
+    this.data = props
     this.sceneBounds = sceneBounds
     this.PIXIContainer.x = sceneBounds.width / 2
     this.PIXIContainer.y = sceneBounds.height - shipHeight / 2 - shipBottomPadding
@@ -99,15 +99,15 @@ class PlayerShip {
 
   handleKeyDown(e) {
     // console.log(e.which)
-    if (!this.isAlive) {
+    if (!this.data.isAlive) {
       return false
     }
 
     // Handle key down for thursting & braking
     if (e.which === 87 || e.which === 38) {
-      this.isThrusting = true
+      this.data.isThrusting = true
     } else if (e.which === 83 || e.which === 40) {
-      this.isBraking = true
+      this.data.isBraking = true
     }
 
     // Handle key down for rotating
@@ -119,27 +119,27 @@ class PlayerShip {
 
     // Handle key down for lateral thrusting
     if (e.which === 81 || e.which === 37) {
-      this.lateralThrusting.left = true
+      this.data.isLateralThrustingLeft = true
     } else if (e.which === 69 || e.which === 39) {
-      this.lateralThrusting.right = true
+      this.data.isLateralThrustingRight = true
     }
 
     // Handle key down for firing weapon
     if (e.which === 32) {
-      this.isFiringWeapon = true
+      this.data.isFiringWeapon = true
     }
   }
 
   handleKeyUp(e) {
-    if (!this.isAlive) {
+    if (!this.data.isAlive) {
       return false
     }
 
     // Handle key up for thursting & braking
     if (e.which === 87 || e.which === 38) {
-      this.isThrusting = false
+      this.data.isThrusting = false
     } else if (e.which === 83 || e.which === 40) {
-      this.isBraking = false
+      this.data.isBraking = false
     }
 
     // Handle key up for rotating
@@ -151,14 +151,14 @@ class PlayerShip {
 
     // Handle key up for lateral thrusting
     if (e.which === 81 || e.which === 37) {
-      this.lateralThrusting.left = false
+      this.data.isLateralThrustingLeft = false
     } else if (e.which === 69 || e.which === 39) {
-      this.lateralThrusting.right = false
+      this.data.isLateralThrustingRight = false
     }
 
     // Handle key up for firing weapon
     if (e.which === 32) {
-      this.isFiringWeapon = false
+      this.data.isFiringWeapon = false
     }
   }
 
@@ -201,137 +201,135 @@ class PlayerShip {
   }
 
   handleGfxDisplay() {
-    this.gfxThrusting.visible = this.fuel > 0 ? this.isThrusting : false
-    this.gfxLateralThrustingLeft.visible = this.fuel > 0 ? this.lateralThrusting.right : false
-    this.gfxLateralThrustingRight.visible = this.fuel > 0 ? this.lateralThrusting.left : false
-    this.gfxBraking.visible = this.isBraking
-    this.gfxReversing.visible = this.isReversing
+    this.gfxThrusting.visible = this.data.fuel > 0 ? this.data.isThrusting : false
+    this.gfxLateralThrustingLeft.visible = this.data.fuel > 0 ? this.data.isLateralThrustingRight : false
+    this.gfxLateralThrustingRight.visible = this.data.fuel > 0 ? this.data.isLateralThrustingLeft : false
+    this.gfxBraking.visible = this.data.isBraking
+    this.gfxReversing.visible = this.data.isReversing
   }
 
-  update(delta) {
-    // Get angle of velocity
-    // var angle = Math.atan2(this.vy, this.vx)
+  update(playerShipProps, delta) {
     this.facingAngle = this.PIXIContainer.rotation * 180 / Math.PI
     // console.log(this.facingAngle)
 
     // Set magnitude of speed
-    this.spd = Math.sqrt(this.vy * this.vy + this.vx * this.vx)
-    this.lateralThrustSpd = Math.sqrt(this.lateralThrustVelY * this.lateralThrustVelY + this.lateralThrustVelX * this.lateralThrustVelX)
-    // console.log(this.spd)
+    this.data.speed = Math.sqrt(this.data.velocity.y * this.data.velocity.y + this.data.velocity.x * this.data.velocity.x)
+    this.lateralThrustSpd = Math.sqrt(this.data.lateralThrustForce.y * this.data.lateralThrustForce.y + this.data.lateralThrustForce.x * this.data.lateralThrustForce.x)
+    // console.log(this.data.speed)
     // console.log(this.lateralThrustSpd)
 
-    // if (this.spd > this.maxSpd) {
-    //   this.spd = this.maxSpd
+    // if (this.data.speed > this.data.speedMax) {
+    //   this.data.speed = this.data.speedMax
     // }
 
-    // if (this.lateralThrustSpd > this.maxLateralThrustSpd) {
-    //   this.lateralThrustSpd = this.maxLateralThrustSpd
+    // if (this.lateralThrustSpd > this.data.lateralThrustSpdMax) {
+    //   this.lateralThrustSpd = this.data.lateralThrustSpdMax
     // }
 
     // Handle rotational acceleration and velocity
     const rotDir = this.rotating.right ? 1 : this.rotating.left ? -1 : 0
-    if (Math.abs(this.rv) < this.maxRotVel) {
-      this.rv += this.rotAccel * rotDir
+    if (Math.abs(this.data.rotationalVelocity) < this.data.rotSpdMax) {
+      this.data.rotationalVelocity += this.data.rotAccel * rotDir
     }
 
     // Handle thrusting acceleration and velocity
-    if (this.isThrusting && this.spd < this.maxSpd && this.fuel > 0) {
-      this.vx += this.accel * Math.cos(this.PIXIContainer.rotation - offsetAngle)
-      this.vy += this.accel * Math.sin(this.PIXIContainer.rotation - offsetAngle)
+    if (this.data.isThrusting && this.data.speed < this.data.speedMax && this.data.fuel > 0) {
+      this.data.velocity.x += this.data.thrustPower * Math.cos(this.PIXIContainer.rotation - offsetAngle)
+      this.data.velocity.y += this.data.thrustPower * Math.sin(this.PIXIContainer.rotation - offsetAngle)
     }
 
     // Handle lateralThrusting forces
-    const lateralThrustDir = this.lateralThrusting.right ? 1 : this.lateralThrusting.left ? -1 : 0
-    if (lateralThrustDir !== 0 && this.lateralThrustSpd < this.maxLateralThrustSpd && this.fuel > 0) {
-      const strafeForceX = this.lateralThrustAccel * Math.cos(this.PIXIContainer.rotation) * lateralThrustDir
-      const strafeForceY = this.lateralThrustAccel * Math.sin(this.PIXIContainer.rotation) * lateralThrustDir
-      this.lateralThrustVelX += strafeForceX
-      this.lateralThrustVelY += strafeForceY
-      this.vx += strafeForceX
-      this.vy += strafeForceY
+    const lateralThrustDir = this.data.isLateralThrustingRight ? 1 : this.data.isLateralThrustingLeft ? -1 : 0
+    if (lateralThrustDir !== 0 && this.lateralThrustSpd < this.data.lateralThrustSpdMax && this.data.fuel > 0) {
+      const lateralThrustForceX = this.data.lateralThrustPower * Math.cos(this.PIXIContainer.rotation) * lateralThrustDir
+      const lateralThrustForceY = this.data.lateralThrustPower * Math.sin(this.PIXIContainer.rotation) * lateralThrustDir
+      this.data.lateralThrustForce.x += lateralThrustForceX
+      this.data.lateralThrustForce.y += lateralThrustForceY
+      this.data.velocity.x += lateralThrustForceX
+      this.data.velocity.y += lateralThrustForceY
     }
 
     // Handle braking
-    if (this.isBraking) {
+    if (this.data.isBraking) {
       // console.log('isBraking')
-      this.vx *= this.brakeForce
-      this.vy *= this.brakeForce
-      this.rv *= this.brakeForce
-      if (this.spd < 0.5) {
-        this.isReversing = this.fuel > 0 ? true : false
+      this.data.velocity.x *= this.data.brakePower
+      this.data.velocity.y *= this.data.brakePower
+      this.data.rotationalVelocity *= this.data.brakePower
+      if (this.data.speed < 0.5) {
+        this.data.isReversing = this.data.fuel > 0 ? true : false
       }
-    } else if (this.spd > 0) {
-      this.isReversing = false
+    } else if (this.data.speed > 0) {
+      this.data.isReversing = false
     }
 
     // Handle reversing
-    if (this.isReversing && this.fuel > 0) {
+    if (this.data.isReversing && this.data.fuel > 0) {
       // console.log('isReversing')
-      const reverseForceX = this.reverseAccel * Math.cos(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)
-      const reverseForceY = this.reverseAccel * Math.sin(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)
-      this.reverseVelX += reverseForceX
-      this.reverseVelY += reverseForceY
-      this.vx += reverseForceX
-      this.vy += reverseForceY
+      const reverseForceX = this.data.reverseThrustPower * Math.cos(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)
+      const reverseForceY = this.data.reverseThrustPower * Math.sin(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)
+      this.data.reverseThrustForce.x += reverseForceX
+      this.data.reverseThrustForce.y += reverseForceY
+      this.data.velocity.x += reverseForceX
+      this.data.velocity.y += reverseForceY
     }
 
     // Handle decceleration from mass
-    this.vx *= this.mass
-    this.vy *= this.mass
-    if (Math.abs(Math.round(this.vx * 100) / 100) <= 0) {
-      this.vx = 0
+    this.data.velocity.x *= this.data.mass
+    this.data.velocity.y *= this.data.mass
+    if (Math.abs(Math.round(this.data.velocity.x * 100) / 100) <= 0) {
+      this.data.velocity.x = 0
     }
-    if (Math.abs(Math.round(this.vy * 100) / 100) <= 0) {
-      this.vy = 0
-    }
-
-    this.lateralThrustVelX *= this.mass
-    this.lateralThrustVelY *= this.mass
-    if (Math.abs(Math.round(this.lateralThrustVelX * 100) / 100) <= 0) {
-      this.lateralThrustVelX = 0
-    }
-    if (Math.abs(Math.round(this.lateralThrustVelY * 100) / 100) <= 0) {
-      this.lateralThrustVelY = 0
+    if (Math.abs(Math.round(this.data.velocity.y * 100) / 100) <= 0) {
+      this.data.velocity.y = 0
     }
 
-    this.reverseVelX *= this.mass
-    this.reverseVelY *= this.mass
-    if (Math.abs(Math.round(this.reverseVelX * 100) / 100) <= 0) {
-      this.reverseVelX = 0
+    this.data.lateralThrustForce.x *= this.data.mass
+    this.data.lateralThrustForce.y *= this.data.mass
+    if (Math.abs(Math.round(this.data.lateralThrustForce.x * 100) / 100) <= 0) {
+      this.data.lateralThrustForce.x = 0
     }
-    if (Math.abs(Math.round(this.reverseVelY * 100) / 100) <= 0) {
-      this.reverseVelY = 0
+    if (Math.abs(Math.round(this.data.lateralThrustForce.y * 100) / 100) <= 0) {
+      this.data.lateralThrustForce.y = 0
+    }
+
+    this.data.reverseThrustForce.x *= this.data.mass
+    this.data.reverseThrustForce.y *= this.data.mass
+    if (Math.abs(Math.round(this.data.reverseThrustForce.x * 100) / 100) <= 0) {
+      this.data.reverseThrustForce.x = 0
+    }
+    if (Math.abs(Math.round(this.data.reverseThrustForce.y * 100) / 100) <= 0) {
+      this.data.reverseThrustForce.y = 0
     }
 
     if (rotDir === 0) {
-      this.rv *= this.mass * 0.8
-      if (Math.abs(Math.round(this.rv * 100) / 100) <= 0) {
-        this.rv = 0
+      this.data.rotationalVelocity *= this.data.mass * 0.8
+      if (Math.abs(Math.round(this.data.rotationalVelocity * 100) / 100) <= 0) {
+        this.data.rotationalVelocity = 0
       }
     }
 
     // Bounds checking
-    if (this.PIXIContainer.x + this.vx < 0) {
-      this.vx = 0
-      this.vy = 0
+    if (this.PIXIContainer.x + this.data.velocity.x < 0) {
+      this.data.velocity.x = 0
+      this.data.velocity.y = 0
       this.PIXIContainer.x = 0
-    } else if (this.PIXIContainer.x + this.vx > this.sceneBounds.width) {
-      this.vx = 0
-      this.vy = 0
+    } else if (this.PIXIContainer.x + this.data.velocity.x > this.sceneBounds.width) {
+      this.data.velocity.x = 0
+      this.data.velocity.y = 0
       this.PIXIContainer.x = this.sceneBounds.width
-    } else if (this.PIXIContainer.y + this.vy < 0) {
-      this.vx = 0
-      this.vy = 0
+    } else if (this.PIXIContainer.y + this.data.velocity.y < 0) {
+      this.data.velocity.x = 0
+      this.data.velocity.y = 0
       this.PIXIContainer.y = 0
-    } else if (this.PIXIContainer.y + this.vy > this.sceneBounds.height) {
-      this.vx = 0
-      this.vy = 0
+    } else if (this.PIXIContainer.y + this.data.velocity.y > this.sceneBounds.height) {
+      this.data.velocity.x = 0
+      this.data.velocity.y = 0
       this.PIXIContainer.y = this.sceneBounds.height
     } else {
       // Update position
-      this.PIXIContainer.rotation += this.rv * delta
-      this.PIXIContainer.x += this.vx * delta
-      this.PIXIContainer.y += this.vy * delta
+      this.PIXIContainer.rotation += this.data.rotationalVelocity * delta
+      this.PIXIContainer.x += this.data.velocity.x * delta
+      this.PIXIContainer.y += this.data.velocity.y * delta
     }
 
     // Handle shields regen timer
@@ -350,6 +348,13 @@ class PlayerShip {
     this.fireTimer += delta
 
     this.handleGfxDisplay()
+
+    // Update local data
+    this.data = {
+      ...this.data,
+      ...playerShipProps
+    }
+    // console.log(this.data.isThrusting)
   }
 }
 

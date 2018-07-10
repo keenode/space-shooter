@@ -60,7 +60,7 @@ const initialState = {
 const gameloopPlayerShipUpdate = (state, action) => {
   return {
     ...state,
-    // TODO: Figure it out...
+    ...action.data
   }
 }
 

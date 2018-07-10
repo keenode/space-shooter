@@ -183,37 +183,37 @@ class GameCanvas extends Component {
   gameLoop(delta) {
     // Hande player updates
 
-    const playerShipUpdates = {
-      shields: 0,
-      hull: 0,
-      energy: 0,
-      fuel: 0,
-      position: {
-        x: 0,
-        y: 0
-      },
-      rotation: 0.0,
-      speed: 0.0,
-      velocity: {
-        x: 0,
-        y: 0
-      },
-      rotationalVelocity: 0,
-      lateralThrustForce: {
-        x: 0,
-        y: 0
-      },
-      reverseThrustForce: {
-        x: 0,
-        y: 0
-      },
-      isThrusting: false,
-      isLateralThrustingLeft: false,
-      isLateralThrustingRight: false,
-      isBraking: false,
-      isFiringWeapon: false
-    }
-    this.props.gameloopPlayerShipUpdated(playerShipUpdates)
+    // const playerShipUpdates = {
+    //   shields: 0,
+    //   hull: 0,
+    //   energy: 0,
+    //   fuel: 0,
+    //   position: {
+    //     x: 0,
+    //     y: 0
+    //   },
+    //   rotation: 0.0,
+    //   speed: 0.0,
+    //   velocity: {
+    //     x: 0,
+    //     y: 0
+    //   },
+    //   rotationalVelocity: 0,
+    //   lateralThrustForce: {
+    //     x: 0,
+    //     y: 0
+    //   },
+    //   reverseThrustForce: {
+    //     x: 0,
+    //     y: 0
+    //   },
+    //   isThrusting: false,
+    //   isLateralThrustingLeft: false,
+    //   isLateralThrustingRight: false,
+    //   isBraking: false,
+    //   isFiringWeapon: false
+    // }
+    // this.props.gameloopPlayerShipUpdated(playerShipUpdates)
 
     if (this.props.playerShip.hull <= 0) {
       this.playerShip.isAlive = false
@@ -229,7 +229,10 @@ class GameCanvas extends Component {
         hitSfx.play()
       }
     }
-    this.playerShip.update(delta)
+
+    this.playerShip.update(this.props.playerShip, delta)
+    this.props.gameloopPlayerShipUpdated(this.playerShip.data)
+
     if (this.playerShip.isFiringWeapon && this.playerShip.fireTimer >= this.playerShip.fireRate && this.props.playerShip.energy > 10) {
       const projectile = new Projectile(this.playerShip)
       this.playerProjectiles.data.push(projectile)
@@ -243,9 +246,11 @@ class GameCanvas extends Component {
       })
       laserSfx.play()
     }
-    this.props.speedUpdated(this.playerShip.spd)
-    this.props.rotationUpdated(this.playerShip.facingAngle)
-    if ((this.playerShip.isThrusting || this.playerShip.lateralThrusting.left || this.playerShip.lateralThrusting.right || this.playerShip.isReversing) && this.props.playerShip.fuel > 0) {
+
+    // this.props.speedUpdated(this.playerShip.spd)
+    // this.props.rotationUpdated(this.playerShip.facingAngle)
+
+    if ((this.props.playerShip.isThrusting || this.props.playerShip.isLateralThrustingLeft || this.props.playerShip.isLateralThrustingRight || this.props.playerShip.isReversing) && this.props.playerShip.fuel > 0) {
       this.props.fuelUsed(0.1)
       this.playerShip.fuel = this.props.playerShip.fuel
 
@@ -257,28 +262,31 @@ class GameCanvas extends Component {
       this.thrustSfx.stop()
       this.thrustsSfxIsPlaying = false
     }
+
     if (this.props.playerShip.fuel <= 0 && !this.playerNoFuelReported) {
       this.props.notificationReported('You ran out of fuel!', 'noFuel')
       this.playerNoFuelReported = true
     }
-    if (this.playerShip.isReversing) {
-      this.props.pilotModeChanged('R')
-    } else {
-      this.props.pilotModeChanged('D')
-    }
-    this.props.pilotStateChanged('thrusting', this.playerShip.isThrusting)
-    this.props.pilotStateChanged('braking', this.playerShip.isBraking)
-    this.props.pilotStateChanged('lateralThrustingLeft', this.playerShip.lateralThrusting.left)
-    this.props.pilotStateChanged('lateralThrustingRight', this.playerShip.lateralThrusting.right)
-    this.props.pilotStateChanged('firingWeapon', this.playerShip.isFiringWeapon)
-    if (this.playerShip.shieldsRegenTimer >= this.playerShip.shieldsRegenRate && this.playerShip.shieldsRegenIsReady && this.playerShip.isAlive) {
-      this.props.shieldsRegenerated(1)
-      this.playerShip.shieldsRegenTimer = 0
-    }
-    if (this.playerShip.energyRegenTimer >= this.playerShip.energyRegenRate && this.playerShip.isAlive) {
-      this.props.energyRegenerated(1)
-      this.playerShip.energyRegenTimer = 0
-    }
+
+    // if (this.playerShip.isReversing) {
+    //   this.props.pilotModeChanged('R')
+    // } else {
+    //   this.props.pilotModeChanged('D')
+    // }
+    // this.props.pilotStateChanged('thrusting', this.playerShip.isThrusting)
+    // this.props.pilotStateChanged('braking', this.playerShip.isBraking)
+    // this.props.pilotStateChanged('lateralThrustingLeft', this.playerShip.lateralThrusting.left)
+    // this.props.pilotStateChanged('lateralThrustingRight', this.playerShip.lateralThrusting.right)
+    // this.props.pilotStateChanged('firingWeapon', this.playerShip.isFiringWeapon)
+
+    // if (this.playerShip.shieldsRegenTimer >= this.playerShip.shieldsRegenRate && this.playerShip.shieldsRegenIsReady && this.playerShip.isAlive) {
+    //   this.props.shieldsRegenerated(1)
+    //   this.playerShip.shieldsRegenTimer = 0
+    // }
+    // if (this.playerShip.energyRegenTimer >= this.playerShip.energyRegenRate && this.playerShip.isAlive) {
+    //   this.props.energyRegenerated(1)
+    //   this.playerShip.energyRegenTimer = 0
+    // }
 
     // Handle enemy updates
     for (let b = 0; b < this.enemies.data.length; b++) {
