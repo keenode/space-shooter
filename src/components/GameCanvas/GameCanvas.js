@@ -242,7 +242,7 @@ class GameCanvas extends Component {
     for (let b = 0; b < this.enemies.data.length; b++) {
       const enemy = this.enemies.data[b]
 
-      // Check collision with player
+      // Check enemy collision with player
       if (collisionTest(enemy.PIXIContainer, this.playerShip.PIXIContainer)) {
         enemy.isAlive = false
         // this.props.hullDamaged(Math.floor(Math.random() * 25) + 50)

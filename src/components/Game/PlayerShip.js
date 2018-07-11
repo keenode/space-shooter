@@ -14,63 +14,27 @@ class PlayerShip {
   gfxBraking = new PIXI.Container()
   gfxReversing = new PIXI.Container()
   sceneBounds = null
-
-  // vx = 0
-  // vy = 0
-  // rv = 0
-  // lateralThrustVelX = 0
-  // lateralThrustVelY = 0
-  // reverseVelX = 0
-  // reverseVelY = 0
-  // accel = 0.5
-  // lateralThrustAccel = 0.5
-  // reverseAccel = 0.25
-  // spd = 0
-  // maxSpd = 10.0
-  // maxLateralThrustSpd = 5.0
-  // rotAccel = 0.01
-  // maxRotVel = 0.1
-  // mass = 0.98
-  // brakeForce = 0.9
-  // isThrusting = false
-  // isBraking = false
-  // isReversing = false
-  // isRequestingToFireWeapon = false
-  // fireRate = 10.0
-  // shields = 0.0
-  // shieldsRegenRate = 0
-  // energyRegenRate = 0
-  // fuel = 0.0
-  // isAlive = true
-
-  // Internal vars
+  data = null
   rotating = {
     left: false,
     right: false
   }
-  // lateralThrusting = {
-  //   left: false,
-  //   right: false
-  // }
   isLateralThrustingLeft = false
   isLateralThrustingRight = false
-  facingAngle = 0
   lateralThrustSpd = 0
   shieldsRegenTimer = 0
   energyRegenTimer = 0
-  weaponFireTimer = 0
   shieldsRegenIsReady = true
   shieldsRegenReadyTime = 100.0
   shieldsRegenReadyTimer = 0
-
-  data = null
-  thrustSfx = new Howl({
-    src: ['assets/audio/fx/thrusters.wav']
-  })
+  weaponFireTimer = 0
+  thrustSfx = new Howl({ src: ['assets/audio/fx/thrusters.wav'] })
   thrustsSfxIsPlaying = false
+  // facingAngle = 0
 
   constructor(props, sceneBounds) {
     this.data = props
+    this.weaponFireTimer = this.data.weaponFireRate
     this.sceneBounds = sceneBounds
     this.PIXIContainer.x = sceneBounds.width / 2
     this.PIXIContainer.y = sceneBounds.height - shipHeight / 2 - shipBottomPadding
@@ -97,7 +61,6 @@ class PlayerShip {
     this.gfxReversing.visible = false
     this.PIXIContainer.addChild(this.gfxReversing)
     this.PIXIContainer.addChild(this.draw())
-    this.weaponFireTimer = this.data.weaponFireRate
     document.addEventListener('keydown', this.handleKeyDown.bind(this), false)
     document.addEventListener('keyup', this.handleKeyUp.bind(this), false)
   }
@@ -276,7 +239,9 @@ class PlayerShip {
   }
 
   update(playerShipProps, delta) {
-    this.facingAngle = this.PIXIContainer.rotation * 180 / Math.PI
+    this.checkDeath()
+
+    // this.facingAngle = this.PIXIContainer.rotation * 180 / Math.PI
     // console.log(this.facingAngle)
 
     // Determine magnitude of speed
@@ -381,7 +346,6 @@ class PlayerShip {
     this.handleWeapons()
     this.handleShieldsRegen()
     this.handleEnergyRegen()
-    this.checkDeath()
 
     // Bounds checking
     if (this.PIXIContainer.x + this.data.velocity.x < 0) {
