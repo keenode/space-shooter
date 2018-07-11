@@ -43,7 +43,7 @@ const initialState = {
   pilotMode: 'D',
 
   // Specs
-  mass: 30.0,
+  mass: 0.98,
   speedMax: 20.0,
   lateralThrustSpdMax: 5.0,
   thrustPower: 0.5, // was accel
@@ -60,7 +60,7 @@ const initialState = {
 const gameloopPlayerShipUpdate = (state, action) => {
   return {
     ...state,
-    ...action.data
+    ...action.updatedData
   }
 }
 

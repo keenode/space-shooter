@@ -69,15 +69,15 @@ class GameContainer extends Component {
           playerShip={this.props.playerShip}
           gameloopPlayerShipUpdated={ data => this.props.onGameloopPlayerShipUpdate(data) }
 
-          hullDamaged={ dmgAmt => this.hullDamagedHandler(dmgAmt) }
-          shieldsRegenerated={ regenAmt => this.shieldsRegeneratedHandler(regenAmt) }
-          energyRegenerated={ regenAmt => this.energyRegeneratedHandler(regenAmt) }
-          energyUsed={ energyUsed => this.energyUsedHandler(energyUsed) }
-          speedUpdated={ value => this.props.onUpdateSpeed(value) }
-          rotationUpdated={ value => this.props.onUpdateRotation(value) }
-          fuelUsed={ value => this.fuelUsedHandler(value) }
-          pilotModeChanged={ mode => this.props.onSetPilotMode(mode) }
-          pilotStateChanged={ (pilotState, value) => this.pilotStateChangedHandler(pilotState, value) }
+          // hullDamaged={ dmgAmt => this.hullDamagedHandler(dmgAmt) }
+          // shieldsRegenerated={ regenAmt => this.shieldsRegeneratedHandler(regenAmt) }
+          // energyRegenerated={ regenAmt => this.energyRegeneratedHandler(regenAmt) }
+          // energyUsed={ energyUsed => this.energyUsedHandler(energyUsed) }
+          // speedUpdated={ value => this.props.onUpdateSpeed(value) }
+          // rotationUpdated={ value => this.props.onUpdateRotation(value) }
+          // fuelUsed={ value => this.fuelUsedHandler(value) }
+          // pilotModeChanged={ mode => this.props.onSetPilotMode(mode) }
+          // pilotStateChanged={ (pilotState, value) => this.pilotStateChangedHandler(pilotState, value) }
           notificationReported={ (message, type) => this.props.onAddNotification(message, type) } />
         <LogsPanel logs={this.props.logs} />
         <HullDash

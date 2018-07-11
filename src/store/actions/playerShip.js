@@ -1,9 +1,9 @@
 import * as actionTypes from './actionTypes'
 
-export const gameloopPlayerShipUpdate = data => {
+export const gameloopPlayerShipUpdate = updatedData => {
   return {
     type: actionTypes.GAMELOOP_PLAYER_SHIP_UPDATE,
-    data
+    updatedData
   }
 }
 

@@ -238,7 +238,7 @@ class GameCanvas extends Component {
       this.playerProjectiles.data.push(projectile)
       this.playerProjectiles.container.addChild(projectile.PIXIContainer)
       this.playerShip.fireTimer = 0
-      this.props.energyUsed(10)
+      // this.props.energyUsed(10)
 
       const laserSfx = new Howl({
         src: ['assets/audio/fx/laser.wav'],
@@ -251,8 +251,8 @@ class GameCanvas extends Component {
     // this.props.rotationUpdated(this.playerShip.facingAngle)
 
     if ((this.props.playerShip.isThrusting || this.props.playerShip.isLateralThrustingLeft || this.props.playerShip.isLateralThrustingRight || this.props.playerShip.isReversing) && this.props.playerShip.fuel > 0) {
-      this.props.fuelUsed(0.1)
-      this.playerShip.fuel = this.props.playerShip.fuel
+      // this.props.fuelUsed(0.1)
+      // this.playerShip.fuel = this.props.playerShip.fuel
 
       if (!this.thrustsSfxIsPlaying) {
         this.thrustSfx.play()
@@ -336,7 +336,7 @@ class GameCanvas extends Component {
       // Check collision with player
       if (collisionTest(enemy.PIXIContainer, this.playerShip.PIXIContainer)) {
         enemy.isAlive = false
-        this.props.hullDamaged(Math.floor(Math.random() * 25) + 50)
+        // this.props.hullDamaged(Math.floor(Math.random() * 25) + 50)
         this.playerShip.shieldsRegenIsReady = false
 
         const hitSfx = new Howl({
@@ -372,7 +372,7 @@ class GameCanvas extends Component {
       const projectile = this.enemyProjectiles.data[p]
       if (collisionTest(this.playerShip.PIXIContainer, projectile.PIXIContainer)) {
         projectile.isAlive = false
-        this.props.hullDamaged(Math.floor(Math.random() * 10) + 5)
+        // this.props.hullDamaged(Math.floor(Math.random() * 10) + 5)
         this.playerShip.shieldsRegenIsReady = false
 
         const hitSfx = new Howl({

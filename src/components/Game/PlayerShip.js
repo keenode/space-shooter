@@ -351,8 +351,8 @@ class PlayerShip {
 
     // Update local data
     this.data = {
-      ...this.data,
-      ...playerShipProps
+      ...playerShipProps,
+      ...this.data
     }
     // console.log(this.data.isThrusting)
   }
