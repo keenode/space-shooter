@@ -28,6 +28,8 @@ class EnemyShip {
   aiTimeElasped = 0
   aiNextActionTime = Math.random() * 175.0 + 25.0
 
+  data = {}
+
   constructor(xPos, yPos, playRegionBounds) {
     this.playRegionBounds = playRegionBounds
     this.PIXIContainer.x = xPos
@@ -54,6 +56,7 @@ class EnemyShip {
   update(delta) {
     // Set magnitude of speed
     this.spd = Math.sqrt(this.vy * this.vy + this.vx * this.vx)
+    this.data.speed = this.spd
 
     // Handle rotational acceleration and velocity
     const rotDir = this.rotating.right ? 1 : this.rotating.left ? -1 : 0

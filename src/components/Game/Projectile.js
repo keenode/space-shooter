@@ -7,23 +7,23 @@ const offsetAngle = 90 * Math.PI / 180
 class Projectile {
   PIXIContainer = new PIXI.Container()
   projectileContainer = new PIXI.Container()
-  parentAngle = 0
+  parentRotation = 0
   vx = 0
   vy = 0
   accel = 4.0
-  spd = 0
-  maxSpd = 20.0
-  parentSpd = 0.0
+  speed = 0
+  speedMax = 20.0
+  parentSpeed = 0
   lifeTime = 0
-  maxLifeTime = 200.0
+  lifeTimeMax = 200.0
   isAlive = true
 
   constructor(parentEntity) {
-    this.parentAngle = parentEntity.PIXIContainer.rotation
-    this.parentSpd = parentEntity.spd
+    this.parentRotation = parentEntity.PIXIContainer.rotation
+    this.parentSpeed = parentEntity.data.speed
     this.PIXIContainer.x = parentEntity.PIXIContainer.x
     this.PIXIContainer.y = parentEntity.PIXIContainer.y
-    this.projectileContainer.rotation = this.parentAngle
+    this.projectileContainer.rotation = this.parentRotation
     const projectileShape = this.draw()
     this.projectileContainer.addChild(projectileShape)
     if (gfxConfig.blur) {
@@ -59,15 +59,16 @@ class Projectile {
   }
 
   update(delta) {
-    // Set magnitude of speed
-    this.spd = Math.sqrt(this.vy * this.vy + this.vx * this.vx)
+    // Determine magnitude of speed
+    this.speed = Math.sqrt(this.vy * this.vy + this.vx * this.vx)
+
     // Handle acceleration and velocity
-    if (this.spd < this.maxSpd + this.parentSpd) {
-      this.vx += this.accel * Math.cos(this.PIXIContainer.rotation + this.parentAngle - offsetAngle)
-      this.vy += this.accel * Math.sin(this.PIXIContainer.rotation + this.parentAngle - offsetAngle)
+    if (this.speed < this.speedMax + this.parentSpeed) {
+      this.vx += this.accel * Math.cos(this.PIXIContainer.rotation + this.parentRotation - offsetAngle)
+      this.vy += this.accel * Math.sin(this.PIXIContainer.rotation + this.parentRotation - offsetAngle)
     }
 
-    if (this.lifeTime >= this.maxLifeTime) {
+    if (this.lifeTime >= this.lifeTimeMax) {
       this.isAlive = false
     }
 

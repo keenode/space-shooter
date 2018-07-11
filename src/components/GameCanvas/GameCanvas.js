@@ -233,18 +233,11 @@ class GameCanvas extends Component {
     this.playerShip.update(this.props.playerShip, delta)
     this.props.gameloopPlayerShipUpdated(this.playerShip.data)
 
-    if (this.playerShip.isFiringWeapon && this.playerShip.fireTimer >= this.playerShip.fireRate && this.props.playerShip.energy > 10) {
+    // Spawn projectiles if player is firing weapon
+    if (this.props.playerShip.isFiringWeapon) {
       const projectile = new Projectile(this.playerShip)
       this.playerProjectiles.data.push(projectile)
       this.playerProjectiles.container.addChild(projectile.PIXIContainer)
-      this.playerShip.fireTimer = 0
-      // this.props.energyUsed(10)
-
-      const laserSfx = new Howl({
-        src: ['assets/audio/fx/laser.wav'],
-        volume: 0.3
-      })
-      laserSfx.play()
     }
 
     // Report no fuel if tank is empty!

@@ -39,6 +39,7 @@ const initialState = {
   isLateralThrustingLeft: false,
   isLateralThrustingRight: false,
   isBraking: false,
+  isRequestingToFireWeapon: false,
   isFiringWeapon: false,
   pilotMode: 'D',
 
@@ -54,7 +55,8 @@ const initialState = {
   rotSpdMax: 0.1, // was maxRotVel
   shieldsRegenRate: 10.0,
   energyRegenRate: 5.0,
-  weaponFireRate: 10.0 // was fireRate
+  weaponFireRate: 10.0, // was fireRate
+  weaponEnergyUsage: 10.0
 }
 
 const gameloopPlayerShipUpdate = (state, action) => {

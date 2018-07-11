@@ -35,7 +35,7 @@ class PlayerShip {
   // isThrusting = false
   // isBraking = false
   // isReversing = false
-  // isFiringWeapon = false
+  // isRequestingToFireWeapon = false
   // fireRate = 10.0
   // shields = 0.0
   // shieldsRegenRate = 0
@@ -58,7 +58,7 @@ class PlayerShip {
   lateralThrustSpd = 0
   shieldsRegenTimer = 0
   energyRegenTimer = 0
-  fireTimer = 0
+  weaponFireTimer = 0
   shieldsRegenIsReady = true
   shieldsRegenReadyTime = 100.0
   shieldsRegenReadyTimer = 0
@@ -97,7 +97,7 @@ class PlayerShip {
     this.gfxReversing.visible = false
     this.PIXIContainer.addChild(this.gfxReversing)
     this.PIXIContainer.addChild(this.draw())
-    this.fireTimer = this.fireRate
+    this.weaponFireTimer = this.data.weaponFireRate
     document.addEventListener('keydown', this.handleKeyDown.bind(this), false)
     document.addEventListener('keyup', this.handleKeyUp.bind(this), false)
   }
@@ -131,7 +131,7 @@ class PlayerShip {
 
     // Handle key down for firing weapon
     if (e.which === 32) {
-      this.data.isFiringWeapon = true
+      this.data.isRequestingToFireWeapon = true
     }
   }
 
@@ -163,7 +163,7 @@ class PlayerShip {
 
     // Handle key up for firing weapon
     if (e.which === 32) {
-      this.data.isFiringWeapon = false
+      this.data.isRequestingToFireWeapon = false
     }
   }
 
@@ -226,11 +226,27 @@ class PlayerShip {
     }
   }
 
+  checkWeapons() {
+    if (this.data.isRequestingToFireWeapon && this.weaponFireTimer >= this.data.weaponFireRate && this.data.energy >= this.data.weaponEnergyUsage) {
+      this.data.isFiringWeapon = true
+      this.data.energy -= this.data.weaponEnergyUsage
+      this.weaponFireTimer = 0
+
+      const laserSfx = new Howl({
+        src: ['assets/audio/fx/laser.wav'],
+        volume: 0.3
+      })
+      laserSfx.play()
+    } else {
+      this.data.isFiringWeapon = false
+    }
+  }
+
   update(playerShipProps, delta) {
     this.facingAngle = this.PIXIContainer.rotation * 180 / Math.PI
     // console.log(this.facingAngle)
 
-    // Set magnitude of speed
+    // Determine magnitude of speed
     this.data.speed = Math.sqrt(this.data.velocity.y * this.data.velocity.y + this.data.velocity.x * this.data.velocity.x)
     this.lateralThrustSpd = Math.sqrt(this.data.lateralThrustForce.y * this.data.lateralThrustForce.y + this.data.lateralThrustForce.x * this.data.lateralThrustForce.x)
     // console.log(this.data.speed)
@@ -327,6 +343,7 @@ class PlayerShip {
     }
 
     this.drainFuel()
+    this.checkWeapons()
 
     // Bounds checking
     if (this.PIXIContainer.x + this.data.velocity.x < 0) {
@@ -365,7 +382,7 @@ class PlayerShip {
     this.energyRegenTimer += delta
 
     // Handle firing of weapon timer
-    this.fireTimer += delta
+    this.weaponFireTimer += delta
 
     this.handleGfxDisplay()
 
