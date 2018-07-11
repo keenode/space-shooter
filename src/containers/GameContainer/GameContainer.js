@@ -71,9 +71,6 @@ class GameContainer extends Component {
 
           // hullDamaged={ dmgAmt => this.hullDamagedHandler(dmgAmt) }
           // shieldsRegenerated={ regenAmt => this.shieldsRegeneratedHandler(regenAmt) }
-          // energyRegenerated={ regenAmt => this.energyRegeneratedHandler(regenAmt) }
-          // energyUsed={ energyUsed => this.energyUsedHandler(energyUsed) }
-          // speedUpdated={ value => this.props.onUpdateSpeed(value) }
           // rotationUpdated={ value => this.props.onUpdateRotation(value) }
           // fuelUsed={ value => this.fuelUsedHandler(value) }
           // pilotModeChanged={ mode => this.props.onSetPilotMode(mode) }

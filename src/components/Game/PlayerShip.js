@@ -216,6 +216,9 @@ class PlayerShip {
   drainFuel() {
     if ((this.data.isThrusting || this.data.isLateralThrustingLeft || this.data.isLateralThrustingRight || this.data.isReversing) && this.data.fuel > 0) {
       this.data.fuel -= 0.1
+      if (this.data.fuel < 0) {
+        this.data.fuel = 0
+      }
       if (!this.thrustsSfxIsPlaying) {
         this.thrustSfx.play()
         this.thrustsSfxIsPlaying = true
@@ -230,6 +233,9 @@ class PlayerShip {
     if (this.data.isRequestingToFireWeapon && this.weaponFireTimer >= this.data.weaponFireRate && this.data.energy >= this.data.weaponEnergyUsage) {
       this.data.isFiringWeapon = true
       this.data.energy -= this.data.weaponEnergyUsage
+      if (this.data.energy < 0) {
+        this.data.energy = 0
+      }
       this.weaponFireTimer = 0
 
       const laserSfx = new Howl({
@@ -399,6 +405,9 @@ class PlayerShip {
       this.PIXIContainer.rotation += this.data.rotationalVelocity * delta
       this.PIXIContainer.x += this.data.velocity.x * delta
       this.PIXIContainer.y += this.data.velocity.y * delta
+      this.data.position.x = this.PIXIContainer.x
+      this.data.position.y = this.PIXIContainer.y
+      this.data.rotation = this.PIXIContainer.rotation
     }
 
     // Handle shields regen timer

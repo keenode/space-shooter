@@ -52,8 +52,6 @@ class GameCanvas extends Component {
   playerDeadReported = false
   playerNoFuelReported = false
   motionBlurFilter = new MotionBlurFilter()
-  thrustSfx = null
-  thrustsSfxIsPlaying = false
 
   componentDidMount() {
     this.setupPIXI('game-canvas')
@@ -69,10 +67,6 @@ class GameCanvas extends Component {
       volume: 0.3
     })
     atmosphereSfx.play()
-
-    // this.thrustSfx = new Howl({
-    //   src: ['assets/audio/fx/thrusters.wav']
-    // })
   }
 
   setupPIXI(canvasSelectorId) {
@@ -151,13 +145,6 @@ class GameCanvas extends Component {
 
   placeEntities() {
     // Player
-    // this.playerShip = new PlayerShip({
-    //   shields: this.props.playerShip.shields,
-    //   fuel: this.props.playerShip.fuel,
-    //   shieldsRegenRate: this.props.playerShip.shieldsRegenRate,
-    //   energyRegenRate: this.props.playerShip.energyRegenRate,
-    //   speedMax: this.props.playerShip.speedMax
-    // }, sceneBounds)
     this.playerShip = new PlayerShip(this.props.playerShip, sceneBounds)
     this.playerContainer.addChild(this.playerProjectiles.container)
     this.playerContainer.addChild(this.playerShip.PIXIContainer)
