@@ -17,7 +17,7 @@ const hullDash = props => {
   const degSpacing = (speedometerEndAngle - speedometerStartAngle) / (speedometerSegments - 1)
   for (let t = 0; t < speedometerSegments; t++) {
     const tickRotation = t * degSpacing + speedometerStartAngle - speedometerAngleOffset
-    const tickLabel = Math.round(props.speedMax / (speedometerSegments - 1) * t)
+    const tickLabel = Math.round(props.playerShip.speedMax / (speedometerSegments - 1) * t)
     speedometerTicks.push(
       <span
         key={t}
@@ -63,12 +63,12 @@ const hullDash = props => {
       <div className={styles.HullStatus}>
         {fuelMeterTicks}
         <div className={styles.FuelFractionDisplay}>
-          <span className={styles.FuelAmount}>{Math.round(props.fuel)}</span>
-          <span className={styles.FuelMaxAmount}>{props.fuelMax}</span>
+          <span className={styles.FuelAmount}>{Math.round(props.playerShip.fuel)}</span>
+          <span className={styles.FuelMaxAmount}>{props.playerShip.fuelMax}</span>
         </div>
         <span
           className={styles.FuelMeter_LineContainer}
-          style={{ transform: `rotate(${(fuelMeterEndAngle - fuelMeterStartAngle) * props.fuel / props.fuelMax + fuelMeterStartAngle - fuelMeterAngleOffset}deg)` }}
+          style={{ transform: `rotate(${(fuelMeterEndAngle - fuelMeterStartAngle) * props.playerShip.fuel / props.playerShip.fuelMax + fuelMeterStartAngle - fuelMeterAngleOffset}deg)` }}
         >
           <span className={styles.FuelMeter_Line}></span>
         </span>
@@ -77,8 +77,8 @@ const hullDash = props => {
           <span
             className={styles.Indicator_Thrust}
             style={{
-              display: props.isThrusting ? 'flex' : 'none',
-              opacity: props.fuel <= 0 ? 0.2 : 0.8
+              display: props.playerShip.isThrusting ? 'flex' : 'none',
+              opacity: props.playerShip.fuel <= 0 ? 0.2 : 0.8
             }}>
             <span></span>
             <span></span>
@@ -86,22 +86,22 @@ const hullDash = props => {
           <span
             className={styles.Indicator_LateralThrust_Left}
             style={{
-              display: props.isLateralThrustingLeft ? 'block' : 'none',
-              opacity: props.fuel <= 0 ? 0.2 : 0.8
+              display: props.playerShip.isLateralThrustingLeft ? 'block' : 'none',
+              opacity: props.playerShip.fuel <= 0 ? 0.2 : 0.8
             }}></span>
           <span
             className={styles.Indicator_LateralThrust_Right}
             style={{
-              display: props.isLateralThrustingRight ? 'block' : 'none',
-              opacity: props.fuel <= 0 ? 0.2 : 0.8
+              display: props.playerShip.isLateralThrustingRight ? 'block' : 'none',
+              opacity: props.playerShip.fuel <= 0 ? 0.2 : 0.8
             }}></span>
           <span
             className={styles.Indicator_Brakes}
             style={{
-              display: props.isBraking ? 'block' : 'none',
-              backgroundColor: props.pilotMode === 'R' ? 'white' : 'red'
+              display: props.playerShip.isBraking ? 'block' : 'none',
+              backgroundColor: props.playerShip.pilotMode === 'R' ? 'white' : 'red'
             }}></span>
-          <span className={styles.Indicator_Weapons} style={{ display: props.isFiringWeapon ? 'flex' : 'none' }}>
+          <span className={styles.Indicator_Weapons} style={{ display: props.playerShip.isFiringWeapon ? 'flex' : 'none' }}>
             <span></span>
             <span></span>
           </span>
@@ -113,33 +113,33 @@ const hullDash = props => {
             <div className={[styles.VitalsBar, styles.VitalsBar_Shields].join(' ')}>
               <span
                 className={styles.VitalsBar_Fill}
-                style={{ transform: `scaleX(${props.shields / props.shieldsMax})` }}
+                style={{ transform: `scaleX(${props.playerShip.shields / props.playerShip.shieldsMax})` }}
               ></span>
             </div>
             <span className={styles.VitalsLabel}>
-              {props.shields}
+              {props.playerShip.shields}
             </span>
           </div>
           <div className={styles.VitalsRow}>
             <div className={[styles.VitalsBar, styles.VitalsBar_Hull].join(' ')}>
               <span
                 className={styles.VitalsBar_Fill}
-                style={{ transform: `scaleX(${props.hull / props.hullMax})` }}
+                style={{ transform: `scaleX(${props.playerShip.hull / props.playerShip.hullMax})` }}
               ></span>
             </div>
             <span className={styles.VitalsLabel}>
-              {props.hull}
+              {props.playerShip.hull}
             </span>
           </div>
           <div className={[styles.VitalsRow, styles.VitalsRow_Energy].join(' ')}>
             <div className={[styles.VitalsBar, styles.VitalsBar_Energy].join(' ')}>
               <span
                 className={styles.VitalsBar_Fill}
-                style={{ transform: `scaleX(${props.energy / props.energyMax})` }}
+                style={{ transform: `scaleX(${props.playerShip.energy / props.playerShip.energyMax})` }}
               ></span>
             </div>
             <span className={[styles.VitalsLabel, styles.VitalsLabel_Energy].join(' ')}>
-              {Math.round(props.energy)}
+              {Math.round(props.playerShip.energy)}
             </span>
           </div>
         </div>
@@ -154,24 +154,24 @@ const hullDash = props => {
         {speedometerTicks}
         <span
           className={styles.Speedometer_LineContainer}
-          style={{ transform: `rotate(${(speedometerEndAngle - speedometerStartAngle) * props.speed / props.speedMax + speedometerStartAngle - speedometerAngleOffset}deg)` }}
+          style={{ transform: `rotate(${(speedometerEndAngle - speedometerStartAngle) * props.playerShip.speed / props.playerShip.speedMax + speedometerStartAngle - speedometerAngleOffset}deg)` }}
         >
           <span className={styles.Speedometer_Line}></span>
         </span>
         <span className={styles.SpeedDisplay}>
-          {Math.round(props.speed)}<span>ps</span>
+          {Math.round(props.playerShip.speed)}<span>ps</span>
         </span>
         <span
           className={styles.ModeDisplay}
-          style={{ color: props.pilotMode === 'D' ? 'orange' : 'yellow' }}
+          style={{ color: props.playerShip.pilotMode === 'D' ? 'orange' : 'yellow' }}
         >
-          {props.pilotMode}
+          {props.playerShip.pilotMode}
         </span>
       </div>
       <div className={styles.RotationGuage}>
-        <span className={styles.RotationGuage_Stick} style={{ transform: `rotate(${props.rotation}deg)` }}></span>
+        <span className={styles.RotationGuage_Stick} style={{ transform: `rotate(${props.playerShip.rotation}deg)` }}></span>
         <span className={styles.RotationDisplay}>
-          {Math.round(props.rotation)}&deg;
+          {Math.round(props.playerShip.rotation)}&deg;
         </span>
       </div>
     </div>

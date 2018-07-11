@@ -68,33 +68,10 @@ class GameContainer extends Component {
         <GameCanvas
           playerShip={this.props.playerShip}
           gameloopPlayerShipUpdated={ data => this.props.onGameloopPlayerShipUpdate(data) }
-
           // hullDamaged={ dmgAmt => this.hullDamagedHandler(dmgAmt) }
-          // shieldsRegenerated={ regenAmt => this.shieldsRegeneratedHandler(regenAmt) }
-          // rotationUpdated={ value => this.props.onUpdateRotation(value) }
-          // fuelUsed={ value => this.fuelUsedHandler(value) }
-          // pilotModeChanged={ mode => this.props.onSetPilotMode(mode) }
-          // pilotStateChanged={ (pilotState, value) => this.pilotStateChangedHandler(pilotState, value) }
           notificationReported={ (message, type) => this.props.onAddNotification(message, type) } />
         <LogsPanel logs={this.props.logs} />
-        <HullDash
-          hull={this.props.playerShip.hull}
-          hullMax={this.props.playerShip.hullMax}
-          shields={this.props.playerShip.shields}
-          shieldsMax={this.props.playerShip.shieldsMax}
-          energy={this.props.playerShip.energy}
-          energyMax={this.props.playerShip.energyMax}
-          speed={this.props.playerShip.speed}
-          speedMax={this.props.playerShip.speedMax}
-          rotation={this.props.playerShip.rotation}
-          fuel={this.props.playerShip.fuel}
-          fuelMax={this.props.playerShip.fuelMax}
-          pilotMode={this.props.playerShip.pilotMode}
-          isThrusting={this.props.playerShip.isThrusting}
-          isBraking={this.props.playerShip.isBraking}
-          isLateralThrustingLeft={this.props.playerShip.isLateralThrustingLeft}
-          isLateralThrustingRight={this.props.playerShip.isLateralThrustingRight}
-          isFiringWeapon={this.props.playerShip.isFiringWeapon} />
+        <HullDash playerShip={this.props.playerShip} />
       </div>
     )
   }
