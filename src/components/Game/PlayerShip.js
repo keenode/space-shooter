@@ -227,14 +227,21 @@ class PlayerShip {
 
   checkDeath() {
     if (this.data.hull <= 0) {
-      this.data.isAlive = false
       this.PIXIContainer.alpha = 0.25
-
-      const hitSfx = new Howl({
-        src: ['assets/audio/fx/explode.wav'],
-        volume: 0.5
-      })
-      hitSfx.play()
+      if (this.data.isAlive) {
+        const hitSfx = new Howl({
+          src: ['assets/audio/fx/explode.wav'],
+          volume: 0.5
+        })
+        hitSfx.play()
+      }
+      this.data.isThrusting = false
+      this.data.isLateralThrustingLeft = false
+      this.data.isLateralThrustingRight = false
+      this.data.isBraking = false
+      this.data.isReversing = false
+      this.data.isRequestingToFireWeapon = false
+      this.data.isAlive = false
     }
   }
 

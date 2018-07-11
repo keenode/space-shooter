@@ -167,6 +167,34 @@ class GameCanvas extends Component {
     return rect
   }
 
+  damagePlayerShip(dmgAmt) {
+    if (this.props.playerShip.hull <= 0) {
+      return false
+    }
+    if (this.props.playerShip.shields > 0) {
+      const dmgDiff = this.props.playerShip.shields - dmgAmt
+      this.playerShip.data.shields -= dmgAmt
+      if (this.playerShip.data.shields < 0) {
+        this.playerShip.data.shields = 0
+      }
+      if (dmgDiff >= 0) {
+        this.props.notificationReported(`Shields absorbed ${dmgAmt} damage!`, 'shieldsDamaged')
+      } else {
+        const shieldsDamageAmt = dmgDiff + dmgAmt
+        this.props.notificationReported(`Shields absorbed ${shieldsDamageAmt} damage!`, 'shieldsDamaged')
+        this.props.notificationReported(`Hull took ${Math.abs(dmgDiff)} damage!`, 'hullDamaged')
+        this.playerShip.data.hull += dmgDiff
+      }
+    } else {
+      this.playerShip.data.hull -= dmgAmt
+      this.props.notificationReported(`Hull took ${dmgAmt} damage!`, 'hullDamaged')
+    }
+
+    if (this.playerShip.data.hull < 0) {
+      this.playerShip.data.hull = 0
+    }
+  }
+
   gameLoop(delta) {
     // Update player ship data from store with updated data from gameloop
     this.playerShip.update(this.props.playerShip, delta)
@@ -245,7 +273,7 @@ class GameCanvas extends Component {
       // Check enemy collision with player
       if (collisionTest(enemy.PIXIContainer, this.playerShip.PIXIContainer)) {
         enemy.isAlive = false
-        // this.props.hullDamaged(Math.floor(Math.random() * 25) + 50)
+        this.damagePlayerShip(Math.floor(Math.random() * 25) + 50)
         this.playerShip.shieldsRegenIsReady = false
 
         const hitSfx = new Howl({
@@ -281,7 +309,7 @@ class GameCanvas extends Component {
       const projectile = this.enemyProjectiles.data[p]
       if (collisionTest(this.playerShip.PIXIContainer, projectile.PIXIContainer)) {
         projectile.isAlive = false
-        // this.props.hullDamaged(Math.floor(Math.random() * 10) + 5)
+        this.damagePlayerShip(Math.floor(Math.random() * 15) + 5)
         this.playerShip.shieldsRegenIsReady = false
 
         const hitSfx = new Howl({
