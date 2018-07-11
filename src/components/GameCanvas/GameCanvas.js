@@ -195,6 +195,63 @@ class GameCanvas extends Component {
     }
   }
 
+  checkForCollisions() {
+    for (let b = 0; b < this.enemies.data.length; b++) {
+      const enemy = this.enemies.data[b]
+
+      // Check enemy collision with player
+      if (collisionTest(enemy.PIXIContainer, this.playerShip.PIXIContainer)) {
+        enemy.isAlive = false
+        this.damagePlayerShip(Math.floor(Math.random() * 25) + 50)
+        this.playerShip.shieldsRegenIsReady = false
+
+        const hitSfx = new Howl({
+          src: ['assets/audio/fx/explode.wav'],
+          volume: 0.3
+        })
+        hitSfx.play()
+      }
+
+      // Check enemy collision with player projectiles
+      for (let p = 0; p < this.playerProjectiles.data.length; p++) {
+        const projectile = this.playerProjectiles.data[p]
+        if (collisionTest(enemy.PIXIContainer, projectile.PIXIContainer)) {
+          projectile.isAlive = false
+          enemy.isAlive = false
+
+          const hitSfx = new Howl({
+            src: ['assets/audio/fx/explode.wav'],
+            volume: 0.3
+          })
+          hitSfx.play()
+        }
+      }
+
+      if (!enemy.isAlive) {
+        this.enemies.data.splice(b, 1)
+        this.enemies.container.removeChildAt(b)
+      }
+    }
+  }
+
+  checkForPlayerCollisions() {
+    // Check player collision with enemy projectiles
+    for (let p = 0; p < this.enemyProjectiles.data.length; p++) {
+      const projectile = this.enemyProjectiles.data[p]
+      if (collisionTest(this.playerShip.PIXIContainer, projectile.PIXIContainer)) {
+        projectile.isAlive = false
+        this.damagePlayerShip(Math.floor(Math.random() * 15) + 5)
+        this.playerShip.shieldsRegenIsReady = false
+
+        const hitSfx = new Howl({
+          src: ['assets/audio/fx/hit.wav'],
+          volume: 0.3
+        })
+        hitSfx.play()
+      }
+    }
+  }
+
   gameLoop(delta) {
     // Update player ship data from store with updated data from gameloop
     this.playerShip.update(this.props.playerShip, delta)
@@ -266,58 +323,9 @@ class GameCanvas extends Component {
       }
     }
 
-    // Handle collisons
-    for (let b = 0; b < this.enemies.data.length; b++) {
-      const enemy = this.enemies.data[b]
-
-      // Check enemy collision with player
-      if (collisionTest(enemy.PIXIContainer, this.playerShip.PIXIContainer)) {
-        enemy.isAlive = false
-        this.damagePlayerShip(Math.floor(Math.random() * 25) + 50)
-        this.playerShip.shieldsRegenIsReady = false
-
-        const hitSfx = new Howl({
-          src: ['assets/audio/fx/explode.wav'],
-          volume: 0.3
-        })
-        hitSfx.play()
-      }
-
-      // Check enemy collision with player projectiles
-      for (let p = 0; p < this.playerProjectiles.data.length; p++) {
-        const projectile = this.playerProjectiles.data[p]
-        if (collisionTest(enemy.PIXIContainer, projectile.PIXIContainer)) {
-          projectile.isAlive = false
-          enemy.isAlive = false
-
-          const hitSfx = new Howl({
-            src: ['assets/audio/fx/explode.wav'],
-            volume: 0.3
-          })
-          hitSfx.play()
-        }
-      }
-
-      if (!enemy.isAlive) {
-        this.enemies.data.splice(b, 1)
-        this.enemies.container.removeChildAt(b)
-      }
-    }
-
-    // Check player collision with enemy projectiles
-    for (let p = 0; p < this.enemyProjectiles.data.length; p++) {
-      const projectile = this.enemyProjectiles.data[p]
-      if (collisionTest(this.playerShip.PIXIContainer, projectile.PIXIContainer)) {
-        projectile.isAlive = false
-        this.damagePlayerShip(Math.floor(Math.random() * 15) + 5)
-        this.playerShip.shieldsRegenIsReady = false
-
-        const hitSfx = new Howl({
-          src: ['assets/audio/fx/hit.wav'],
-          volume: 0.3
-        })
-        hitSfx.play()
-      }
+    if (this.playerShip.data.isAlive) {
+      this.checkForCollisions()
+      this.checkForPlayerCollisions()
     }
 
     // Update nebulas
@@ -329,7 +337,10 @@ class GameCanvas extends Component {
     this.camera.update(delta)
 
     // Update motion blur FX
-    this.motionBlurFilter.velocity = [this.playerShip.vx * motionBlurMultiplier, this.playerShip.vy * motionBlurMultiplier]
+    this.motionBlurFilter.velocity = [
+      this.playerShip.data.velocity.x * motionBlurMultiplier,
+      this.playerShip.data.velocity.y * motionBlurMultiplier
+    ]
 
     // Update FPS text
     this.fpsText.text = Math.round(this.gameApp.ticker.FPS) + ' FPS'
