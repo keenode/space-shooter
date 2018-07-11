@@ -70,9 +70,9 @@ class GameCanvas extends Component {
     })
     atmosphereSfx.play()
 
-    this.thrustSfx = new Howl({
-      src: ['assets/audio/fx/thrusters.wav']
-    })
+    // this.thrustSfx = new Howl({
+    //   src: ['assets/audio/fx/thrusters.wav']
+    // })
   }
 
   setupPIXI(canvasSelectorId) {
@@ -247,22 +247,7 @@ class GameCanvas extends Component {
       laserSfx.play()
     }
 
-    // this.props.speedUpdated(this.playerShip.spd)
-    // this.props.rotationUpdated(this.playerShip.facingAngle)
-
-    if ((this.props.playerShip.isThrusting || this.props.playerShip.isLateralThrustingLeft || this.props.playerShip.isLateralThrustingRight || this.props.playerShip.isReversing) && this.props.playerShip.fuel > 0) {
-      // this.props.fuelUsed(0.1)
-      // this.playerShip.fuel = this.props.playerShip.fuel
-
-      if (!this.thrustsSfxIsPlaying) {
-        this.thrustSfx.play()
-        this.thrustsSfxIsPlaying = true
-      }
-    } else {
-      this.thrustSfx.stop()
-      this.thrustsSfxIsPlaying = false
-    }
-
+    // Report no fuel if tank is empty!
     if (this.props.playerShip.fuel <= 0 && !this.playerNoFuelReported) {
       this.props.notificationReported('You ran out of fuel!', 'noFuel')
       this.playerNoFuelReported = true

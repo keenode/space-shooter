@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js'
+import { Howl } from 'howler'
 
 const shipWidth = 48
 const shipHeight = 48
@@ -63,6 +64,10 @@ class PlayerShip {
   shieldsRegenReadyTimer = 0
 
   data = null
+  thrustSfx = new Howl({
+    src: ['assets/audio/fx/thrusters.wav']
+  })
+  thrustsSfxIsPlaying = false
 
   constructor(props, sceneBounds) {
     this.data = props
@@ -208,6 +213,19 @@ class PlayerShip {
     this.gfxReversing.visible = this.data.isReversing
   }
 
+  drainFuel() {
+    if ((this.data.isThrusting || this.data.isLateralThrustingLeft || this.data.isLateralThrustingRight || this.data.isReversing) && this.data.fuel > 0) {
+      this.data.fuel -= 0.1
+      if (!this.thrustsSfxIsPlaying) {
+        this.thrustSfx.play()
+        this.thrustsSfxIsPlaying = true
+      }
+    } else {
+      this.thrustSfx.stop()
+      this.thrustsSfxIsPlaying = false
+    }
+  }
+
   update(playerShipProps, delta) {
     this.facingAngle = this.PIXIContainer.rotation * 180 / Math.PI
     // console.log(this.facingAngle)
@@ -307,6 +325,8 @@ class PlayerShip {
         this.data.rotationalVelocity = 0
       }
     }
+
+    this.drainFuel()
 
     // Bounds checking
     if (this.PIXIContainer.x + this.data.velocity.x < 0) {
