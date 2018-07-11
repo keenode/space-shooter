@@ -226,7 +226,7 @@ class PlayerShip {
     }
   }
 
-  checkWeapons() {
+  handleWeapons() {
     if (this.data.isRequestingToFireWeapon && this.weaponFireTimer >= this.data.weaponFireRate && this.data.energy >= this.data.weaponEnergyUsage) {
       this.data.isFiringWeapon = true
       this.data.energy -= this.data.weaponEnergyUsage
@@ -239,6 +239,33 @@ class PlayerShip {
       laserSfx.play()
     } else {
       this.data.isFiringWeapon = false
+    }
+  }
+
+  handleShieldsRegen() {
+    if (this.data.shields < this.data.shieldsMax && this.shieldsRegenTimer >= this.data.shieldsRegenRate && this.shieldsRegenIsReady && this.data.isAlive) {
+      this.data.shields += 1
+      this.shieldsRegenTimer = 0
+    }
+  }
+
+  handleEnergyRegen() {
+    if (this.data.energy < this.data.energyMax && this.energyRegenTimer >= this.data.energyRegenRate && this.data.isAlive) {
+      this.data.energy += 1
+      this.energyRegenTimer = 0
+    }
+  }
+
+  checkDeath() {
+    if (this.data.hull <= 0) {
+      this.data.isAlive = false
+      this.PIXIContainer.alpha = 0.25
+
+      const hitSfx = new Howl({
+        src: ['assets/audio/fx/explode.wav'],
+        volume: 0.5
+      })
+      hitSfx.play()
     }
   }
 
@@ -294,10 +321,12 @@ class PlayerShip {
       }
     } else if (this.data.speed > 0) {
       this.data.isReversing = false
+      this.data.pilotMode = 'D'
     }
 
     // Handle reversing
     if (this.data.isReversing && this.data.fuel > 0) {
+      this.data.pilotMode = 'R'
       // console.log('isReversing')
       const reverseForceX = this.data.reverseThrustPower * Math.cos(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)
       const reverseForceY = this.data.reverseThrustPower * Math.sin(this.PIXIContainer.rotation - offsetAngle - 180 * Math.PI / 180)
@@ -343,7 +372,10 @@ class PlayerShip {
     }
 
     this.drainFuel()
-    this.checkWeapons()
+    this.handleWeapons()
+    this.handleShieldsRegen()
+    this.handleEnergyRegen()
+    this.checkDeath()
 
     // Bounds checking
     if (this.PIXIContainer.x + this.data.velocity.x < 0) {

@@ -181,57 +181,21 @@ class GameCanvas extends Component {
   }
 
   gameLoop(delta) {
-    // Hande player updates
-
-    // const playerShipUpdates = {
-    //   shields: 0,
-    //   hull: 0,
-    //   energy: 0,
-    //   fuel: 0,
-    //   position: {
-    //     x: 0,
-    //     y: 0
-    //   },
-    //   rotation: 0.0,
-    //   speed: 0.0,
-    //   velocity: {
-    //     x: 0,
-    //     y: 0
-    //   },
-    //   rotationalVelocity: 0,
-    //   lateralThrustForce: {
-    //     x: 0,
-    //     y: 0
-    //   },
-    //   reverseThrustForce: {
-    //     x: 0,
-    //     y: 0
-    //   },
-    //   isThrusting: false,
-    //   isLateralThrustingLeft: false,
-    //   isLateralThrustingRight: false,
-    //   isBraking: false,
-    //   isFiringWeapon: false
-    // }
-    // this.props.gameloopPlayerShipUpdated(playerShipUpdates)
-
-    if (this.props.playerShip.hull <= 0) {
-      this.playerShip.isAlive = false
-      this.playerShip.PIXIContainer.alpha = 0.25
-      if (!this.playerDeadReported) {
-        this.props.notificationReported('Your ship has been destroyed!', 'playerShipDestroyed')
-        this.playerDeadReported = true
-
-        const hitSfx = new Howl({
-          src: ['assets/audio/fx/explode.wav'],
-          volume: 0.5
-        })
-        hitSfx.play()
-      }
-    }
-
+    // Update player ship data from store with updated data from gameloop
     this.playerShip.update(this.props.playerShip, delta)
     this.props.gameloopPlayerShipUpdated(this.playerShip.data)
+
+    // Check for player death
+    if (!this.props.playerShip.isAlive && !this.playerDeadReported) {
+      this.props.notificationReported('Your ship has been destroyed!', 'playerShipDestroyed')
+      this.playerDeadReported = true
+
+      const hitSfx = new Howl({
+        src: ['assets/audio/fx/explode.wav'],
+        volume: 0.5
+      })
+      hitSfx.play()
+    }
 
     // Spawn projectiles if player is firing weapon
     if (this.props.playerShip.isFiringWeapon) {
@@ -245,26 +209,6 @@ class GameCanvas extends Component {
       this.props.notificationReported('You ran out of fuel!', 'noFuel')
       this.playerNoFuelReported = true
     }
-
-    // if (this.playerShip.isReversing) {
-    //   this.props.pilotModeChanged('R')
-    // } else {
-    //   this.props.pilotModeChanged('D')
-    // }
-    // this.props.pilotStateChanged('thrusting', this.playerShip.isThrusting)
-    // this.props.pilotStateChanged('braking', this.playerShip.isBraking)
-    // this.props.pilotStateChanged('lateralThrustingLeft', this.playerShip.lateralThrusting.left)
-    // this.props.pilotStateChanged('lateralThrustingRight', this.playerShip.lateralThrusting.right)
-    // this.props.pilotStateChanged('firingWeapon', this.playerShip.isFiringWeapon)
-
-    // if (this.playerShip.shieldsRegenTimer >= this.playerShip.shieldsRegenRate && this.playerShip.shieldsRegenIsReady && this.playerShip.isAlive) {
-    //   this.props.shieldsRegenerated(1)
-    //   this.playerShip.shieldsRegenTimer = 0
-    // }
-    // if (this.playerShip.energyRegenTimer >= this.playerShip.energyRegenRate && this.playerShip.isAlive) {
-    //   this.props.energyRegenerated(1)
-    //   this.playerShip.energyRegenTimer = 0
-    // }
 
     // Handle enemy updates
     for (let b = 0; b < this.enemies.data.length; b++) {
