@@ -47,15 +47,15 @@ const initialState = {
   mass: 0.98,
   speedMax: 20.0,
   lateralThrustSpdMax: 5.0,
-  thrustPower: 0.5, // was accel
-  lateralThrustPower: 0.5, // was lateralThrustAccel
-  brakePower: 0.9, // was brakeForce
-  reverseThrustPower: 0.25, //  was reverseAccel
-  rotAccel: 0.01, // was rotAccel
-  rotSpdMax: 0.1, // was maxRotVel
+  thrustPower: 0.41,
+  lateralThrustPower: 0.5,
+  brakeForce: 0.9, 
+  reverseThrustPower: 0.25,
+  rotAccel: 0.05,
+  rotSpdMax: 0.05,
   shieldsRegenRate: 10.0,
   energyRegenRate: 5.0,
-  weaponFireRate: 10.0, // was fireRate
+  weaponFireRate: 10.0,
   weaponEnergyUsage: 5.0
 }
 

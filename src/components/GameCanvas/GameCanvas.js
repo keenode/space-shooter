@@ -18,8 +18,8 @@ import gfxConfig from '../../config/graphics'
 import styles from './GameCanvas.css'
 
 const sceneBounds = {
-  width: 4000,
-  height: 4000
+  width: 8000,
+  height: 8000
 }
 const motionBlurMultiplier = 3.0
 
@@ -156,7 +156,7 @@ class GameCanvas extends Component {
     this.playerContainer.addChild(this.playerShip.PIXIContainer)
 
     // Enemies
-    const numEnemies = 32
+    const numEnemies = 64
     for (let e = 0; e < numEnemies; e++) {
       const enemy = new EnemyShip(Math.random() * sceneBounds.width, Math.random() * sceneBounds.height, sceneBounds)
       this.enemies.data.push(enemy)

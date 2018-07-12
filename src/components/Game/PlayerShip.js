@@ -178,7 +178,7 @@ class PlayerShip {
 
   drainFuel() {
     if ((this.data.isThrusting || this.data.isLateralThrustingLeft || this.data.isLateralThrustingRight || this.data.isReversing) && this.data.fuel > 0) {
-      this.data.fuel -= 0.1
+      this.data.fuel -= 0.05
       if (this.data.fuel < 0) {
         this.data.fuel = 0
       }
@@ -291,9 +291,9 @@ class PlayerShip {
     // Handle braking
     if (this.data.isBraking) {
       // console.log('isBraking')
-      this.data.velocity.x *= this.data.brakePower
-      this.data.velocity.y *= this.data.brakePower
-      this.data.rotationalVelocity *= this.data.brakePower
+      this.data.velocity.x *= this.data.brakeForce
+      this.data.velocity.y *= this.data.brakeForce
+      this.data.rotationalVelocity *= this.data.brakeForce
       if (this.data.speed < 0.5) {
         this.data.isReversing = this.data.fuel > 0 ? true : false
       }
@@ -342,12 +342,12 @@ class PlayerShip {
       this.data.reverseThrustForce.y = 0
     }
 
-    if (rotDir === 0) {
+    // if (rotDir === 0) {
       this.data.rotationalVelocity *= this.data.mass * 0.8
       if (Math.abs(Math.round(this.data.rotationalVelocity * 100) / 100) <= 0) {
         this.data.rotationalVelocity = 0
       }
-    }
+    // }
 
     this.drainFuel()
     this.handleWeapons()

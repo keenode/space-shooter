@@ -2,7 +2,7 @@ import * as PIXI from 'pixi.js'
 
 import gfxConfig from '../../config/graphics'
 
-const numStars = 2048
+const numStars = 4096
 const starColors = [
   0xffffff,
   0xffbcc4,
