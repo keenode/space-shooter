@@ -1,12 +1,10 @@
 import * as PIXI from 'pixi.js'
-
-import gfxConfig from '../../config/graphics'
+import PlayerShip from './PlayerShip'
 
 const offsetAngle = 90 * Math.PI / 180
 
 class Projectile {
   PIXIContainer = new PIXI.Container()
-  projectileContainer = new PIXI.Container()
   parentRotation = 0
   vx = 0
   vy = 0
@@ -23,31 +21,19 @@ class Projectile {
     this.parentSpeed = parentEntity.data.speed
     this.PIXIContainer.x = parentEntity.PIXIContainer.x
     this.PIXIContainer.y = parentEntity.PIXIContainer.y
-    this.projectileContainer.rotation = this.parentRotation
-    const projectileShape = this.draw()
-    this.projectileContainer.addChild(projectileShape)
-    if (gfxConfig.blur) {
-      this.addFiltersFX(projectileShape)
-    }
-    this.PIXIContainer.addChild(this.projectileContainer)
-  }
 
-  addFiltersFX(projectileShape) {
-    const blurFilter = new PIXI.filters.BlurFilter()
-    blurFilter.blur = 1
-    projectileShape.filters = [blurFilter]
-    const blurFxInner = this.draw(2)
-    const blurFilterInner = new PIXI.filters.BlurFilter()
-    blurFilterInner.blur = 4
-    blurFxInner.filters = [blurFilterInner]
-    this.projectileContainer.addChild(blurFxInner)
-    const blurFxOuter = this.draw(4, 0xffff00)
-    const blurFilterOuter = new PIXI.filters.BlurFilter()
-    blurFilterOuter.blur = 12
-    blurFilterOuter.resolution = 4
-    blurFxOuter.filters = [blurFilterOuter]
-    blurFxOuter.alpha = 0.5
-    this.projectileContainer.addChild(blurFxOuter)
+    const spriteContainer = new PIXI.Container()
+    const projectileSprite = new PIXI.Sprite(
+      PIXI.loader.resources['assets/images/projectiles/projectile.png'].texture
+    )
+    projectileSprite.width = projectileSprite.width / 2
+    projectileSprite.height = projectileSprite.height / 2
+    projectileSprite.x = -projectileSprite.width / 2
+    projectileSprite.y = -projectileSprite.height / 2
+    projectileSprite.tint = parentEntity instanceof PlayerShip ? 0x00ff42 : 0xff0030
+    spriteContainer.rotation = this.parentRotation
+    spriteContainer.addChild(projectileSprite)
+    this.PIXIContainer.addChild(spriteContainer)
   }
 
   draw(size = 2, color = 0x00ff00) {

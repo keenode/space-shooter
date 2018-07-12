@@ -55,18 +55,24 @@ class GameCanvas extends Component {
 
   componentDidMount() {
     this.setupPIXI('game-canvas')
-    this.setupScene()
-    this.placeEntities()
-    this.camera = new Camera(this.scene, this.playerShip.PIXIContainer, this.gameApp.renderer, this.starFieldAmbientBGs, this.nebulas.container)
-    this.gameApp.ticker.add(delta => this.gameLoop(delta))
+    // Load images
+    PIXI.loader.add([
+      'assets/images/projectiles/projectile.png'
+    ]).load(() => {
+      console.log('Textures loaded into PIXI.')
+      this.setupScene()
+      this.placeEntities()
+      this.camera = new Camera(this.scene, this.playerShip.PIXIContainer, this.gameApp.renderer, this.starFieldAmbientBGs, this.nebulas.container)
+      this.gameApp.ticker.add(delta => this.gameLoop(delta))
 
-    // Play atmosphere SFX
-    const atmosphereSfx = new Howl({
-      src: ['assets/audio/fx/atmosphere.flac'],
-      loop: true,
-      volume: 0.3
+      // Play atmosphere SFX
+      const atmosphereSfx = new Howl({
+        src: ['assets/audio/fx/atmosphere.flac'],
+        loop: true,
+        volume: 0.3
+      })
+      atmosphereSfx.play()
     })
-    atmosphereSfx.play()
   }
 
   setupPIXI(canvasSelectorId) {
@@ -156,8 +162,8 @@ class GameCanvas extends Component {
       this.enemies.data.push(enemy)
       this.enemies.container.addChild(enemy.PIXIContainer)
     }
-    this.entitiesContainer.addChild(this.enemies.container)
     this.entitiesContainer.addChild(this.enemyProjectiles.container)
+    this.entitiesContainer.addChild(this.enemies.container)
   }
 
   drawsceneBounds() {

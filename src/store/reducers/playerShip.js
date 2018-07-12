@@ -56,7 +56,7 @@ const initialState = {
   shieldsRegenRate: 10.0,
   energyRegenRate: 5.0,
   weaponFireRate: 10.0, // was fireRate
-  weaponEnergyUsage: 10.0
+  weaponEnergyUsage: 5.0
 }
 
 const gameloopPlayerShipUpdate = (state, action) => {
