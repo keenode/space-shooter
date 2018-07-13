@@ -1,7 +1,7 @@
 export default {
   starFieldDepth: 4,
-  nebula: true,
+  nebula: false,
   bloom: false,
   motionBlur: true,
-  blur: true
+  blur: false
 }

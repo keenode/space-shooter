@@ -1,14 +1,15 @@
 import * as PIXI from 'pixi.js'
 
-import gfxConfig from '../../config/graphics'
-
 const numStars = 4096
+const numFuzzyStars = 1024
+const numFuzziestStars = 512
 const starColors = [
   0xffffff,
   0xffbcc4,
   0xbaf8ff,
   0xfec7ff,
-  0xfff4d9
+  0xfff4d9,
+  0xff6c6c
 ]
 
 class StarFieldAmbientBG {
@@ -19,15 +20,30 @@ class StarFieldAmbientBG {
     this.sceneBounds = sceneBounds
     this.depth = depth
     this.PIXIContainer.addChild(this.draw())
-    if (gfxConfig.blur) {
-      this.addFiltersFX()
+    for (let i = 0; i < numFuzzyStars; i++) {
+      const starSprite = new PIXI.Sprite(
+        PIXI.loader.resources['assets/images/stars/star.png'].texture
+      )
+      this.addStarSrite(starSprite)
     }
+    for (let i = 0; i < numFuzziestStars; i++) {
+      const starSprite = new PIXI.Sprite(
+        PIXI.loader.resources['assets/images/stars/star-fuzzier.png'].texture
+      )
+      this.addStarSrite(starSprite)
+    }
+    this.PIXIContainer.cacheAsBitmap = true
   }
 
-  addFiltersFX() {
-    const blurFilter = new PIXI.filters.BlurFilter()
-    blurFilter.blur = 0.5
-    this.PIXIContainer.filters = [blurFilter]
+  addStarSrite(starSprite) {
+    const color = starColors[Math.floor(Math.random() * starColors.length)]
+    const scale = Math.random() * 1
+    starSprite.width = (starSprite.width / 2) * scale
+    starSprite.height = (starSprite.height / 2) * scale
+    starSprite.x = Math.floor(Math.random() * this.sceneBounds.width)
+    starSprite.y = Math.floor(Math.random() * this.sceneBounds.height)
+    starSprite.tint = color
+    this.PIXIContainer.addChild(starSprite)
   }
 
   draw() {
@@ -36,7 +52,7 @@ class StarFieldAmbientBG {
       const color = starColors[Math.floor(Math.random() * starColors.length)]
       const xPos = Math.floor(Math.random() * this.sceneBounds.width)
       const yPos = Math.floor(Math.random() * this.sceneBounds.height)
-      let radius = Math.round((Math.random() * 4 * 100) / this.depth) / 100
+      let radius = Math.round((Math.random() * 3 * 100) / this.depth) / 100
       const alpha = Math.round(Math.random() * 1 * 100) / 100
       if (radius < 1) {
         radius = 1

@@ -57,7 +57,9 @@ class GameCanvas extends Component {
     this.setupPIXI('game-canvas')
     // Load images
     PIXI.loader.add([
-      'assets/images/projectiles/projectile.png'
+      'assets/images/projectiles/projectile.png',
+      'assets/images/stars/star.png',
+      'assets/images/stars/star-fuzzier.png'
     ]).load(() => {
       console.log('Textures loaded into PIXI.')
       this.setupScene()
@@ -114,7 +116,7 @@ class GameCanvas extends Component {
 
     // Add ambient nebula
     if (gfxConfig.nebula) {
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 20; i++) {
         const nebula = new Nebula(sceneBounds)
         this.nebulas.data.push(nebula)
         this.nebulas.container.addChild(nebula.PIXIContainer)
@@ -137,9 +139,9 @@ class GameCanvas extends Component {
     this.bloomContainer.addChild(this.worldContainer)
     this.bloomContainer.addChild(this.entitiesContainer)
     this.bloomContainer.addChild(this.playerContainer)
-    // this.bloomContainer.addChild(this.sceneBg)
+    this.bloomContainer.addChild(this.sceneBg)
 
-    this.scene.addChild(this.sceneBg)
+    // this.scene.addChild(this.sceneBg)
     this.scene.addChild(this.bloomContainer)
 
     if (gfxConfig.motionBlur) {
