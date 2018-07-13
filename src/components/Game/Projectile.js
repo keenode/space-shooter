@@ -8,7 +8,7 @@ class Projectile {
   parentRotation = 0
   vx = 0
   vy = 0
-  accel = 4.0
+  accel = 10.0
   speed = 0
   speedMax = 20.0
   parentSpeed = 0
