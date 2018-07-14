@@ -256,7 +256,7 @@ class GameCanvas extends Component {
 
         const hitSfx = new Howl({
           src: ['assets/audio/fx/hit.wav'],
-          volume: 0.3
+          volume: 0.2
         })
         hitSfx.play()
       }
