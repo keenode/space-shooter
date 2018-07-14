@@ -58,6 +58,10 @@ const hullDash = props => {
     )
   }
 
+  const radToDegRotation = props.playerShip.rotation * 180 / Math.PI
+  const totalRotations = Math.floor(radToDegRotation / 360)
+  const facingAngle = radToDegRotation - 360 * totalRotations
+
   return (
     <div className={styles.HullDash}>
       <div className={styles.HullStatus}>
@@ -169,9 +173,9 @@ const hullDash = props => {
         </span>
       </div>
       <div className={styles.RotationGuage}>
-        <span className={styles.RotationGuage_Stick} style={{ transform: `rotate(${props.playerShip.rotation}deg)` }}></span>
+        <span className={styles.RotationGuage_Stick} style={{ transform: `rotate(${facingAngle}deg)` }}></span>
         <span className={styles.RotationDisplay}>
-          {Math.round(props.playerShip.rotation)}&deg;
+          {Math.round(facingAngle)}&deg;
         </span>
       </div>
     </div>

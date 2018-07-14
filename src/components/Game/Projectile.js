@@ -10,7 +10,7 @@ class Projectile {
   vy = 0
   accel = 10.0
   speed = 0
-  speedMax = 20.0
+  speedMax = 22.0
   parentSpeed = 0
   lifeTime = 0
   lifeTimeMax = 200.0
