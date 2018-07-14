@@ -12,7 +12,7 @@ const starColors = [
   0xff6c6c
 ]
 
-class StarFieldAmbientBG {
+class StarFieldBG {
   PIXIContainer = new PIXI.Container()
   sceneBounds = null
 
@@ -65,4 +65,4 @@ class StarFieldAmbientBG {
   }
 }
 
-export default StarFieldAmbientBG
+export default StarFieldBG

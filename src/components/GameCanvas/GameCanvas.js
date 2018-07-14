@@ -10,8 +10,8 @@ import Camera from '../Game/Camera'
 import PlayerShip from '../Game/PlayerShip'
 import EnemyShip from '../Game/EnemyShip'
 import Projectile from '../Game/Projectile'
-import StarFieldAmbientBG from '../Game/StarFieldAmbientBG'
-import Nebula from '../Game/Nebula'
+import StarFieldBG from '../Game/StarFieldBG'
+import StarDustBG from '../Game/StarDustBG'
 
 import gfxConfig from '../../config/graphics'
 
@@ -44,11 +44,12 @@ class GameCanvas extends Component {
     data: [],
     container: new PIXI.Container()
   }
-  nebulas = {
+  stardust = {
     data: [],
     container: new PIXI.Container()
   }
-  starFieldAmbientBGs = []
+  starFieldBGs = []
+  starDustBgs = []
   playerDeadReported = false
   playerNoFuelReported = false
   motionBlurFilter = new MotionBlurFilter()
@@ -59,12 +60,13 @@ class GameCanvas extends Component {
     PIXI.loader.add([
       'assets/images/projectiles/projectile.png',
       'assets/images/stars/star.png',
-      'assets/images/stars/star-fuzzier.png'
+      'assets/images/stars/star-fuzzier.png',
+      'assets/images/stardust/stardust-1.png'
     ]).load(() => {
       console.log('Textures loaded into PIXI.')
       this.setupScene()
       this.placeEntities()
-      this.camera = new Camera(this.scene, this.playerShip.PIXIContainer, this.gameApp.renderer, this.starFieldAmbientBGs, this.nebulas.container)
+      this.camera = new Camera(this.scene, this.playerShip.PIXIContainer, this.gameApp.renderer, this.starFieldBGs, this.stardust.container)
       this.gameApp.ticker.add(delta => this.gameLoop(delta))
 
       // Play atmosphere SFX
@@ -109,19 +111,18 @@ class GameCanvas extends Component {
   setupScene() {
     // Add ambient star field
     for (let i = 0; i < gfxConfig.starFieldDepth; i++) {
-      const starFieldBg = new StarFieldAmbientBG(sceneBounds, i + 1)
-      this.starFieldAmbientBGs.push(starFieldBg)
+      const starFieldBg = new StarFieldBG(sceneBounds, i + 1)
+      this.starFieldBGs.push(starFieldBg)
       this.sceneBg.addChild(starFieldBg.PIXIContainer)
     }
 
-    // Add ambient nebula
-    if (gfxConfig.nebula) {
-      for (let i = 0; i < 20; i++) {
-        const nebula = new Nebula(sceneBounds)
-        this.nebulas.data.push(nebula)
-        this.nebulas.container.addChild(nebula.PIXIContainer)
+    // Add ambient stardust
+    if (gfxConfig.stardust) {
+      for (let i = 0; i < gfxConfig.starDustDepth; i++) {
+        const starDustBg = new StarDustBG(sceneBounds)
+        this.starDustBgs.push(starDustBg)
+        this.sceneBg.addChild(starDustBg.PIXIContainer)
       }
-      this.sceneBg.addChild(this.nebulas.container)
     }
 
     this.worldContainer.addChild(this.drawsceneBounds())
@@ -137,9 +138,9 @@ class GameCanvas extends Component {
     }
 
     this.bloomContainer.addChild(this.worldContainer)
+    this.bloomContainer.addChild(this.sceneBg)
     this.bloomContainer.addChild(this.entitiesContainer)
     this.bloomContainer.addChild(this.playerContainer)
-    this.bloomContainer.addChild(this.sceneBg)
 
     // this.scene.addChild(this.sceneBg)
     this.scene.addChild(this.bloomContainer)
@@ -336,9 +337,9 @@ class GameCanvas extends Component {
       this.checkForPlayerCollisions()
     }
 
-    // Update nebulas
-    for (let n = 0; n < this.nebulas.data.length; n++) {
-      this.nebulas.data[n].update(delta)
+    // Update stardust
+    for (let n = 0; n < this.stardust.data.length; n++) {
+      this.stardust.data[n].update(delta)
     }
 
     // Update camera position
