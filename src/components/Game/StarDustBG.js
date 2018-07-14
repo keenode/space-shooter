@@ -16,7 +16,6 @@ class StarDustBG {
   constructor(sceneBounds) {
     this.sceneBounds = sceneBounds
     this.generateDust()
-    // this.PIXIContainer.cacheAsBitmap = true
   }
 
   generateDust() {
@@ -40,11 +39,11 @@ class StarDustBG {
       stardustSprite.data.vy = 0
       stardustSprite.data.moveRotation =  Math.random() * Math.PI * 2
       stardustSprite.data.alphaMax = stardustSprite.alpha
-      stardustSprite.data.accel = 1.0
+      stardustSprite.data.accel = 0.0001
       stardustSprite.data.speed = 0
-      stardustSprite.data.speedMax = 0.1
+      stardustSprite.data.speedMax = Math.random() * 0.15
       stardustSprite.data.dist = 0
-      stardustSprite.data.distMax = 500
+      stardustSprite.data.distMax = Math.random() * 2000 + 500
       this.stardusts.push(stardustSprite)
       this.PIXIContainer.addChild(stardustSprite)
     }
@@ -59,7 +58,7 @@ class StarDustBG {
         const distX = this.stardusts[d].x - stardust.data.originalX
         const distY = this.stardusts[d].y - stardust.data.originalY
         stardust.data.dist = Math.sqrt(distY * distY + distX * distX)
-        stardust.alpha +=  0.01 * delta
+        stardust.alpha +=  0.001 * delta
         if (stardust.alpha > stardust.data.alphaMax) {
           stardust.alpha = stardust.data.alphaMax
         }
@@ -68,18 +67,16 @@ class StarDustBG {
 
         if (stardust.alpha < 0) {
           // stardust.alpha = stardust.data.alphaMax
-          stardust.alpha = 0
           stardust.x = stardust.data.originalX
           stardust.y = stardust.data.originalY
+          stardust.alpha = 0
           stardust.data.vx = 0
           stardust.data.vy = 0
           stardust.data.moveRotation = Math.random() * Math.PI * 2
+          stardust.data.alphaMax = Math.random() * 1
+          stardust.data.speedMax = Math.random() * 0.15
           stardust.data.dist = 0
         }
-      }
-
-      if (d === 0) {
-        // console.log(stardust.data.dist)
       }
 
       // console.log(stardust.data.dist)
