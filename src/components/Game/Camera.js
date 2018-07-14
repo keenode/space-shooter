@@ -1,29 +1,31 @@
-const nebulasParallaxAmt = 0.3
+const starDustBgsParallaxAmt = 0.02
 const starFieldParallaxAmt = 0.08
 
 class Camera {
   scane = null
   trackingEntity = null
   renderer = null
-  starFieldAmbientBGs = null
-  nebulas = null
+  starFieldBgs = null
+  starDustBgs = null
 
-  constructor(scene, trackingEntity, renderer, starFieldAmbientBGs, nebulas) {
+  constructor(scene, trackingEntity, renderer, starFieldBgs, starDustBgs) {
     this.scene = scene
     this.trackingEntity = trackingEntity
     this.renderer = renderer
-    this.starFieldAmbientBGs = starFieldAmbientBGs
-    this.nebulas = nebulas
+    this.starFieldBgs = starFieldBgs
+    this.starDustBgs = starDustBgs
   }
 
   update(delta) {
     this.scene.x = -this.trackingEntity.x + this.renderer.width / 2
     this.scene.y = -this.trackingEntity.y + this.renderer.height / 2
-    this.nebulas.x = -this.scene.x * nebulasParallaxAmt
-    this.nebulas.y = -this.scene.y * nebulasParallaxAmt
-    for (let i = 0; i < this.starFieldAmbientBGs.length; i++) {
-      this.starFieldAmbientBGs[i].PIXIContainer.x = -this.scene.x * starFieldParallaxAmt * (i + 1)
-      this.starFieldAmbientBGs[i].PIXIContainer.y = -this.scene.y * starFieldParallaxAmt * (i + 1)
+    for (let d = 0; d < this.starDustBgs.length; d++) {
+      this.starDustBgs[d].PIXIContainer.x = this.scene.x * starDustBgsParallaxAmt * (d + 1)
+      this.starDustBgs[d].PIXIContainer.y = this.scene.y * starDustBgsParallaxAmt * (d + 1)
+    }
+    for (let s = 0; s < this.starFieldBgs.length; s++) {
+      this.starFieldBgs[s].PIXIContainer.x = -this.scene.x * starFieldParallaxAmt * (s + 1)
+      this.starFieldBgs[s].PIXIContainer.y = -this.scene.y * starFieldParallaxAmt * (s + 1)
     }
   }
 }

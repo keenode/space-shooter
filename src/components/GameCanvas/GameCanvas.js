@@ -44,12 +44,11 @@ class GameCanvas extends Component {
     data: [],
     container: new PIXI.Container()
   }
-  stardust = {
+  starDustBgs = {
     data: [],
     container: new PIXI.Container()
   }
   starFieldBGs = []
-  starDustBgs = []
   playerDeadReported = false
   playerNoFuelReported = false
   motionBlurFilter = new MotionBlurFilter()
@@ -61,12 +60,15 @@ class GameCanvas extends Component {
       'assets/images/projectiles/projectile.png',
       'assets/images/stars/star.png',
       'assets/images/stars/star-fuzzier.png',
-      'assets/images/stardust/stardust-1.png'
+      'assets/images/stardust/stardust-1.png',
+      'assets/images/stardust/stardust-2.png',
+      'assets/images/stardust/stardust-3.png',
+      'assets/images/stardust/stardust-4.png'
     ]).load(() => {
       console.log('Textures loaded into PIXI.')
       this.setupScene()
       this.placeEntities()
-      this.camera = new Camera(this.scene, this.playerShip.PIXIContainer, this.gameApp.renderer, this.starFieldBGs, this.stardust.container)
+      this.camera = new Camera(this.scene, this.playerShip.PIXIContainer, this.gameApp.renderer, this.starFieldBGs, this.starDustBgs.data)
       this.gameApp.ticker.add(delta => this.gameLoop(delta))
 
       // Play atmosphere SFX
@@ -120,7 +122,7 @@ class GameCanvas extends Component {
     if (gfxConfig.stardust) {
       for (let i = 0; i < gfxConfig.starDustDepth; i++) {
         const starDustBg = new StarDustBG(sceneBounds)
-        this.starDustBgs.push(starDustBg)
+        this.starDustBgs.data.push(starDustBg)
         this.sceneBg.addChild(starDustBg.PIXIContainer)
       }
     }
@@ -138,11 +140,11 @@ class GameCanvas extends Component {
     }
 
     this.bloomContainer.addChild(this.worldContainer)
-    this.bloomContainer.addChild(this.sceneBg)
+    // this.bloomContainer.addChild(this.sceneBg)
     this.bloomContainer.addChild(this.entitiesContainer)
     this.bloomContainer.addChild(this.playerContainer)
 
-    // this.scene.addChild(this.sceneBg)
+    this.scene.addChild(this.sceneBg)
     this.scene.addChild(this.bloomContainer)
 
     if (gfxConfig.motionBlur) {
@@ -338,8 +340,8 @@ class GameCanvas extends Component {
     }
 
     // Update stardust
-    for (let n = 0; n < this.stardust.data.length; n++) {
-      this.stardust.data[n].update(delta)
+    for (let d = 0; d < this.starDustBgs.data.length; d++) {
+      this.starDustBgs.data[d].update(delta)
     }
 
     // Update camera position

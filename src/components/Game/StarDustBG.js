@@ -1,8 +1,11 @@
 import * as PIXI from 'pixi.js'
 
-const numStarDusts = 10
+const numStarDusts = 8
 const dustAssetPaths = [
-  'assets/images/stardust/stardust-1.png'
+  'assets/images/stardust/stardust-1.png',
+  'assets/images/stardust/stardust-2.png',
+  'assets/images/stardust/stardust-3.png',
+  'assets/images/stardust/stardust-4.png'
 ]
 
 class StarDustBG {
